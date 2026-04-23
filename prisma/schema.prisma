@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum QuestionCategory {
+  VOCAB
+  GRAMMAR
+  READING
+  LISTENING
+  INFO
+  SPEAKING
+  OTHER
+}
+
+model User {
+  id               String            @id @default(cuid())
+  name             String?
+  email            String            @unique
+  password         String?
+  role             String            @default("student")
+  attempts         Attempt[]
+  weaknessProfiles WeaknessProfile[]
+  memberships      ClassMember[]
+}
+
+model Exam {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  attempts    Attempt[]
+  questions   Question[]
+}
+
+model Question {
+  id          String           @id @default(cuid())
+  examId      String
+  text        String
+  category    QuestionCategory @default(OTHER)
+  type        String           @default("mcq")
+  options     Json?
+  answer      String?
+  exam        Exam             @relation(fields: [examId], references: [id], onDelete: Cascade)
+  answers     AttemptAnswer[]
+}
+
+model Attempt {
+  id          String          @id @default(cuid())
+  userId      String
+  examId      String
+  startedAt   DateTime        @default(now())
+  submittedAt DateTime?
+  totalScore  Int?
+  resultLabel String?
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exam        Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
+  answers     AttemptAnswer[]
+}
+
+model AttemptAnswer {
+  id               String   @id @default(cuid())
+  attemptId        String
+  questionId       String
+  selectedChoiceId String?
+  isCorrect        Boolean?
+  timeSpentSec     Int?
+  flagged          Boolean  @default(false)
+  attempt          Attempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question         Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model WeaknessProfile {
+  id            String           @id @default(cuid())
+  userId        String
+  category      QuestionCategory
+  attemptsCount Int              @default(0)
+  correctCount  Int              @default(0)
+  accuracy      Float            @default(0)
+  weaknessLevel String?
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, category])
+}
+
+model ClassRoom {
+  id        String        @id @default(cuid())
+  name      String
+  teacherId String
+  members   ClassMember[]
+}
+
+model ClassMember {
+  id          String    @id @default(cuid())
+  classRoomId String
+  userId      String
+  classRoom   ClassRoom @relation(fields: [classRoomId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([classRoomId, userId])
+}
