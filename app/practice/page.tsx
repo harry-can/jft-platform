@@ -9,6 +9,9 @@ type Question = {
   answer: string | null;
   category: string;
   type: string;
+  imageUrl?: string | null;
+  audioUrl?: string | null;
+  explanation?: string | null;
 };
 
 export default function PracticePage() {
@@ -36,7 +39,9 @@ export default function PracticePage() {
       } catch (err) {
         console.error("Failed to load practice questions:", err);
         setError(
-          err instanceof Error ? err.message : "Failed to load practice questions"
+          err instanceof Error
+            ? err.message
+            : "Failed to load practice questions"
         );
       } finally {
         setLoading(false);
@@ -72,24 +77,47 @@ export default function PracticePage() {
         </div>
 
         {loading ? (
-          <div className="rounded-3xl bg-white p-6 shadow">Loading questions...</div>
+          <div className="rounded-3xl bg-white p-6 shadow">
+            Loading questions...
+          </div>
         ) : error ? (
           <div className="rounded-3xl bg-white p-6 shadow">
-            <div className="font-semibold text-red-600">Failed to load practice questions.</div>
+            <div className="font-semibold text-red-600">
+              Failed to load practice questions.
+            </div>
             <pre className="mt-4 overflow-auto rounded-xl bg-zinc-100 p-4 text-sm">
               {error}
             </pre>
           </div>
         ) : questions.length === 0 ? (
-          <div className="rounded-3xl bg-white p-6 shadow">No questions found.</div>
+          <div className="rounded-3xl bg-white p-6 shadow">
+            No questions found.
+          </div>
         ) : (
           <div className="space-y-6">
             {questions.map((q, index) => (
               <div key={q.id} className="rounded-3xl bg-white p-6 shadow">
                 <div className="mb-4">
-                  <div className="text-sm text-zinc-500">Question {index + 1}</div>
+                  <div className="text-sm text-zinc-500">
+                    Question {index + 1}
+                  </div>
                   <div className="mt-2 text-lg font-semibold">{q.text}</div>
                 </div>
+
+                {q.imageUrl && (
+                  <img
+                    src={q.imageUrl}
+                    alt="Question"
+                    className="mb-4 max-h-64 rounded-2xl border object-contain"
+                  />
+                )}
+
+                {q.audioUrl && (
+                  <audio controls className="mb-4 w-full">
+                    <source src={q.audioUrl} />
+                    Your browser does not support the audio element.
+                  </audio>
+                )}
 
                 <div className="space-y-3">
                   {q.options &&
@@ -116,12 +144,20 @@ export default function PracticePage() {
                 </div>
 
                 {showResult && (
-                  <div className="mt-4">
+                  <div className="mt-4 space-y-2">
                     {answers[q.id] === q.answer ? (
-                      <div className="font-semibold text-green-600">Correct</div>
+                      <div className="font-semibold text-green-600">
+                        Correct
+                      </div>
                     ) : (
                       <div className="font-semibold text-red-600">
                         Wrong — Correct answer: {q.answer}
+                      </div>
+                    )}
+
+                    {q.explanation && (
+                      <div className="rounded-xl bg-blue-50 p-3 text-sm text-zinc-700">
+                        {q.explanation}
                       </div>
                     )}
                   </div>

@@ -17,13 +17,20 @@ export async function GET() {
 export async function POST(req: Request) {
   const body = await req.json();
 
-  const { examId, text, category, type, options, answer } = body;
+  const {
+    examId,
+    text,
+    category,
+    type,
+    options,
+    answer,
+    imageUrl,
+    audioUrl,
+    explanation,
+  } = body;
 
   if (!examId || !text || !category || !type || !answer) {
-    return NextResponse.json(
-      { error: "Missing required fields" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
 
   const question = await prisma.question.create({
@@ -34,6 +41,9 @@ export async function POST(req: Request) {
       type,
       options,
       answer,
+      imageUrl: imageUrl || null,
+      audioUrl: audioUrl || null,
+      explanation: explanation || null,
     },
   });
 

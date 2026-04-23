@@ -1,18 +1,16 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+const SESSION_COOKIE = "jft_session";
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const session = request.cookies.get(SESSION_COOKIE)?.value;
 
-  // Example only: replace with real auth later
-  const isLoggedIn = true;
+  const protectedPaths = ["/dashboard", "/teacher", "/admin", "/exam"];
+  const requiresAuth = protectedPaths.some((path) => pathname.startsWith(path));
 
-  if (
-    (pathname.startsWith("/admin") ||
-      pathname.startsWith("/teacher") ||
-      pathname.startsWith("/dashboard")) &&
-    !isLoggedIn
-  ) {
+  if (requiresAuth && !session) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
@@ -20,5 +18,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/teacher/:path*", "/dashboard/:path*"],
+  matcher: ["/dashboard/:path*", "/teacher/:path*", "/admin/:path*", "/exam/:path*"],
 };

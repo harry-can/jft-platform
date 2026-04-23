@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { comparePassword } from "@/lib/auth";
+import { createSession } from "@/lib/session";
 
 export async function POST(req: Request) {
   try {
@@ -19,20 +20,16 @@ export async function POST(req: Request) {
     });
 
     if (!user || !user.password) {
-      return NextResponse.json(
-        { error: "Invalid credentials" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
     }
 
     const valid = await comparePassword(password, user.password);
 
     if (!valid) {
-      return NextResponse.json(
-        { error: "Invalid credentials" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
     }
+
+    await createSession(user.id);
 
     return NextResponse.json({
       id: user.id,
@@ -42,9 +39,6 @@ export async function POST(req: Request) {
     });
   } catch (error) {
     console.error("Login error:", error);
-    return NextResponse.json(
-      { error: "Login failed" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Login failed" }, { status: 500 });
   }
 }

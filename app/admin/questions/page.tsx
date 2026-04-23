@@ -9,6 +9,9 @@ type Question = {
   type: string;
   options: any;
   answer: string | null;
+  imageUrl?: string | null;
+  audioUrl?: string | null;
+  explanation?: string | null;
   exam: {
     id: string;
     title: string;
@@ -35,6 +38,9 @@ export default function AdminQuestionsPage() {
     optionC: "",
     optionD: "",
     answer: "A",
+    imageUrl: "",
+    audioUrl: "",
+    explanation: "",
   });
 
   async function loadData() {
@@ -71,6 +77,9 @@ export default function AdminQuestionsPage() {
         D: form.optionD,
       },
       answer: form.answer,
+      imageUrl: form.imageUrl,
+      audioUrl: form.audioUrl,
+      explanation: form.explanation,
     };
 
     const res = await fetch("/api/admin/questions", {
@@ -97,6 +106,9 @@ export default function AdminQuestionsPage() {
       optionC: "",
       optionD: "",
       answer: "A",
+      imageUrl: "",
+      audioUrl: "",
+      explanation: "",
     });
 
     await loadData();
@@ -107,9 +119,7 @@ export default function AdminQuestionsPage() {
       <div className="mx-auto max-w-7xl px-6 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Admin Question Manager</h1>
-          <p className="mt-2 text-zinc-600">
-            Create and manage questions for exams.
-          </p>
+          <p className="mt-2 text-zinc-600">Create text, image, and audio questions.</p>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-3">
@@ -187,6 +197,27 @@ export default function AdminQuestionsPage() {
                 <option value="D">Correct Answer: D</option>
               </select>
 
+              <input
+                className="w-full rounded-2xl border p-3"
+                placeholder="Image URL (optional)"
+                value={form.imageUrl}
+                onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+              />
+
+              <input
+                className="w-full rounded-2xl border p-3"
+                placeholder="Audio URL (optional)"
+                value={form.audioUrl}
+                onChange={(e) => setForm({ ...form, audioUrl: e.target.value })}
+              />
+
+              <textarea
+                className="w-full rounded-2xl border p-3"
+                placeholder="Explanation (optional)"
+                value={form.explanation}
+                onChange={(e) => setForm({ ...form, explanation: e.target.value })}
+              />
+
               <button
                 type="submit"
                 className="w-full rounded-2xl bg-black px-5 py-3 font-medium text-white transition hover:bg-zinc-800"
@@ -210,9 +241,29 @@ export default function AdminQuestionsPage() {
                       Exam: {q.exam.title} | Category: {q.category} | Type: {q.type}
                     </div>
 
+                    {q.imageUrl && (
+                      <img
+                        src={q.imageUrl}
+                        alt="Question"
+                        className="mt-4 max-h-56 rounded-xl border object-contain"
+                      />
+                    )}
+
+                    {q.audioUrl && (
+                      <audio controls className="mt-4 w-full">
+                        <source src={q.audioUrl} />
+                      </audio>
+                    )}
+
                     <pre className="mt-3 overflow-auto rounded-xl bg-zinc-100 p-3 text-sm">
                       {JSON.stringify(q.options, null, 2)}
                     </pre>
+
+                    {q.explanation && (
+                      <div className="mt-3 rounded-xl bg-blue-50 p-3 text-sm text-zinc-700">
+                        {q.explanation}
+                      </div>
+                    )}
 
                     <div className="mt-3 font-semibold">Correct Answer: {q.answer}</div>
                   </div>

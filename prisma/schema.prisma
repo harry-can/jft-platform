@@ -26,6 +26,18 @@ model User {
   attempts         Attempt[]
   weaknessProfiles WeaknessProfile[]
   memberships      ClassMember[]
+  sessions         Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Exam {
@@ -44,6 +56,9 @@ model Question {
   type        String           @default("mcq")
   options     Json?
   answer      String?
+  imageUrl    String?
+  audioUrl    String?
+  explanation String?
   exam        Exam             @relation(fields: [examId], references: [id], onDelete: Cascade)
   answers     AttemptAnswer[]
 }

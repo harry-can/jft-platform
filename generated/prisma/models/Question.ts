@@ -31,6 +31,9 @@ export type QuestionMinAggregateOutputType = {
   category: $Enums.QuestionCategory | null
   type: string | null
   answer: string | null
+  imageUrl: string | null
+  audioUrl: string | null
+  explanation: string | null
 }
 
 export type QuestionMaxAggregateOutputType = {
@@ -40,6 +43,9 @@ export type QuestionMaxAggregateOutputType = {
   category: $Enums.QuestionCategory | null
   type: string | null
   answer: string | null
+  imageUrl: string | null
+  audioUrl: string | null
+  explanation: string | null
 }
 
 export type QuestionCountAggregateOutputType = {
@@ -50,6 +56,9 @@ export type QuestionCountAggregateOutputType = {
   type: number
   options: number
   answer: number
+  imageUrl: number
+  audioUrl: number
+  explanation: number
   _all: number
 }
 
@@ -61,6 +70,9 @@ export type QuestionMinAggregateInputType = {
   category?: true
   type?: true
   answer?: true
+  imageUrl?: true
+  audioUrl?: true
+  explanation?: true
 }
 
 export type QuestionMaxAggregateInputType = {
@@ -70,6 +82,9 @@ export type QuestionMaxAggregateInputType = {
   category?: true
   type?: true
   answer?: true
+  imageUrl?: true
+  audioUrl?: true
+  explanation?: true
 }
 
 export type QuestionCountAggregateInputType = {
@@ -80,6 +95,9 @@ export type QuestionCountAggregateInputType = {
   type?: true
   options?: true
   answer?: true
+  imageUrl?: true
+  audioUrl?: true
+  explanation?: true
   _all?: true
 }
 
@@ -163,6 +181,9 @@ export type QuestionGroupByOutputType = {
   type: string
   options: runtime.JsonValue | null
   answer: string | null
+  imageUrl: string | null
+  audioUrl: string | null
+  explanation: string | null
   _count: QuestionCountAggregateOutputType | null
   _min: QuestionMinAggregateOutputType | null
   _max: QuestionMaxAggregateOutputType | null
@@ -194,6 +215,9 @@ export type QuestionWhereInput = {
   type?: Prisma.StringFilter<"Question"> | string
   options?: Prisma.JsonNullableFilter<"Question">
   answer?: Prisma.StringNullableFilter<"Question"> | string | null
+  imageUrl?: Prisma.StringNullableFilter<"Question"> | string | null
+  audioUrl?: Prisma.StringNullableFilter<"Question"> | string | null
+  explanation?: Prisma.StringNullableFilter<"Question"> | string | null
   exam?: Prisma.XOR<Prisma.ExamScalarRelationFilter, Prisma.ExamWhereInput>
   answers?: Prisma.AttemptAnswerListRelationFilter
 }
@@ -206,6 +230,9 @@ export type QuestionOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   options?: Prisma.SortOrderInput | Prisma.SortOrder
   answer?: Prisma.SortOrderInput | Prisma.SortOrder
+  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  audioUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  explanation?: Prisma.SortOrderInput | Prisma.SortOrder
   exam?: Prisma.ExamOrderByWithRelationInput
   answers?: Prisma.AttemptAnswerOrderByRelationAggregateInput
 }
@@ -221,6 +248,9 @@ export type QuestionWhereUniqueInput = Prisma.AtLeast<{
   type?: Prisma.StringFilter<"Question"> | string
   options?: Prisma.JsonNullableFilter<"Question">
   answer?: Prisma.StringNullableFilter<"Question"> | string | null
+  imageUrl?: Prisma.StringNullableFilter<"Question"> | string | null
+  audioUrl?: Prisma.StringNullableFilter<"Question"> | string | null
+  explanation?: Prisma.StringNullableFilter<"Question"> | string | null
   exam?: Prisma.XOR<Prisma.ExamScalarRelationFilter, Prisma.ExamWhereInput>
   answers?: Prisma.AttemptAnswerListRelationFilter
 }, "id">
@@ -233,6 +263,9 @@ export type QuestionOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   options?: Prisma.SortOrderInput | Prisma.SortOrder
   answer?: Prisma.SortOrderInput | Prisma.SortOrder
+  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  audioUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  explanation?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.QuestionCountOrderByAggregateInput
   _max?: Prisma.QuestionMaxOrderByAggregateInput
   _min?: Prisma.QuestionMinOrderByAggregateInput
@@ -249,6 +282,9 @@ export type QuestionScalarWhereWithAggregatesInput = {
   type?: Prisma.StringWithAggregatesFilter<"Question"> | string
   options?: Prisma.JsonNullableWithAggregatesFilter<"Question">
   answer?: Prisma.StringNullableWithAggregatesFilter<"Question"> | string | null
+  imageUrl?: Prisma.StringNullableWithAggregatesFilter<"Question"> | string | null
+  audioUrl?: Prisma.StringNullableWithAggregatesFilter<"Question"> | string | null
+  explanation?: Prisma.StringNullableWithAggregatesFilter<"Question"> | string | null
 }
 
 export type QuestionCreateInput = {
@@ -258,6 +294,9 @@ export type QuestionCreateInput = {
   type?: string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: string | null
+  imageUrl?: string | null
+  audioUrl?: string | null
+  explanation?: string | null
   exam: Prisma.ExamCreateNestedOneWithoutQuestionsInput
   answers?: Prisma.AttemptAnswerCreateNestedManyWithoutQuestionInput
 }
@@ -270,6 +309,9 @@ export type QuestionUncheckedCreateInput = {
   type?: string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: string | null
+  imageUrl?: string | null
+  audioUrl?: string | null
+  explanation?: string | null
   answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutQuestionInput
 }
 
@@ -280,6 +322,9 @@ export type QuestionUpdateInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exam?: Prisma.ExamUpdateOneRequiredWithoutQuestionsNestedInput
   answers?: Prisma.AttemptAnswerUpdateManyWithoutQuestionNestedInput
 }
@@ -292,6 +337,9 @@ export type QuestionUncheckedUpdateInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutQuestionNestedInput
 }
 
@@ -303,6 +351,9 @@ export type QuestionCreateManyInput = {
   type?: string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: string | null
+  imageUrl?: string | null
+  audioUrl?: string | null
+  explanation?: string | null
 }
 
 export type QuestionUpdateManyMutationInput = {
@@ -312,6 +363,9 @@ export type QuestionUpdateManyMutationInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type QuestionUncheckedUpdateManyInput = {
@@ -322,6 +376,9 @@ export type QuestionUncheckedUpdateManyInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type QuestionListRelationFilter = {
@@ -342,6 +399,9 @@ export type QuestionCountOrderByAggregateInput = {
   type?: Prisma.SortOrder
   options?: Prisma.SortOrder
   answer?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
+  audioUrl?: Prisma.SortOrder
+  explanation?: Prisma.SortOrder
 }
 
 export type QuestionMaxOrderByAggregateInput = {
@@ -351,6 +411,9 @@ export type QuestionMaxOrderByAggregateInput = {
   category?: Prisma.SortOrder
   type?: Prisma.SortOrder
   answer?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
+  audioUrl?: Prisma.SortOrder
+  explanation?: Prisma.SortOrder
 }
 
 export type QuestionMinOrderByAggregateInput = {
@@ -360,6 +423,9 @@ export type QuestionMinOrderByAggregateInput = {
   category?: Prisma.SortOrder
   type?: Prisma.SortOrder
   answer?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
+  audioUrl?: Prisma.SortOrder
+  explanation?: Prisma.SortOrder
 }
 
 export type QuestionScalarRelationFilter = {
@@ -434,6 +500,9 @@ export type QuestionCreateWithoutExamInput = {
   type?: string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: string | null
+  imageUrl?: string | null
+  audioUrl?: string | null
+  explanation?: string | null
   answers?: Prisma.AttemptAnswerCreateNestedManyWithoutQuestionInput
 }
 
@@ -444,6 +513,9 @@ export type QuestionUncheckedCreateWithoutExamInput = {
   type?: string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: string | null
+  imageUrl?: string | null
+  audioUrl?: string | null
+  explanation?: string | null
   answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutQuestionInput
 }
 
@@ -484,6 +556,9 @@ export type QuestionScalarWhereInput = {
   type?: Prisma.StringFilter<"Question"> | string
   options?: Prisma.JsonNullableFilter<"Question">
   answer?: Prisma.StringNullableFilter<"Question"> | string | null
+  imageUrl?: Prisma.StringNullableFilter<"Question"> | string | null
+  audioUrl?: Prisma.StringNullableFilter<"Question"> | string | null
+  explanation?: Prisma.StringNullableFilter<"Question"> | string | null
 }
 
 export type QuestionCreateWithoutAnswersInput = {
@@ -493,6 +568,9 @@ export type QuestionCreateWithoutAnswersInput = {
   type?: string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: string | null
+  imageUrl?: string | null
+  audioUrl?: string | null
+  explanation?: string | null
   exam: Prisma.ExamCreateNestedOneWithoutQuestionsInput
 }
 
@@ -504,6 +582,9 @@ export type QuestionUncheckedCreateWithoutAnswersInput = {
   type?: string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: string | null
+  imageUrl?: string | null
+  audioUrl?: string | null
+  explanation?: string | null
 }
 
 export type QuestionCreateOrConnectWithoutAnswersInput = {
@@ -529,6 +610,9 @@ export type QuestionUpdateWithoutAnswersInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exam?: Prisma.ExamUpdateOneRequiredWithoutQuestionsNestedInput
 }
 
@@ -540,6 +624,9 @@ export type QuestionUncheckedUpdateWithoutAnswersInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type QuestionCreateManyExamInput = {
@@ -549,6 +636,9 @@ export type QuestionCreateManyExamInput = {
   type?: string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: string | null
+  imageUrl?: string | null
+  audioUrl?: string | null
+  explanation?: string | null
 }
 
 export type QuestionUpdateWithoutExamInput = {
@@ -558,6 +648,9 @@ export type QuestionUpdateWithoutExamInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   answers?: Prisma.AttemptAnswerUpdateManyWithoutQuestionNestedInput
 }
 
@@ -568,6 +661,9 @@ export type QuestionUncheckedUpdateWithoutExamInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutQuestionNestedInput
 }
 
@@ -578,6 +674,9 @@ export type QuestionUncheckedUpdateManyWithoutExamInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -619,6 +718,9 @@ export type QuestionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   type?: boolean
   options?: boolean
   answer?: boolean
+  imageUrl?: boolean
+  audioUrl?: boolean
+  explanation?: boolean
   exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
   answers?: boolean | Prisma.Question$answersArgs<ExtArgs>
   _count?: boolean | Prisma.QuestionCountOutputTypeDefaultArgs<ExtArgs>
@@ -632,6 +734,9 @@ export type QuestionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   type?: boolean
   options?: boolean
   answer?: boolean
+  imageUrl?: boolean
+  audioUrl?: boolean
+  explanation?: boolean
   exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["question"]>
 
@@ -643,6 +748,9 @@ export type QuestionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   type?: boolean
   options?: boolean
   answer?: boolean
+  imageUrl?: boolean
+  audioUrl?: boolean
+  explanation?: boolean
   exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["question"]>
 
@@ -654,9 +762,12 @@ export type QuestionSelectScalar = {
   type?: boolean
   options?: boolean
   answer?: boolean
+  imageUrl?: boolean
+  audioUrl?: boolean
+  explanation?: boolean
 }
 
-export type QuestionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "examId" | "text" | "category" | "type" | "options" | "answer", ExtArgs["result"]["question"]>
+export type QuestionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "examId" | "text" | "category" | "type" | "options" | "answer" | "imageUrl" | "audioUrl" | "explanation", ExtArgs["result"]["question"]>
 export type QuestionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
   answers?: boolean | Prisma.Question$answersArgs<ExtArgs>
@@ -683,6 +794,9 @@ export type $QuestionPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     type: string
     options: runtime.JsonValue | null
     answer: string | null
+    imageUrl: string | null
+    audioUrl: string | null
+    explanation: string | null
   }, ExtArgs["result"]["question"]>
   composites: {}
 }
@@ -1115,6 +1229,9 @@ export interface QuestionFieldRefs {
   readonly type: Prisma.FieldRef<"Question", 'String'>
   readonly options: Prisma.FieldRef<"Question", 'Json'>
   readonly answer: Prisma.FieldRef<"Question", 'String'>
+  readonly imageUrl: Prisma.FieldRef<"Question", 'String'>
+  readonly audioUrl: Prisma.FieldRef<"Question", 'String'>
+  readonly explanation: Prisma.FieldRef<"Question", 'String'>
 }
     
 

@@ -185,6 +185,7 @@ export type UserWhereInput = {
   attempts?: Prisma.AttemptListRelationFilter
   weaknessProfiles?: Prisma.WeaknessProfileListRelationFilter
   memberships?: Prisma.ClassMemberListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -196,6 +197,7 @@ export type UserOrderByWithRelationInput = {
   attempts?: Prisma.AttemptOrderByRelationAggregateInput
   weaknessProfiles?: Prisma.WeaknessProfileOrderByRelationAggregateInput
   memberships?: Prisma.ClassMemberOrderByRelationAggregateInput
+  sessions?: Prisma.SessionOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -210,6 +212,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   attempts?: Prisma.AttemptListRelationFilter
   weaknessProfiles?: Prisma.WeaknessProfileListRelationFilter
   memberships?: Prisma.ClassMemberListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -243,6 +246,7 @@ export type UserCreateInput = {
   attempts?: Prisma.AttemptCreateNestedManyWithoutUserInput
   weaknessProfiles?: Prisma.WeaknessProfileCreateNestedManyWithoutUserInput
   memberships?: Prisma.ClassMemberCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -254,6 +258,7 @@ export type UserUncheckedCreateInput = {
   attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutUserInput
   weaknessProfiles?: Prisma.WeaknessProfileUncheckedCreateNestedManyWithoutUserInput
   memberships?: Prisma.ClassMemberUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -265,6 +270,7 @@ export type UserUpdateInput = {
   attempts?: Prisma.AttemptUpdateManyWithoutUserNestedInput
   weaknessProfiles?: Prisma.WeaknessProfileUpdateManyWithoutUserNestedInput
   memberships?: Prisma.ClassMemberUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -276,6 +282,7 @@ export type UserUncheckedUpdateInput = {
   attempts?: Prisma.AttemptUncheckedUpdateManyWithoutUserNestedInput
   weaknessProfiles?: Prisma.WeaknessProfileUncheckedUpdateManyWithoutUserNestedInput
   memberships?: Prisma.ClassMemberUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -339,6 +346,20 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
+export type UserCreateNestedOneWithoutSessionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
+  upsert?: Prisma.UserUpsertWithoutSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+}
+
 export type UserCreateNestedOneWithoutAttemptsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAttemptsInput, Prisma.UserUncheckedCreateWithoutAttemptsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAttemptsInput
@@ -381,6 +402,66 @@ export type UserUpdateOneRequiredWithoutMembershipsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMembershipsInput, Prisma.UserUpdateWithoutMembershipsInput>, Prisma.UserUncheckedUpdateWithoutMembershipsInput>
 }
 
+export type UserCreateWithoutSessionsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  password?: string | null
+  role?: string
+  attempts?: Prisma.AttemptCreateNestedManyWithoutUserInput
+  weaknessProfiles?: Prisma.WeaknessProfileCreateNestedManyWithoutUserInput
+  memberships?: Prisma.ClassMemberCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSessionsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  password?: string | null
+  role?: string
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutUserInput
+  weaknessProfiles?: Prisma.WeaknessProfileUncheckedCreateNestedManyWithoutUserInput
+  memberships?: Prisma.ClassMemberUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSessionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+}
+
+export type UserUpsertWithoutSessionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSessionsInput, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSessionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSessionsInput, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+}
+
+export type UserUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  attempts?: Prisma.AttemptUpdateManyWithoutUserNestedInput
+  weaknessProfiles?: Prisma.WeaknessProfileUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.ClassMemberUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutUserNestedInput
+  weaknessProfiles?: Prisma.WeaknessProfileUncheckedUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.ClassMemberUncheckedUpdateManyWithoutUserNestedInput
+}
+
 export type UserCreateWithoutAttemptsInput = {
   id?: string
   name?: string | null
@@ -389,6 +470,7 @@ export type UserCreateWithoutAttemptsInput = {
   role?: string
   weaknessProfiles?: Prisma.WeaknessProfileCreateNestedManyWithoutUserInput
   memberships?: Prisma.ClassMemberCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAttemptsInput = {
@@ -399,6 +481,7 @@ export type UserUncheckedCreateWithoutAttemptsInput = {
   role?: string
   weaknessProfiles?: Prisma.WeaknessProfileUncheckedCreateNestedManyWithoutUserInput
   memberships?: Prisma.ClassMemberUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAttemptsInput = {
@@ -425,6 +508,7 @@ export type UserUpdateWithoutAttemptsInput = {
   role?: Prisma.StringFieldUpdateOperationsInput | string
   weaknessProfiles?: Prisma.WeaknessProfileUpdateManyWithoutUserNestedInput
   memberships?: Prisma.ClassMemberUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAttemptsInput = {
@@ -435,6 +519,7 @@ export type UserUncheckedUpdateWithoutAttemptsInput = {
   role?: Prisma.StringFieldUpdateOperationsInput | string
   weaknessProfiles?: Prisma.WeaknessProfileUncheckedUpdateManyWithoutUserNestedInput
   memberships?: Prisma.ClassMemberUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutWeaknessProfilesInput = {
@@ -445,6 +530,7 @@ export type UserCreateWithoutWeaknessProfilesInput = {
   role?: string
   attempts?: Prisma.AttemptCreateNestedManyWithoutUserInput
   memberships?: Prisma.ClassMemberCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutWeaknessProfilesInput = {
@@ -455,6 +541,7 @@ export type UserUncheckedCreateWithoutWeaknessProfilesInput = {
   role?: string
   attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutUserInput
   memberships?: Prisma.ClassMemberUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutWeaknessProfilesInput = {
@@ -481,6 +568,7 @@ export type UserUpdateWithoutWeaknessProfilesInput = {
   role?: Prisma.StringFieldUpdateOperationsInput | string
   attempts?: Prisma.AttemptUpdateManyWithoutUserNestedInput
   memberships?: Prisma.ClassMemberUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWeaknessProfilesInput = {
@@ -491,6 +579,7 @@ export type UserUncheckedUpdateWithoutWeaknessProfilesInput = {
   role?: Prisma.StringFieldUpdateOperationsInput | string
   attempts?: Prisma.AttemptUncheckedUpdateManyWithoutUserNestedInput
   memberships?: Prisma.ClassMemberUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutMembershipsInput = {
@@ -501,6 +590,7 @@ export type UserCreateWithoutMembershipsInput = {
   role?: string
   attempts?: Prisma.AttemptCreateNestedManyWithoutUserInput
   weaknessProfiles?: Prisma.WeaknessProfileCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMembershipsInput = {
@@ -511,6 +601,7 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   role?: string
   attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutUserInput
   weaknessProfiles?: Prisma.WeaknessProfileUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMembershipsInput = {
@@ -537,6 +628,7 @@ export type UserUpdateWithoutMembershipsInput = {
   role?: Prisma.StringFieldUpdateOperationsInput | string
   attempts?: Prisma.AttemptUpdateManyWithoutUserNestedInput
   weaknessProfiles?: Prisma.WeaknessProfileUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMembershipsInput = {
@@ -547,6 +639,7 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   role?: Prisma.StringFieldUpdateOperationsInput | string
   attempts?: Prisma.AttemptUncheckedUpdateManyWithoutUserNestedInput
   weaknessProfiles?: Prisma.WeaknessProfileUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -558,12 +651,14 @@ export type UserCountOutputType = {
   attempts: number
   weaknessProfiles: number
   memberships: number
+  sessions: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   attempts?: boolean | UserCountOutputTypeCountAttemptsArgs
   weaknessProfiles?: boolean | UserCountOutputTypeCountWeaknessProfilesArgs
   memberships?: boolean | UserCountOutputTypeCountMembershipsArgs
+  sessions?: boolean | UserCountOutputTypeCountSessionsArgs
 }
 
 /**
@@ -597,6 +692,13 @@ export type UserCountOutputTypeCountMembershipsArgs<ExtArgs extends runtime.Type
   where?: Prisma.ClassMemberWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SessionWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -607,6 +709,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   attempts?: boolean | Prisma.User$attemptsArgs<ExtArgs>
   weaknessProfiles?: boolean | Prisma.User$weaknessProfilesArgs<ExtArgs>
   memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -639,6 +742,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   attempts?: boolean | Prisma.User$attemptsArgs<ExtArgs>
   weaknessProfiles?: boolean | Prisma.User$weaknessProfilesArgs<ExtArgs>
   memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -650,6 +754,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     attempts: Prisma.$AttemptPayload<ExtArgs>[]
     weaknessProfiles: Prisma.$WeaknessProfilePayload<ExtArgs>[]
     memberships: Prisma.$ClassMemberPayload<ExtArgs>[]
+    sessions: Prisma.$SessionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1054,6 +1159,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   attempts<T extends Prisma.User$attemptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$attemptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   weaknessProfiles<T extends Prisma.User$weaknessProfilesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$weaknessProfilesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WeaknessProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   memberships<T extends Prisma.User$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClassMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1550,6 +1656,30 @@ export type User$membershipsArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.ClassMemberScalarFieldEnum | Prisma.ClassMemberScalarFieldEnum[]
+}
+
+/**
+ * User.sessions
+ */
+export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Session
+   */
+  select?: Prisma.SessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Session
+   */
+  omit?: Prisma.SessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SessionInclude<ExtArgs> | null
+  where?: Prisma.SessionWhereInput
+  orderBy?: Prisma.SessionOrderByWithRelationInput | Prisma.SessionOrderByWithRelationInput[]
+  cursor?: Prisma.SessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
 }
 
 /**

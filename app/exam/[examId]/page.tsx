@@ -10,6 +10,9 @@ type Question = {
   answer: string | null;
   category: string;
   type: string;
+  imageUrl?: string | null;
+  audioUrl?: string | null;
+  explanation?: string | null;
 };
 
 type Exam = {
@@ -97,49 +100,72 @@ export default function ExamPage() {
     router.push(`/results/${attempt.id}`);
   }
 
-  if (loading) {
-    return <div className="p-6">Loading exam...</div>;
-  }
-
-  if (!exam) {
-    return <div className="p-6">Exam not found.</div>;
-  }
+  if (loading) return <div className="p-6">Loading exam...</div>;
+  if (!exam) return <div className="p-6">Exam not found.</div>;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <h1 className="text-3xl font-bold">{exam.title}</h1>
-      <p className="text-gray-600">{exam.description}</p>
+    <div className="min-h-screen bg-zinc-100">
+      <div className="mx-auto max-w-5xl px-6 py-8">
+        <h1 className="text-3xl font-bold">{exam.title}</h1>
+        <p className="mt-2 text-zinc-600">{exam.description}</p>
 
-      {exam.questions.map((q, index) => (
-        <div key={q.id} className="border rounded-xl p-4 space-y-3">
-          <div className="font-medium">
-            Q{index + 1}. {q.text}
-          </div>
+        <div className="mt-8 space-y-6">
+          {exam.questions.map((q, index) => (
+            <div key={q.id} className="rounded-3xl bg-white p-6 shadow">
+              <div className="mb-4">
+                <div className="text-sm text-zinc-500">Question {index + 1}</div>
+                <div className="mt-2 text-lg font-semibold">{q.text}</div>
+              </div>
 
-          {q.options &&
-            Object.entries(q.options).map(([key, value]) => (
-              <label key={key} className="block border rounded p-3 cursor-pointer">
-                <input
-                  type="radio"
-                  name={q.id}
-                  value={key}
-                  className="mr-2"
-                  checked={answers[q.id] === key}
-                  onChange={() => handleSelect(q.id, key)}
+              {q.imageUrl && (
+                <img
+                  src={q.imageUrl}
+                  alt="Question"
+                  className="mb-4 max-h-64 rounded-2xl border object-contain"
                 />
-                {key}. {value}
-              </label>
-            ))}
-        </div>
-      ))}
+              )}
 
-      <button
-        onClick={handleFinish}
-        disabled={submitting}
-        className="px-6 py-3 bg-black text-white rounded-xl"
-      >
-        {submitting ? "Submitting..." : "Finish Exam"}
-      </button>
+              {q.audioUrl && (
+                <audio controls className="mb-4 w-full">
+                  <source src={q.audioUrl} />
+                </audio>
+              )}
+
+              <div className="space-y-3">
+                {q.options &&
+                  Object.entries(q.options).map(([key, value]) => (
+                    <label
+                      key={key}
+                      className={`block cursor-pointer rounded-2xl border p-4 transition ${
+                        answers[q.id] === key
+                          ? "border-black bg-zinc-50"
+                          : "hover:bg-zinc-50"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name={q.id}
+                        value={key}
+                        className="mr-3"
+                        checked={answers[q.id] === key}
+                        onChange={() => handleSelect(q.id, key)}
+                      />
+                      <span className="font-medium">{key}.</span> {value}
+                    </label>
+                  ))}
+              </div>
+            </div>
+          ))}
+
+          <button
+            onClick={handleFinish}
+            disabled={submitting}
+            className="rounded-2xl bg-black px-6 py-3 font-medium text-white transition hover:bg-zinc-800"
+          >
+            {submitting ? "Submitting..." : "Finish Exam"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { PrismaClient, QuestionCategory } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import bcrypt from "bcrypt";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,
@@ -9,13 +10,15 @@ const adapter = new PrismaPg({
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
+  const hashed = await bcrypt.hash("test1234", 10);
+
   const user = await prisma.user.upsert({
     where: { email: "student1@example.com" },
     update: {},
     create: {
       name: "Student 1",
       email: "student1@example.com",
-      password: "test1234",
+      password: hashed,
       role: "student",
     },
   });
@@ -26,8 +29,19 @@ async function main() {
     create: {
       name: "Teacher 1",
       email: "teacher1@example.com",
-      password: "test1234",
+      password: hashed,
       role: "teacher",
+    },
+  });
+
+  const admin = await prisma.user.upsert({
+    where: { email: "admin1@example.com" },
+    update: {},
+    create: {
+      name: "Admin 1",
+      email: "admin1@example.com",
+      password: hashed,
+      role: "admin",
     },
   });
 
@@ -52,113 +66,59 @@ async function main() {
     },
   });
 
-  const q1 = await prisma.question.create({
-    data: {
-      examId: exam.id,
-      text: "『えき』の意味はどれですか。",
-      category: QuestionCategory.VOCAB,
-      type: "mcq",
-      options: {
-        A: "school",
-        B: "station",
-        C: "hospital",
-        D: "shop",
-      },
-      answer: "B",
-    },
-  });
-
-  const q2 = await prisma.question.create({
-    data: {
-      examId: exam.id,
-      text: "毎日7時に（　　　）。",
-      category: QuestionCategory.GRAMMAR,
-      type: "mcq",
-      options: {
-        A: "起きます",
-        B: "起きた",
-        C: "起きて",
-        D: "起きる",
-      },
-      answer: "A",
-    },
-  });
-
-  const q3 = await prisma.question.create({
-    data: {
-      examId: exam.id,
-      text: "彼は電車で会社へ行きます。何で行きますか。",
-      category: QuestionCategory.READING,
-      type: "mcq",
-      options: {
-        A: "バス",
-        B: "車",
-        C: "電車",
-        D: "歩き",
-      },
-      answer: "C",
-    },
-  });
-
-  const attempt = await prisma.attempt.create({
-    data: {
-      userId: user.id,
-      examId: exam.id,
-      totalScore: 2,
-      resultLabel: "Needs Improvement",
-    },
-  });
-
-  await prisma.attemptAnswer.createMany({
+  await prisma.question.createMany({
     data: [
       {
-        attemptId: attempt.id,
-        questionId: q1.id,
-        selectedChoiceId: "B",
-        isCorrect: true,
-        timeSpentSec: 20,
+        examId: exam.id,
+        text: "『えき』の意味はどれですか。",
+        category: QuestionCategory.VOCAB,
+        type: "mcq",
+        options: {
+          A: "school",
+          B: "station",
+          C: "hospital",
+          D: "shop",
+        } as any,
+        answer: "B",
+        explanation: "えき means station.",
       },
       {
-        attemptId: attempt.id,
-        questionId: q2.id,
-        selectedChoiceId: "A",
-        isCorrect: true,
-        timeSpentSec: 15,
+        examId: exam.id,
+        text: "この写真は何ですか。",
+        category: QuestionCategory.INFO,
+        type: "image-mcq",
+        options: {
+          A: "駅",
+          B: "学校",
+          C: "病院",
+          D: "店",
+        } as any,
+        answer: "A",
+        imageUrl: "https://images.unsplash.com/photo-1474487548417-781cb71495f3?q=80&w=1200&auto=format&fit=crop",
+        explanation: "This image is a station-related scene.",
       },
       {
-        attemptId: attempt.id,
-        questionId: q3.id,
-        selectedChoiceId: "B",
-        isCorrect: false,
-        timeSpentSec: 25,
+        examId: exam.id,
+        text: "音声を聞いて、正しい答えを選んでください。",
+        category: QuestionCategory.LISTENING,
+        type: "audio-mcq",
+        options: {
+          A: "パン",
+          B: "水",
+          C: "電車",
+          D: "学校",
+        } as any,
+        answer: "B",
+        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+        explanation: "Sample listening item.",
       },
     ],
   });
 
-  await prisma.weaknessProfile.upsert({
-    where: {
-      userId_category: {
-        userId: user.id,
-        category: QuestionCategory.READING,
-      },
-    },
-    update: {
-      attemptsCount: 1,
-      correctCount: 0,
-      accuracy: 0,
-      weaknessLevel: "weak",
-    },
-    create: {
-      userId: user.id,
-      category: QuestionCategory.READING,
-      attemptsCount: 1,
-      correctCount: 0,
-      accuracy: 0,
-      weaknessLevel: "weak",
-    },
-  });
-
   console.log("Seed completed successfully.");
+  console.log("Student:", user.email, "password: test1234");
+  console.log("Teacher:", teacher.email, "password: test1234");
+  console.log("Admin:", admin.email, "password: test1234");
 }
 
 main()

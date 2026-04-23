@@ -52,6 +52,7 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  Session: 'Session',
   Exam: 'Exam',
   Question: 'Question',
   Attempt: 'Attempt',
@@ -88,6 +89,17 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const SessionScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
 export const ExamScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -104,7 +116,10 @@ export const QuestionScalarFieldEnum = {
   category: 'category',
   type: 'type',
   options: 'options',
-  answer: 'answer'
+  answer: 'answer',
+  imageUrl: 'imageUrl',
+  audioUrl: 'audioUrl',
+  explanation: 'explanation'
 } as const
 
 export type QuestionScalarFieldEnum = (typeof QuestionScalarFieldEnum)[keyof typeof QuestionScalarFieldEnum]
