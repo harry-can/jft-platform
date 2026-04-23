@@ -15,16 +15,35 @@ export default function PracticePage() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResult, setShowResult] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("/api/practice")
-      .then((r) => r.json())
-      .then((data) => {
+    async function loadQuestions() {
+      try {
+        setLoading(true);
+        setError("");
+
+        const res = await fetch("/api/practice");
+
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(`API error ${res.status}: ${text}`);
+        }
+
+        const data = await res.json();
         setQuestions(data);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error("Failed to load practice questions:", err);
-      });
+        setError(
+          err instanceof Error ? err.message : "Failed to load practice questions"
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadQuestions();
   }, []);
 
   const handleSelect = (questionId: string, choiceKey: string) => {
@@ -36,80 +55,97 @@ export default function PracticePage() {
 
   const calculateScore = () => {
     let score = 0;
-
     for (const q of questions) {
-      if (answers[q.id] === q.answer) {
-        score++;
-      }
+      if (answers[q.id] === q.answer) score++;
     }
-
     return score;
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <h1 className="text-3xl font-bold">Practice Mode</h1>
+    <div className="min-h-screen bg-zinc-100">
+      <div className="mx-auto max-w-5xl px-6 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">Practice Mode</h1>
+          <p className="mt-2 text-zinc-600">
+            Solve practice questions and review your answers instantly.
+          </p>
+        </div>
 
-      {questions.length === 0 ? (
-        <div>Loading questions...</div>
-      ) : (
-        <>
-          {questions.map((q, index) => (
-            <div key={q.id} className="border rounded-xl p-4 space-y-3">
-              <div className="font-medium">
-                Q{index + 1}. {q.text}
+        {loading ? (
+          <div className="rounded-3xl bg-white p-6 shadow">Loading questions...</div>
+        ) : error ? (
+          <div className="rounded-3xl bg-white p-6 shadow">
+            <div className="font-semibold text-red-600">Failed to load practice questions.</div>
+            <pre className="mt-4 overflow-auto rounded-xl bg-zinc-100 p-4 text-sm">
+              {error}
+            </pre>
+          </div>
+        ) : questions.length === 0 ? (
+          <div className="rounded-3xl bg-white p-6 shadow">No questions found.</div>
+        ) : (
+          <div className="space-y-6">
+            {questions.map((q, index) => (
+              <div key={q.id} className="rounded-3xl bg-white p-6 shadow">
+                <div className="mb-4">
+                  <div className="text-sm text-zinc-500">Question {index + 1}</div>
+                  <div className="mt-2 text-lg font-semibold">{q.text}</div>
+                </div>
+
+                <div className="space-y-3">
+                  {q.options &&
+                    Object.entries(q.options).map(([key, value]) => (
+                      <label
+                        key={key}
+                        className={`block cursor-pointer rounded-2xl border p-4 transition ${
+                          answers[q.id] === key
+                            ? "border-black bg-zinc-50"
+                            : "hover:bg-zinc-50"
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name={q.id}
+                          value={key}
+                          className="mr-3"
+                          checked={answers[q.id] === key}
+                          onChange={() => handleSelect(q.id, key)}
+                        />
+                        <span className="font-medium">{key}.</span> {value}
+                      </label>
+                    ))}
+                </div>
+
+                {showResult && (
+                  <div className="mt-4">
+                    {answers[q.id] === q.answer ? (
+                      <div className="font-semibold text-green-600">Correct</div>
+                    ) : (
+                      <div className="font-semibold text-red-600">
+                        Wrong — Correct answer: {q.answer}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
+            ))}
 
-              {q.options &&
-                Object.entries(q.options).map(([key, value]) => (
-                  <label
-                    key={key}
-                    className="block border rounded p-3 cursor-pointer"
-                  >
-                    <input
-                      type="radio"
-                      name={q.id}
-                      value={key}
-                      className="mr-2"
-                      checked={answers[q.id] === key}
-                      onChange={() => handleSelect(q.id, key)}
-                    />
-                    <span>
-                      {key}. {value}
-                    </span>
-                  </label>
-                ))}
+            <div className="sticky bottom-6 flex items-center justify-between rounded-3xl bg-white p-5 shadow-xl">
+              <button
+                onClick={() => setShowResult(true)}
+                className="rounded-2xl bg-black px-6 py-3 font-medium text-white transition hover:bg-zinc-800"
+              >
+                Submit Practice
+              </button>
 
               {showResult && (
-                <div className="pt-2">
-                  {answers[q.id] === q.answer ? (
-                    <div className="text-green-600 font-semibold">Correct</div>
-                  ) : (
-                    <div className="text-red-600 font-semibold">
-                      Wrong — Correct answer: {q.answer}
-                    </div>
-                  )}
+                <div className="rounded-2xl bg-zinc-100 px-5 py-3 font-semibold">
+                  Score: {calculateScore()} / {questions.length}
                 </div>
               )}
             </div>
-          ))}
-
-          <div className="flex gap-4">
-            <button
-              onClick={() => setShowResult(true)}
-              className="px-6 py-3 bg-black text-white rounded-xl"
-            >
-              Submit Practice
-            </button>
-
-            {showResult && (
-              <div className="px-6 py-3 border rounded-xl font-semibold">
-                Score: {calculateScore()} / {questions.length}
-              </div>
-            )}
           </div>
-        </>
-      )}
+        )}
+      </div>
     </div>
   );
 }

@@ -103,118 +103,124 @@ export default function AdminQuestionsPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-8">
-      <h1 className="text-3xl font-bold">Admin - Manage Questions</h1>
-
-      <form onSubmit={handleSubmit} className="border rounded-2xl p-6 space-y-4">
-        <h2 className="text-xl font-semibold">Create Question</h2>
-
-        <select
-          className="border rounded p-2 w-full"
-          value={form.examId}
-          onChange={(e) => setForm({ ...form, examId: e.target.value })}
-        >
-          <option value="">Select Exam</option>
-          {exams.map((exam) => (
-            <option key={exam.id} value={exam.id}>
-              {exam.title}
-            </option>
-          ))}
-        </select>
-
-        <textarea
-          className="border rounded p-2 w-full"
-          placeholder="Question text"
-          value={form.text}
-          onChange={(e) => setForm({ ...form, text: e.target.value })}
-        />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <select
-            className="border rounded p-2"
-            value={form.category}
-            onChange={(e) => setForm({ ...form, category: e.target.value })}
-          >
-            <option value="VOCAB">VOCAB</option>
-            <option value="GRAMMAR">GRAMMAR</option>
-            <option value="READING">READING</option>
-            <option value="LISTENING">LISTENING</option>
-            <option value="INFO">INFO</option>
-            <option value="SPEAKING">SPEAKING</option>
-            <option value="OTHER">OTHER</option>
-          </select>
-
-          <input
-            className="border rounded p-2"
-            placeholder="Type"
-            value={form.type}
-            onChange={(e) => setForm({ ...form, type: e.target.value })}
-          />
+    <div className="min-h-screen bg-zinc-100">
+      <div className="mx-auto max-w-7xl px-6 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">Admin Question Manager</h1>
+          <p className="mt-2 text-zinc-600">
+            Create and manage questions for exams.
+          </p>
         </div>
 
-        <input
-          className="border rounded p-2 w-full"
-          placeholder="Option A"
-          value={form.optionA}
-          onChange={(e) => setForm({ ...form, optionA: e.target.value })}
-        />
-        <input
-          className="border rounded p-2 w-full"
-          placeholder="Option B"
-          value={form.optionB}
-          onChange={(e) => setForm({ ...form, optionB: e.target.value })}
-        />
-        <input
-          className="border rounded p-2 w-full"
-          placeholder="Option C"
-          value={form.optionC}
-          onChange={(e) => setForm({ ...form, optionC: e.target.value })}
-        />
-        <input
-          className="border rounded p-2 w-full"
-          placeholder="Option D"
-          value={form.optionD}
-          onChange={(e) => setForm({ ...form, optionD: e.target.value })}
-        />
+        <div className="grid gap-8 lg:grid-cols-3">
+          <div className="rounded-3xl bg-white p-6 shadow lg:col-span-1">
+            <h2 className="text-xl font-semibold">Create Question</h2>
 
-        <select
-          className="border rounded p-2 w-full"
-          value={form.answer}
-          onChange={(e) => setForm({ ...form, answer: e.target.value })}
-        >
-          <option value="A">Correct Answer: A</option>
-          <option value="B">Correct Answer: B</option>
-          <option value="C">Correct Answer: C</option>
-          <option value="D">Correct Answer: D</option>
-        </select>
+            <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+              <select
+                className="w-full rounded-2xl border p-3"
+                value={form.examId}
+                onChange={(e) => setForm({ ...form, examId: e.target.value })}
+              >
+                <option value="">Select Exam</option>
+                {exams.map((exam) => (
+                  <option key={exam.id} value={exam.id}>
+                    {exam.title}
+                  </option>
+                ))}
+              </select>
 
-        <button
-          type="submit"
-          className="rounded-xl px-4 py-2 bg-black text-white"
-        >
-          Create Question
-        </button>
-      </form>
+              <textarea
+                className="w-full rounded-2xl border p-3"
+                placeholder="Question text"
+                value={form.text}
+                onChange={(e) => setForm({ ...form, text: e.target.value })}
+              />
 
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold">Question List</h2>
+              <select
+                className="w-full rounded-2xl border p-3"
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+              >
+                <option value="VOCAB">VOCAB</option>
+                <option value="GRAMMAR">GRAMMAR</option>
+                <option value="READING">READING</option>
+                <option value="LISTENING">LISTENING</option>
+                <option value="INFO">INFO</option>
+                <option value="SPEAKING">SPEAKING</option>
+                <option value="OTHER">OTHER</option>
+              </select>
 
-        {loading ? (
-          <div>Loading questions...</div>
-        ) : (
-          questions.map((q) => (
-            <div key={q.id} className="border rounded-xl p-4 space-y-2">
-              <div className="font-medium">{q.text}</div>
-              <div className="text-sm text-gray-500">
-                Exam: {q.exam.title} | Category: {q.category} | Type: {q.type}
+              <input
+                className="w-full rounded-2xl border p-3"
+                placeholder="Option A"
+                value={form.optionA}
+                onChange={(e) => setForm({ ...form, optionA: e.target.value })}
+              />
+              <input
+                className="w-full rounded-2xl border p-3"
+                placeholder="Option B"
+                value={form.optionB}
+                onChange={(e) => setForm({ ...form, optionB: e.target.value })}
+              />
+              <input
+                className="w-full rounded-2xl border p-3"
+                placeholder="Option C"
+                value={form.optionC}
+                onChange={(e) => setForm({ ...form, optionC: e.target.value })}
+              />
+              <input
+                className="w-full rounded-2xl border p-3"
+                placeholder="Option D"
+                value={form.optionD}
+                onChange={(e) => setForm({ ...form, optionD: e.target.value })}
+              />
+
+              <select
+                className="w-full rounded-2xl border p-3"
+                value={form.answer}
+                onChange={(e) => setForm({ ...form, answer: e.target.value })}
+              >
+                <option value="A">Correct Answer: A</option>
+                <option value="B">Correct Answer: B</option>
+                <option value="C">Correct Answer: C</option>
+                <option value="D">Correct Answer: D</option>
+              </select>
+
+              <button
+                type="submit"
+                className="w-full rounded-2xl bg-black px-5 py-3 font-medium text-white transition hover:bg-zinc-800"
+              >
+                Create Question
+              </button>
+            </form>
+          </div>
+
+          <div className="rounded-3xl bg-white p-6 shadow lg:col-span-2">
+            <h2 className="text-xl font-semibold">Question List</h2>
+
+            {loading ? (
+              <div className="mt-4">Loading questions...</div>
+            ) : (
+              <div className="mt-4 space-y-4">
+                {questions.map((q) => (
+                  <div key={q.id} className="rounded-2xl border p-5">
+                    <div className="font-medium">{q.text}</div>
+                    <div className="mt-1 text-sm text-zinc-500">
+                      Exam: {q.exam.title} | Category: {q.category} | Type: {q.type}
+                    </div>
+
+                    <pre className="mt-3 overflow-auto rounded-xl bg-zinc-100 p-3 text-sm">
+                      {JSON.stringify(q.options, null, 2)}
+                    </pre>
+
+                    <div className="mt-3 font-semibold">Correct Answer: {q.answer}</div>
+                  </div>
+                ))}
               </div>
-              <pre className="bg-gray-100 p-3 rounded text-sm overflow-auto">
-                {JSON.stringify(q.options, null, 2)}
-              </pre>
-              <div className="font-semibold">Correct Answer: {q.answer}</div>
-            </div>
-          ))
-        )}
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
