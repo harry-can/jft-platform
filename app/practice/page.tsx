@@ -19,14 +19,14 @@ export default function PracticePage() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [savedAttemptId, setSavedAttemptId] = useState("");
 
   useEffect(() => {
     async function loadQuestions() {
       try {
         setLoading(true);
-        setError("");
-
         const res = await fetch("/api/practice");
 
         if (!res.ok) {
@@ -37,12 +37,7 @@ export default function PracticePage() {
         const data = await res.json();
         setQuestions(data);
       } catch (err) {
-        console.error("Failed to load practice questions:", err);
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Failed to load practice questions"
-        );
+        setError(err instanceof Error ? err.message : "Failed to load questions");
       } finally {
         setLoading(false);
       }
@@ -66,41 +61,62 @@ export default function PracticePage() {
     return score;
   };
 
+  async function submitPractice() {
+    setShowResult(true);
+    setSaving(true);
+
+    try {
+      const res = await fetch("/api/practice/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ answers }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.error || "Failed to save attempt");
+        return;
+      }
+
+      setSavedAttemptId(data.attemptId);
+    } catch {
+      alert("Failed to save practice attempt");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-zinc-100">
       <div className="mx-auto max-w-5xl px-6 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Practice Mode</h1>
-          <p className="mt-2 text-zinc-600">
-            Solve practice questions and review your answers instantly.
-          </p>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Practice Mode</h1>
+            <p className="mt-2 text-zinc-600">
+              Practice questions are now saved to your dashboard.
+            </p>
+          </div>
+
+          <a href="/dashboard" className="rounded-xl border bg-white px-4 py-2">
+            Dashboard
+          </a>
         </div>
 
         {loading ? (
-          <div className="rounded-3xl bg-white p-6 shadow">
-            Loading questions...
-          </div>
+          <div className="rounded-3xl bg-white p-6 shadow">Loading questions...</div>
         ) : error ? (
-          <div className="rounded-3xl bg-white p-6 shadow">
-            <div className="font-semibold text-red-600">
-              Failed to load practice questions.
-            </div>
-            <pre className="mt-4 overflow-auto rounded-xl bg-zinc-100 p-4 text-sm">
-              {error}
-            </pre>
-          </div>
+          <div className="rounded-3xl bg-white p-6 shadow text-red-600">{error}</div>
         ) : questions.length === 0 ? (
-          <div className="rounded-3xl bg-white p-6 shadow">
-            No questions found.
-          </div>
+          <div className="rounded-3xl bg-white p-6 shadow">No questions found.</div>
         ) : (
           <div className="space-y-6">
             {questions.map((q, index) => (
               <div key={q.id} className="rounded-3xl bg-white p-6 shadow">
                 <div className="mb-4">
-                  <div className="text-sm text-zinc-500">
-                    Question {index + 1}
-                  </div>
+                  <div className="text-sm text-zinc-500">Question {index + 1}</div>
                   <div className="mt-2 text-lg font-semibold">{q.text}</div>
                 </div>
 
@@ -115,7 +131,6 @@ export default function PracticePage() {
                 {q.audioUrl && (
                   <audio controls className="mb-4 w-full">
                     <source src={q.audioUrl} />
-                    Your browser does not support the audio element.
                   </audio>
                 )}
 
@@ -146,9 +161,7 @@ export default function PracticePage() {
                 {showResult && (
                   <div className="mt-4 space-y-2">
                     {answers[q.id] === q.answer ? (
-                      <div className="font-semibold text-green-600">
-                        Correct
-                      </div>
+                      <div className="font-semibold text-green-600">Correct</div>
                     ) : (
                       <div className="font-semibold text-red-600">
                         Wrong — Correct answer: {q.answer}
@@ -165,19 +178,31 @@ export default function PracticePage() {
               </div>
             ))}
 
-            <div className="sticky bottom-6 flex items-center justify-between rounded-3xl bg-white p-5 shadow-xl">
-              <button
-                onClick={() => setShowResult(true)}
-                className="rounded-2xl bg-black px-6 py-3 font-medium text-white transition hover:bg-zinc-800"
-              >
-                Submit Practice
-              </button>
+            <div className="sticky bottom-6 rounded-3xl bg-white p-5 shadow-xl">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <button
+                  onClick={submitPractice}
+                  disabled={saving}
+                  className="rounded-2xl bg-black px-6 py-3 font-medium text-white disabled:opacity-50"
+                >
+                  {saving ? "Saving..." : "Submit & Save Practice"}
+                </button>
 
-              {showResult && (
-                <div className="rounded-2xl bg-zinc-100 px-5 py-3 font-semibold">
-                  Score: {calculateScore()} / {questions.length}
-                </div>
-              )}
+                {showResult && (
+                  <div className="rounded-2xl bg-zinc-100 px-5 py-3 font-semibold">
+                    Score: {calculateScore()} / {questions.length}
+                  </div>
+                )}
+
+                {savedAttemptId && (
+                  <a
+                    href={`/results/${savedAttemptId}`}
+                    className="rounded-2xl border px-5 py-3 font-semibold"
+                  >
+                    View Saved Result
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         )}

@@ -12,7 +12,6 @@ type Question = {
   type: string;
   imageUrl?: string | null;
   audioUrl?: string | null;
-  explanation?: string | null;
 };
 
 type Exam = {
@@ -28,6 +27,8 @@ type Attempt = {
   userId: string;
 };
 
+const EXAM_SECONDS = 60 * 60;
+
 export default function ExamPage() {
   const params = useParams();
   const router = useRouter();
@@ -38,6 +39,7 @@ export default function ExamPage() {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(EXAM_SECONDS);
 
   useEffect(() => {
     async function init() {
@@ -54,11 +56,26 @@ export default function ExamPage() {
       setLoading(false);
     }
 
-    init().catch((err) => {
-      console.error("Failed to start exam:", err);
-      setLoading(false);
-    });
+    init().catch(() => setLoading(false));
   }, [examId]);
+
+  useEffect(() => {
+    if (loading || submitting) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          handleFinish();
+          return 0;
+        }
+
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [loading, submitting, attempt]);
 
   async function handleSelect(questionId: string, choiceKey: string) {
     setAnswers((prev) => ({
@@ -76,14 +93,14 @@ export default function ExamPage() {
       body: JSON.stringify({
         questionId,
         selectedChoiceId: choiceKey,
-        timeSpentSec: 0,
+        timeSpentSec: EXAM_SECONDS - timeLeft,
         flagged: false,
       }),
     });
   }
 
   async function handleFinish() {
-    if (!attempt) return;
+    if (!attempt || submitting) return;
 
     setSubmitting(true);
 
@@ -100,16 +117,36 @@ export default function ExamPage() {
     router.push(`/results/${attempt.id}`);
   }
 
+  function formatTime(seconds: number) {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+
   if (loading) return <div className="p-6">Loading exam...</div>;
   if (!exam) return <div className="p-6">Exam not found.</div>;
 
   return (
     <div className="min-h-screen bg-zinc-100">
-      <div className="mx-auto max-w-5xl px-6 py-8">
-        <h1 className="text-3xl font-bold">{exam.title}</h1>
-        <p className="mt-2 text-zinc-600">{exam.description}</p>
+      <div className="sticky top-0 z-20 border-b bg-white/90 backdrop-blur">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+          <div>
+            <h1 className="text-xl font-bold">{exam.title}</h1>
+            <p className="text-sm text-zinc-500">{exam.description}</p>
+          </div>
 
-        <div className="mt-8 space-y-6">
+          <div
+            className={`rounded-2xl px-5 py-3 font-bold ${
+              timeLeft < 300 ? "bg-red-100 text-red-700" : "bg-zinc-100"
+            }`}
+          >
+            Time: {formatTime(timeLeft)}
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-5xl px-6 py-8">
+        <div className="space-y-6">
           {exam.questions.map((q, index) => (
             <div key={q.id} className="rounded-3xl bg-white p-6 shadow">
               <div className="mb-4">
@@ -160,7 +197,7 @@ export default function ExamPage() {
           <button
             onClick={handleFinish}
             disabled={submitting}
-            className="rounded-2xl bg-black px-6 py-3 font-medium text-white transition hover:bg-zinc-800"
+            className="rounded-2xl bg-black px-6 py-3 font-medium text-white disabled:opacity-50"
           >
             {submitting ? "Submitting..." : "Finish Exam"}
           </button>

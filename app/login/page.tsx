@@ -5,6 +5,7 @@ import { useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
+
   const [email, setEmail] = useState("student1@example.com");
   const [password, setPassword] = useState("test1234");
   const [loading, setLoading] = useState(false);
@@ -13,33 +14,39 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
 
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await res.json();
-    setLoading(false);
+      const data = await res.json();
 
-    if (!res.ok) {
-      alert(data.error || "Login failed");
-      return;
+      if (!res.ok) {
+        alert(data.error || "Login failed");
+        setLoading(false);
+        return;
+      }
+
+      if (data.role === "admin") {
+        window.location.href = "/admin/questions";
+        return;
+      }
+
+      if (data.role === "teacher") {
+        window.location.href = "/teacher/classes";
+        return;
+      }
+
+      window.location.href = "/dashboard";
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Something went wrong during login");
+      setLoading(false);
     }
-
-    if (data.role === "teacher") {
-      router.push("/teacher/classes");
-      return;
-    }
-
-    if (data.role === "admin") {
-      router.push("/admin/questions");
-      return;
-    }
-
-    router.push("/dashboard");
   }
 
   return (
@@ -67,11 +74,18 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-2xl bg-black px-5 py-3 font-medium text-white transition hover:bg-zinc-800"
+            className="w-full rounded-2xl bg-black px-5 py-3 font-medium text-white transition hover:bg-zinc-800 disabled:opacity-50"
           >
             {loading ? "Signing in..." : "Login"}
           </button>
         </form>
+
+        <div className="mt-6 rounded-2xl bg-zinc-100 p-4 text-sm">
+          <p className="font-semibold">Test Accounts</p>
+          <p>Student: student1@example.com / test1234</p>
+          <p>Teacher: teacher1@example.com / test1234</p>
+          <p>Admin: admin1@example.com / test1234</p>
+        </div>
       </div>
     </div>
   );
