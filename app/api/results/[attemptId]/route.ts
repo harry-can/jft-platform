@@ -8,13 +8,6 @@ type CategoryStats = {
 
 type CategoryBreakdown = Record<string, CategoryStats>;
 
-type AnswerWithQuestion = {
-  isCorrect: boolean | null;
-  question: {
-    category: string;
-  };
-};
-
 export async function GET(
   _: Request,
   { params }: { params: Promise<{ attemptId: string }> }
@@ -25,12 +18,12 @@ export async function GET(
     where: { id: attemptId },
     include: {
       exam: true,
+      user: true,
       answers: {
         include: {
           question: true,
         },
       },
-      user: true,
     },
   });
 
@@ -38,16 +31,16 @@ export async function GET(
     return NextResponse.json({ error: "Attempt not found" }, { status: 404 });
   }
 
-  const groupedByCategory = attempt.answers.reduce(
-    (acc: CategoryBreakdown, ans: AnswerWithQuestion) => {
-      const cat = String(ans.question.category);
+  const categoryBreakdown = attempt.answers.reduce(
+    (acc: CategoryBreakdown, ans) => {
+      const category = String(ans.question.category);
 
-      if (!acc[cat]) {
-        acc[cat] = { total: 0, correct: 0 };
+      if (!acc[category]) {
+        acc[category] = { total: 0, correct: 0 };
       }
 
-      acc[cat].total += 1;
-      if (ans.isCorrect) acc[cat].correct += 1;
+      acc[category].total += 1;
+      if (ans.isCorrect) acc[category].correct += 1;
 
       return acc;
     },
@@ -60,8 +53,12 @@ export async function GET(
     resultLabel: attempt.resultLabel,
     submittedAt: attempt.submittedAt,
     exam: attempt.exam,
-    user: attempt.user,
+    user: {
+      id: attempt.user.id,
+      name: attempt.user.name,
+      email: attempt.user.email,
+    },
     answers: attempt.answers,
-    categoryBreakdown: groupedByCategory,
+    categoryBreakdown,
   });
 }
