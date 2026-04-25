@@ -14,7 +14,11 @@ async function main() {
 
   const user = await prisma.user.upsert({
     where: { email: "student1@example.com" },
-    update: {},
+    update: {
+      name: "Student 1",
+      password: hashed,
+      role: "student",
+    },
     create: {
       name: "Student 1",
       email: "student1@example.com",
@@ -25,7 +29,11 @@ async function main() {
 
   const teacher = await prisma.user.upsert({
     where: { email: "teacher1@example.com" },
-    update: {},
+    update: {
+      name: "Teacher 1",
+      password: hashed,
+      role: "teacher",
+    },
     create: {
       name: "Teacher 1",
       email: "teacher1@example.com",
@@ -36,7 +44,11 @@ async function main() {
 
   const admin = await prisma.user.upsert({
     where: { email: "admin1@example.com" },
-    update: {},
+    update: {
+      name: "Admin 1",
+      password: hashed,
+      role: "admin",
+    },
     create: {
       name: "Admin 1",
       email: "admin1@example.com",
@@ -45,75 +57,102 @@ async function main() {
     },
   });
 
-  const exam = await prisma.exam.create({
-    data: {
-      title: "JFT Mock Exam 1",
-      description: "Sample JFT-style practice exam",
-    },
+  let exam = await prisma.exam.findFirst({
+    where: { title: "JFT Mock Exam 1" },
   });
 
-  const classRoom = await prisma.classRoom.create({
-    data: {
-      name: "Batch A",
-      teacherId: teacher.id,
-    },
+  if (!exam) {
+    exam = await prisma.exam.create({
+      data: {
+        title: "JFT Mock Exam 1",
+        description: "Sample JFT-style practice exam",
+      },
+    });
+  }
+
+  let classRoom = await prisma.classRoom.findFirst({
+    where: { name: "Batch A" },
   });
 
-  await prisma.classMember.create({
-    data: {
+  if (!classRoom) {
+    classRoom = await prisma.classRoom.create({
+      data: {
+        name: "Batch A",
+        teacherId: teacher.id,
+      },
+    });
+  }
+
+  await prisma.classMember.upsert({
+    where: {
+      classRoomId_userId: {
+        classRoomId: classRoom.id,
+        userId: user.id,
+      },
+    },
+    update: {},
+    create: {
       classRoomId: classRoom.id,
       userId: user.id,
     },
   });
 
-  await prisma.question.createMany({
-    data: [
-      {
-        examId: exam.id,
-        text: "『えき』の意味はどれですか。",
-        category: QuestionCategory.VOCAB,
-        type: "mcq",
-        options: {
-          A: "school",
-          B: "station",
-          C: "hospital",
-          D: "shop",
-        } as any,
-        answer: "B",
-        explanation: "えき means station.",
-      },
-      {
-        examId: exam.id,
-        text: "この写真は何ですか。",
-        category: QuestionCategory.INFO,
-        type: "image-mcq",
-        options: {
-          A: "駅",
-          B: "学校",
-          C: "病院",
-          D: "店",
-        } as any,
-        answer: "A",
-        imageUrl: "https://images.unsplash.com/photo-1474487548417-781cb71495f3?q=80&w=1200&auto=format&fit=crop",
-        explanation: "This image is a station-related scene.",
-      },
-      {
-        examId: exam.id,
-        text: "音声を聞いて、正しい答えを選んでください。",
-        category: QuestionCategory.LISTENING,
-        type: "audio-mcq",
-        options: {
-          A: "パン",
-          B: "水",
-          C: "電車",
-          D: "学校",
-        } as any,
-        answer: "B",
-        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-        explanation: "Sample listening item.",
-      },
-    ],
+  const questionCount = await prisma.question.count({
+    where: { examId: exam.id },
   });
+
+  if (questionCount === 0) {
+    await prisma.question.createMany({
+      data: [
+        {
+          examId: exam.id,
+          text: "『えき』の意味はどれですか。",
+          category: QuestionCategory.VOCAB,
+          type: "mcq",
+          options: {
+            A: "school",
+            B: "station",
+            C: "hospital",
+            D: "shop",
+          } as any,
+          answer: "B",
+          explanation: "えき means station.",
+        },
+        {
+          examId: exam.id,
+          text: "この写真は何ですか。",
+          category: QuestionCategory.INFO,
+          type: "image-mcq",
+          options: {
+            A: "駅",
+            B: "学校",
+            C: "病院",
+            D: "店",
+          } as any,
+          answer: "A",
+          imageUrl:
+            "https://images.unsplash.com/photo-1474487548417-781cb71495f3?q=80&w=1200&auto=format&fit=crop",
+          explanation: "This image is a station-related scene.",
+        },
+        {
+          examId: exam.id,
+          text: "音声を聞いて、正しい答えを選んでください。",
+          category: QuestionCategory.LISTENING,
+          type: "audio-mcq",
+          options: {
+            A: "パン",
+            B: "水",
+            C: "電車",
+            D: "学校",
+          } as any,
+          answer: "B",
+          audioUrl:
+            "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+          explanation: "Sample listening item.",
+        },
+      ],
+    });
+  }
 
   console.log("Seed completed successfully.");
   console.log("Student:", user.email, "password: test1234");
