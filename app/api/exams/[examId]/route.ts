@@ -7,10 +7,13 @@ export async function GET(
 ) {
   const { examId } = await params;
 
-  const exam = await prisma.exam.findUnique({
+  const exam = await prisma.practiceSet.findUnique({
     where: { id: examId },
     include: {
-      questions: true,
+      questions: {
+        where: { isPublished: true },
+        orderBy: { orderIndex: "asc" },
+      },
     },
   });
 

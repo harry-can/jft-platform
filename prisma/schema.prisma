@@ -7,14 +7,47 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserRole {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
 enum QuestionCategory {
   VOCAB
   GRAMMAR
   READING
   LISTENING
+  KANJI
   INFO
   SPEAKING
   OTHER
+}
+
+enum QuestionDifficulty {
+  EASY
+  MEDIUM
+  HARD
+  OFFICIAL
+}
+
+enum SetType {
+  CATEGORY_PRACTICE
+  FULL_PRACTICE
+  WRONG_RETRY
+  OFFICIAL_EXAM
+}
+
+enum AttemptType {
+  PRACTICE
+  WRONG_RETRY
+  OFFICIAL_EXAM
+}
+
+enum AttemptStatus {
+  STARTED
+  SUBMITTED
+  AUTO_SUBMITTED
 }
 
 model User {
@@ -22,11 +55,20 @@ model User {
   name             String?
   email            String            @unique
   password         String?
-  role             String            @default("student")
+  role             UserRole          @default(STUDENT)
+  phone            String?
+  address          String?
+  avatarUrl        String?
+  isActive         Boolean           @default(true)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  sessions         Session[]
   attempts         Attempt[]
   weaknessProfiles WeaknessProfile[]
   memberships      ClassMember[]
-  sessions         Session[]
+  createdSets      PracticeSet[]     @relation("SetCreator")
+  generatedJobs    GeneratorJob[]
 }
 
 model Session {
@@ -35,57 +77,159 @@ model Session {
   userId    String
   expiresAt DateTime
   createdAt DateTime @default(now())
+
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
 
-model Exam {
-  id          String     @id @default(cuid())
-  title       String
+model ClassRoom {
+  id          String        @id @default(cuid())
+  name        String
   description String?
-  attempts    Attempt[]
-  questions   Question[]
+  teacherId   String
+  joinCode    String        @unique
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  members     ClassMember[]
+  assignments Assignment[]
+}
+
+model ClassMember {
+  id          String    @id @default(cuid())
+  classRoomId String
+  userId      String
+  joinedAt    DateTime  @default(now())
+
+  classRoom   ClassRoom @relation(fields: [classRoomId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([classRoomId, userId])
+}
+
+model PracticeSet {
+  id             String       @id @default(cuid())
+  title          String
+  description    String?
+  type           SetType      @default(CATEGORY_PRACTICE)
+  category       QuestionCategory?
+  difficulty     QuestionDifficulty?
+  isPublished    Boolean      @default(false)
+  timeLimitMin   Int?
+  audioReplayLimit Int?
+  createdById    String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  createdBy      User?        @relation("SetCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  questions      Question[]
+  attempts       Attempt[]
+  assignments    Assignment[]
 }
 
 model Question {
-  id          String           @id @default(cuid())
-  examId      String
-  text        String
-  category    QuestionCategory @default(OTHER)
-  type        String           @default("mcq")
-  options     Json?
-  answer      String?
-  imageUrl    String?
-  audioUrl    String?
-  explanation String?
-  exam        Exam             @relation(fields: [examId], references: [id], onDelete: Cascade)
-  answers     AttemptAnswer[]
+  id             String              @id @default(cuid())
+  practiceSetId  String
+  text           String
+  category       QuestionCategory    @default(OTHER)
+  difficulty     QuestionDifficulty  @default(MEDIUM)
+  type           String              @default("mcq")
+  options        Json?
+  answer         String?
+  imageUrl       String?
+  audioUrl       String?
+  explanation    String?
+  tags           String[]
+  points         Int                 @default(1)
+  orderIndex     Int                 @default(0)
+  isPublished    Boolean             @default(true)
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  practiceSet    PracticeSet         @relation(fields: [practiceSetId], references: [id], onDelete: Cascade)
+  answers        AttemptAnswer[]
+  wrongItems     WrongQuestionItem[]
+}
+
+model Assignment {
+  id           String      @id @default(cuid())
+  classRoomId  String
+  practiceSetId String
+  dueDate      DateTime?
+  createdAt    DateTime    @default(now())
+
+  classRoom    ClassRoom   @relation(fields: [classRoomId], references: [id], onDelete: Cascade)
+  practiceSet  PracticeSet @relation(fields: [practiceSetId], references: [id], onDelete: Cascade)
+
+  @@unique([classRoomId, practiceSetId])
 }
 
 model Attempt {
-  id          String          @id @default(cuid())
-  userId      String
-  examId      String
-  startedAt   DateTime        @default(now())
-  submittedAt DateTime?
-  totalScore  Int?
-  resultLabel String?
-  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  exam        Exam            @relation(fields: [examId], references: [id], onDelete: Cascade)
-  answers     AttemptAnswer[]
+  id            String        @id @default(cuid())
+  userId        String
+  practiceSetId String
+  type          AttemptType   @default(PRACTICE)
+  status        AttemptStatus @default(STARTED)
+  startedAt     DateTime      @default(now())
+  submittedAt   DateTime?
+  totalScore    Int?
+  totalQuestions Int?
+  correctCount  Int?
+  accuracy      Float?
+  resultLabel   String?
+  timeSpentSec  Int?
+  parentAttemptId String?
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  practiceSet   PracticeSet   @relation(fields: [practiceSetId], references: [id], onDelete: Cascade)
+  answers       AttemptAnswer[]
+  wrongRetrySet WrongRetrySet?
+
+  @@index([userId])
+  @@index([practiceSetId])
 }
 
 model AttemptAnswer {
-  id               String   @id @default(cuid())
+  id               String    @id @default(cuid())
   attemptId        String
   questionId       String
   selectedChoiceId String?
   isCorrect        Boolean?
   timeSpentSec     Int?
-  flagged          Boolean  @default(false)
-  attempt          Attempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
-  question         Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  flagged          Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+
+  attempt          Attempt   @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question         Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([attemptId, questionId])
+}
+
+model WrongRetrySet {
+  id              String              @id @default(cuid())
+  userId          String
+  sourceAttemptId String              @unique
+  isCompleted     Boolean             @default(false)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  sourceAttempt    Attempt            @relation(fields: [sourceAttemptId], references: [id], onDelete: Cascade)
+  items            WrongQuestionItem[]
+}
+
+model WrongQuestionItem {
+  id              String        @id @default(cuid())
+  wrongRetrySetId String
+  questionId      String
+  retryCount      Int           @default(0)
+  isResolved      Boolean       @default(false)
+  lastTriedAt     DateTime?
+
+  wrongRetrySet   WrongRetrySet @relation(fields: [wrongRetrySetId], references: [id], onDelete: Cascade)
+  question        Question      @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([wrongRetrySetId, questionId])
 }
 
 model WeaknessProfile {
@@ -96,24 +240,24 @@ model WeaknessProfile {
   correctCount  Int              @default(0)
   accuracy      Float            @default(0)
   weaknessLevel String?
+  updatedAt     DateTime         @updatedAt
+
   user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, category])
 }
 
-model ClassRoom {
-  id        String        @id @default(cuid())
-  name      String
-  teacherId String
-  members   ClassMember[]
-}
-
-model ClassMember {
-  id          String    @id @default(cuid())
-  classRoomId String
+model GeneratorJob {
+  id          String   @id @default(cuid())
   userId      String
-  classRoom   ClassRoom @relation(fields: [classRoomId], references: [id], onDelete: Cascade)
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sourceType  String
+  prompt      String?
+  fileUrl     String?
+  status      String   @default("PENDING")
+  outputJson  Json?
+  error       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  @@unique([classRoomId, userId])
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

@@ -9,14 +9,62 @@
 * 🟢 You can import this file directly.
 */
 
+export const UserRole = {
+  STUDENT: 'STUDENT',
+  TEACHER: 'TEACHER',
+  ADMIN: 'ADMIN'
+} as const
+
+export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+
 export const QuestionCategory = {
   VOCAB: 'VOCAB',
   GRAMMAR: 'GRAMMAR',
   READING: 'READING',
   LISTENING: 'LISTENING',
+  KANJI: 'KANJI',
   INFO: 'INFO',
   SPEAKING: 'SPEAKING',
   OTHER: 'OTHER'
 } as const
 
 export type QuestionCategory = (typeof QuestionCategory)[keyof typeof QuestionCategory]
+
+
+export const QuestionDifficulty = {
+  EASY: 'EASY',
+  MEDIUM: 'MEDIUM',
+  HARD: 'HARD',
+  OFFICIAL: 'OFFICIAL'
+} as const
+
+export type QuestionDifficulty = (typeof QuestionDifficulty)[keyof typeof QuestionDifficulty]
+
+
+export const SetType = {
+  CATEGORY_PRACTICE: 'CATEGORY_PRACTICE',
+  FULL_PRACTICE: 'FULL_PRACTICE',
+  WRONG_RETRY: 'WRONG_RETRY',
+  OFFICIAL_EXAM: 'OFFICIAL_EXAM'
+} as const
+
+export type SetType = (typeof SetType)[keyof typeof SetType]
+
+
+export const AttemptType = {
+  PRACTICE: 'PRACTICE',
+  WRONG_RETRY: 'WRONG_RETRY',
+  OFFICIAL_EXAM: 'OFFICIAL_EXAM'
+} as const
+
+export type AttemptType = (typeof AttemptType)[keyof typeof AttemptType]
+
+
+export const AttemptStatus = {
+  STARTED: 'STARTED',
+  SUBMITTED: 'SUBMITTED',
+  AUTO_SUBMITTED: 'AUTO_SUBMITTED'
+} as const
+
+export type AttemptStatus = (typeof AttemptStatus)[keyof typeof AttemptStatus]

@@ -28,80 +28,138 @@ export type AggregateAttempt = {
 
 export type AttemptAvgAggregateOutputType = {
   totalScore: number | null
+  totalQuestions: number | null
+  correctCount: number | null
+  accuracy: number | null
+  timeSpentSec: number | null
 }
 
 export type AttemptSumAggregateOutputType = {
   totalScore: number | null
+  totalQuestions: number | null
+  correctCount: number | null
+  accuracy: number | null
+  timeSpentSec: number | null
 }
 
 export type AttemptMinAggregateOutputType = {
   id: string | null
   userId: string | null
-  examId: string | null
+  practiceSetId: string | null
+  type: $Enums.AttemptType | null
+  status: $Enums.AttemptStatus | null
   startedAt: Date | null
   submittedAt: Date | null
   totalScore: number | null
+  totalQuestions: number | null
+  correctCount: number | null
+  accuracy: number | null
   resultLabel: string | null
+  timeSpentSec: number | null
+  parentAttemptId: string | null
 }
 
 export type AttemptMaxAggregateOutputType = {
   id: string | null
   userId: string | null
-  examId: string | null
+  practiceSetId: string | null
+  type: $Enums.AttemptType | null
+  status: $Enums.AttemptStatus | null
   startedAt: Date | null
   submittedAt: Date | null
   totalScore: number | null
+  totalQuestions: number | null
+  correctCount: number | null
+  accuracy: number | null
   resultLabel: string | null
+  timeSpentSec: number | null
+  parentAttemptId: string | null
 }
 
 export type AttemptCountAggregateOutputType = {
   id: number
   userId: number
-  examId: number
+  practiceSetId: number
+  type: number
+  status: number
   startedAt: number
   submittedAt: number
   totalScore: number
+  totalQuestions: number
+  correctCount: number
+  accuracy: number
   resultLabel: number
+  timeSpentSec: number
+  parentAttemptId: number
   _all: number
 }
 
 
 export type AttemptAvgAggregateInputType = {
   totalScore?: true
+  totalQuestions?: true
+  correctCount?: true
+  accuracy?: true
+  timeSpentSec?: true
 }
 
 export type AttemptSumAggregateInputType = {
   totalScore?: true
+  totalQuestions?: true
+  correctCount?: true
+  accuracy?: true
+  timeSpentSec?: true
 }
 
 export type AttemptMinAggregateInputType = {
   id?: true
   userId?: true
-  examId?: true
+  practiceSetId?: true
+  type?: true
+  status?: true
   startedAt?: true
   submittedAt?: true
   totalScore?: true
+  totalQuestions?: true
+  correctCount?: true
+  accuracy?: true
   resultLabel?: true
+  timeSpentSec?: true
+  parentAttemptId?: true
 }
 
 export type AttemptMaxAggregateInputType = {
   id?: true
   userId?: true
-  examId?: true
+  practiceSetId?: true
+  type?: true
+  status?: true
   startedAt?: true
   submittedAt?: true
   totalScore?: true
+  totalQuestions?: true
+  correctCount?: true
+  accuracy?: true
   resultLabel?: true
+  timeSpentSec?: true
+  parentAttemptId?: true
 }
 
 export type AttemptCountAggregateInputType = {
   id?: true
   userId?: true
-  examId?: true
+  practiceSetId?: true
+  type?: true
+  status?: true
   startedAt?: true
   submittedAt?: true
   totalScore?: true
+  totalQuestions?: true
+  correctCount?: true
+  accuracy?: true
   resultLabel?: true
+  timeSpentSec?: true
+  parentAttemptId?: true
   _all?: true
 }
 
@@ -194,11 +252,18 @@ export type AttemptGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type AttemptGroupByOutputType = {
   id: string
   userId: string
-  examId: string
+  practiceSetId: string
+  type: $Enums.AttemptType
+  status: $Enums.AttemptStatus
   startedAt: Date
   submittedAt: Date | null
   totalScore: number | null
+  totalQuestions: number | null
+  correctCount: number | null
+  accuracy: number | null
   resultLabel: string | null
+  timeSpentSec: number | null
+  parentAttemptId: string | null
   _count: AttemptCountAggregateOutputType | null
   _avg: AttemptAvgAggregateOutputType | null
   _sum: AttemptSumAggregateOutputType | null
@@ -227,27 +292,43 @@ export type AttemptWhereInput = {
   NOT?: Prisma.AttemptWhereInput | Prisma.AttemptWhereInput[]
   id?: Prisma.StringFilter<"Attempt"> | string
   userId?: Prisma.StringFilter<"Attempt"> | string
-  examId?: Prisma.StringFilter<"Attempt"> | string
+  practiceSetId?: Prisma.StringFilter<"Attempt"> | string
+  type?: Prisma.EnumAttemptTypeFilter<"Attempt"> | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFilter<"Attempt"> | $Enums.AttemptStatus
   startedAt?: Prisma.DateTimeFilter<"Attempt"> | Date | string
   submittedAt?: Prisma.DateTimeNullableFilter<"Attempt"> | Date | string | null
   totalScore?: Prisma.IntNullableFilter<"Attempt"> | number | null
+  totalQuestions?: Prisma.IntNullableFilter<"Attempt"> | number | null
+  correctCount?: Prisma.IntNullableFilter<"Attempt"> | number | null
+  accuracy?: Prisma.FloatNullableFilter<"Attempt"> | number | null
   resultLabel?: Prisma.StringNullableFilter<"Attempt"> | string | null
+  timeSpentSec?: Prisma.IntNullableFilter<"Attempt"> | number | null
+  parentAttemptId?: Prisma.StringNullableFilter<"Attempt"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  exam?: Prisma.XOR<Prisma.ExamScalarRelationFilter, Prisma.ExamWhereInput>
+  practiceSet?: Prisma.XOR<Prisma.PracticeSetScalarRelationFilter, Prisma.PracticeSetWhereInput>
   answers?: Prisma.AttemptAnswerListRelationFilter
+  wrongRetrySet?: Prisma.XOR<Prisma.WrongRetrySetNullableScalarRelationFilter, Prisma.WrongRetrySetWhereInput> | null
 }
 
 export type AttemptOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  examId?: Prisma.SortOrder
+  practiceSetId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   submittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   totalScore?: Prisma.SortOrderInput | Prisma.SortOrder
+  totalQuestions?: Prisma.SortOrderInput | Prisma.SortOrder
+  correctCount?: Prisma.SortOrderInput | Prisma.SortOrder
+  accuracy?: Prisma.SortOrderInput | Prisma.SortOrder
   resultLabel?: Prisma.SortOrderInput | Prisma.SortOrder
+  timeSpentSec?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentAttemptId?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
-  exam?: Prisma.ExamOrderByWithRelationInput
+  practiceSet?: Prisma.PracticeSetOrderByWithRelationInput
   answers?: Prisma.AttemptAnswerOrderByRelationAggregateInput
+  wrongRetrySet?: Prisma.WrongRetrySetOrderByWithRelationInput
 }
 
 export type AttemptWhereUniqueInput = Prisma.AtLeast<{
@@ -256,24 +337,39 @@ export type AttemptWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.AttemptWhereInput[]
   NOT?: Prisma.AttemptWhereInput | Prisma.AttemptWhereInput[]
   userId?: Prisma.StringFilter<"Attempt"> | string
-  examId?: Prisma.StringFilter<"Attempt"> | string
+  practiceSetId?: Prisma.StringFilter<"Attempt"> | string
+  type?: Prisma.EnumAttemptTypeFilter<"Attempt"> | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFilter<"Attempt"> | $Enums.AttemptStatus
   startedAt?: Prisma.DateTimeFilter<"Attempt"> | Date | string
   submittedAt?: Prisma.DateTimeNullableFilter<"Attempt"> | Date | string | null
   totalScore?: Prisma.IntNullableFilter<"Attempt"> | number | null
+  totalQuestions?: Prisma.IntNullableFilter<"Attempt"> | number | null
+  correctCount?: Prisma.IntNullableFilter<"Attempt"> | number | null
+  accuracy?: Prisma.FloatNullableFilter<"Attempt"> | number | null
   resultLabel?: Prisma.StringNullableFilter<"Attempt"> | string | null
+  timeSpentSec?: Prisma.IntNullableFilter<"Attempt"> | number | null
+  parentAttemptId?: Prisma.StringNullableFilter<"Attempt"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  exam?: Prisma.XOR<Prisma.ExamScalarRelationFilter, Prisma.ExamWhereInput>
+  practiceSet?: Prisma.XOR<Prisma.PracticeSetScalarRelationFilter, Prisma.PracticeSetWhereInput>
   answers?: Prisma.AttemptAnswerListRelationFilter
+  wrongRetrySet?: Prisma.XOR<Prisma.WrongRetrySetNullableScalarRelationFilter, Prisma.WrongRetrySetWhereInput> | null
 }, "id">
 
 export type AttemptOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  examId?: Prisma.SortOrder
+  practiceSetId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   submittedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   totalScore?: Prisma.SortOrderInput | Prisma.SortOrder
+  totalQuestions?: Prisma.SortOrderInput | Prisma.SortOrder
+  correctCount?: Prisma.SortOrderInput | Prisma.SortOrder
+  accuracy?: Prisma.SortOrderInput | Prisma.SortOrder
   resultLabel?: Prisma.SortOrderInput | Prisma.SortOrder
+  timeSpentSec?: Prisma.SortOrderInput | Prisma.SortOrder
+  parentAttemptId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AttemptCountOrderByAggregateInput
   _avg?: Prisma.AttemptAvgOrderByAggregateInput
   _max?: Prisma.AttemptMaxOrderByAggregateInput
@@ -287,83 +383,143 @@ export type AttemptScalarWhereWithAggregatesInput = {
   NOT?: Prisma.AttemptScalarWhereWithAggregatesInput | Prisma.AttemptScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Attempt"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Attempt"> | string
-  examId?: Prisma.StringWithAggregatesFilter<"Attempt"> | string
+  practiceSetId?: Prisma.StringWithAggregatesFilter<"Attempt"> | string
+  type?: Prisma.EnumAttemptTypeWithAggregatesFilter<"Attempt"> | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusWithAggregatesFilter<"Attempt"> | $Enums.AttemptStatus
   startedAt?: Prisma.DateTimeWithAggregatesFilter<"Attempt"> | Date | string
   submittedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Attempt"> | Date | string | null
   totalScore?: Prisma.IntNullableWithAggregatesFilter<"Attempt"> | number | null
+  totalQuestions?: Prisma.IntNullableWithAggregatesFilter<"Attempt"> | number | null
+  correctCount?: Prisma.IntNullableWithAggregatesFilter<"Attempt"> | number | null
+  accuracy?: Prisma.FloatNullableWithAggregatesFilter<"Attempt"> | number | null
   resultLabel?: Prisma.StringNullableWithAggregatesFilter<"Attempt"> | string | null
+  timeSpentSec?: Prisma.IntNullableWithAggregatesFilter<"Attempt"> | number | null
+  parentAttemptId?: Prisma.StringNullableWithAggregatesFilter<"Attempt"> | string | null
 }
 
 export type AttemptCreateInput = {
   id?: string
+  type?: $Enums.AttemptType
+  status?: $Enums.AttemptStatus
   startedAt?: Date | string
   submittedAt?: Date | string | null
   totalScore?: number | null
+  totalQuestions?: number | null
+  correctCount?: number | null
+  accuracy?: number | null
   resultLabel?: string | null
+  timeSpentSec?: number | null
+  parentAttemptId?: string | null
   user: Prisma.UserCreateNestedOneWithoutAttemptsInput
-  exam: Prisma.ExamCreateNestedOneWithoutAttemptsInput
+  practiceSet: Prisma.PracticeSetCreateNestedOneWithoutAttemptsInput
   answers?: Prisma.AttemptAnswerCreateNestedManyWithoutAttemptInput
+  wrongRetrySet?: Prisma.WrongRetrySetCreateNestedOneWithoutSourceAttemptInput
 }
 
 export type AttemptUncheckedCreateInput = {
   id?: string
   userId: string
-  examId: string
+  practiceSetId: string
+  type?: $Enums.AttemptType
+  status?: $Enums.AttemptStatus
   startedAt?: Date | string
   submittedAt?: Date | string | null
   totalScore?: number | null
+  totalQuestions?: number | null
+  correctCount?: number | null
+  accuracy?: number | null
   resultLabel?: string | null
+  timeSpentSec?: number | null
+  parentAttemptId?: string | null
   answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutAttemptInput
+  wrongRetrySet?: Prisma.WrongRetrySetUncheckedCreateNestedOneWithoutSourceAttemptInput
 }
 
 export type AttemptUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAttemptTypeFieldUpdateOperationsInput | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalQuestions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  correctCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accuracy?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   resultLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAttemptsNestedInput
-  exam?: Prisma.ExamUpdateOneRequiredWithoutAttemptsNestedInput
+  practiceSet?: Prisma.PracticeSetUpdateOneRequiredWithoutAttemptsNestedInput
   answers?: Prisma.AttemptAnswerUpdateManyWithoutAttemptNestedInput
+  wrongRetrySet?: Prisma.WrongRetrySetUpdateOneWithoutSourceAttemptNestedInput
 }
 
 export type AttemptUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  examId?: Prisma.StringFieldUpdateOperationsInput | string
+  practiceSetId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAttemptTypeFieldUpdateOperationsInput | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalQuestions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  correctCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accuracy?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   resultLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutAttemptNestedInput
+  wrongRetrySet?: Prisma.WrongRetrySetUncheckedUpdateOneWithoutSourceAttemptNestedInput
 }
 
 export type AttemptCreateManyInput = {
   id?: string
   userId: string
-  examId: string
+  practiceSetId: string
+  type?: $Enums.AttemptType
+  status?: $Enums.AttemptStatus
   startedAt?: Date | string
   submittedAt?: Date | string | null
   totalScore?: number | null
+  totalQuestions?: number | null
+  correctCount?: number | null
+  accuracy?: number | null
   resultLabel?: string | null
+  timeSpentSec?: number | null
+  parentAttemptId?: string | null
 }
 
 export type AttemptUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAttemptTypeFieldUpdateOperationsInput | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalQuestions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  correctCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accuracy?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   resultLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AttemptUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  examId?: Prisma.StringFieldUpdateOperationsInput | string
+  practiceSetId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAttemptTypeFieldUpdateOperationsInput | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalQuestions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  correctCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accuracy?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   resultLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AttemptListRelationFilter = {
@@ -379,39 +535,68 @@ export type AttemptOrderByRelationAggregateInput = {
 export type AttemptCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  examId?: Prisma.SortOrder
+  practiceSetId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   submittedAt?: Prisma.SortOrder
   totalScore?: Prisma.SortOrder
+  totalQuestions?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  accuracy?: Prisma.SortOrder
   resultLabel?: Prisma.SortOrder
+  timeSpentSec?: Prisma.SortOrder
+  parentAttemptId?: Prisma.SortOrder
 }
 
 export type AttemptAvgOrderByAggregateInput = {
   totalScore?: Prisma.SortOrder
+  totalQuestions?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  accuracy?: Prisma.SortOrder
+  timeSpentSec?: Prisma.SortOrder
 }
 
 export type AttemptMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  examId?: Prisma.SortOrder
+  practiceSetId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   submittedAt?: Prisma.SortOrder
   totalScore?: Prisma.SortOrder
+  totalQuestions?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  accuracy?: Prisma.SortOrder
   resultLabel?: Prisma.SortOrder
+  timeSpentSec?: Prisma.SortOrder
+  parentAttemptId?: Prisma.SortOrder
 }
 
 export type AttemptMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
-  examId?: Prisma.SortOrder
+  practiceSetId?: Prisma.SortOrder
+  type?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   startedAt?: Prisma.SortOrder
   submittedAt?: Prisma.SortOrder
   totalScore?: Prisma.SortOrder
+  totalQuestions?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  accuracy?: Prisma.SortOrder
   resultLabel?: Prisma.SortOrder
+  timeSpentSec?: Prisma.SortOrder
+  parentAttemptId?: Prisma.SortOrder
 }
 
 export type AttemptSumOrderByAggregateInput = {
   totalScore?: Prisma.SortOrder
+  totalQuestions?: Prisma.SortOrder
+  correctCount?: Prisma.SortOrder
+  accuracy?: Prisma.SortOrder
+  timeSpentSec?: Prisma.SortOrder
 }
 
 export type AttemptScalarRelationFilter = {
@@ -461,53 +646,57 @@ export type AttemptUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.AttemptScalarWhereInput | Prisma.AttemptScalarWhereInput[]
 }
 
-export type AttemptCreateNestedManyWithoutExamInput = {
-  create?: Prisma.XOR<Prisma.AttemptCreateWithoutExamInput, Prisma.AttemptUncheckedCreateWithoutExamInput> | Prisma.AttemptCreateWithoutExamInput[] | Prisma.AttemptUncheckedCreateWithoutExamInput[]
-  connectOrCreate?: Prisma.AttemptCreateOrConnectWithoutExamInput | Prisma.AttemptCreateOrConnectWithoutExamInput[]
-  createMany?: Prisma.AttemptCreateManyExamInputEnvelope
+export type AttemptCreateNestedManyWithoutPracticeSetInput = {
+  create?: Prisma.XOR<Prisma.AttemptCreateWithoutPracticeSetInput, Prisma.AttemptUncheckedCreateWithoutPracticeSetInput> | Prisma.AttemptCreateWithoutPracticeSetInput[] | Prisma.AttemptUncheckedCreateWithoutPracticeSetInput[]
+  connectOrCreate?: Prisma.AttemptCreateOrConnectWithoutPracticeSetInput | Prisma.AttemptCreateOrConnectWithoutPracticeSetInput[]
+  createMany?: Prisma.AttemptCreateManyPracticeSetInputEnvelope
   connect?: Prisma.AttemptWhereUniqueInput | Prisma.AttemptWhereUniqueInput[]
 }
 
-export type AttemptUncheckedCreateNestedManyWithoutExamInput = {
-  create?: Prisma.XOR<Prisma.AttemptCreateWithoutExamInput, Prisma.AttemptUncheckedCreateWithoutExamInput> | Prisma.AttemptCreateWithoutExamInput[] | Prisma.AttemptUncheckedCreateWithoutExamInput[]
-  connectOrCreate?: Prisma.AttemptCreateOrConnectWithoutExamInput | Prisma.AttemptCreateOrConnectWithoutExamInput[]
-  createMany?: Prisma.AttemptCreateManyExamInputEnvelope
+export type AttemptUncheckedCreateNestedManyWithoutPracticeSetInput = {
+  create?: Prisma.XOR<Prisma.AttemptCreateWithoutPracticeSetInput, Prisma.AttemptUncheckedCreateWithoutPracticeSetInput> | Prisma.AttemptCreateWithoutPracticeSetInput[] | Prisma.AttemptUncheckedCreateWithoutPracticeSetInput[]
+  connectOrCreate?: Prisma.AttemptCreateOrConnectWithoutPracticeSetInput | Prisma.AttemptCreateOrConnectWithoutPracticeSetInput[]
+  createMany?: Prisma.AttemptCreateManyPracticeSetInputEnvelope
   connect?: Prisma.AttemptWhereUniqueInput | Prisma.AttemptWhereUniqueInput[]
 }
 
-export type AttemptUpdateManyWithoutExamNestedInput = {
-  create?: Prisma.XOR<Prisma.AttemptCreateWithoutExamInput, Prisma.AttemptUncheckedCreateWithoutExamInput> | Prisma.AttemptCreateWithoutExamInput[] | Prisma.AttemptUncheckedCreateWithoutExamInput[]
-  connectOrCreate?: Prisma.AttemptCreateOrConnectWithoutExamInput | Prisma.AttemptCreateOrConnectWithoutExamInput[]
-  upsert?: Prisma.AttemptUpsertWithWhereUniqueWithoutExamInput | Prisma.AttemptUpsertWithWhereUniqueWithoutExamInput[]
-  createMany?: Prisma.AttemptCreateManyExamInputEnvelope
+export type AttemptUpdateManyWithoutPracticeSetNestedInput = {
+  create?: Prisma.XOR<Prisma.AttemptCreateWithoutPracticeSetInput, Prisma.AttemptUncheckedCreateWithoutPracticeSetInput> | Prisma.AttemptCreateWithoutPracticeSetInput[] | Prisma.AttemptUncheckedCreateWithoutPracticeSetInput[]
+  connectOrCreate?: Prisma.AttemptCreateOrConnectWithoutPracticeSetInput | Prisma.AttemptCreateOrConnectWithoutPracticeSetInput[]
+  upsert?: Prisma.AttemptUpsertWithWhereUniqueWithoutPracticeSetInput | Prisma.AttemptUpsertWithWhereUniqueWithoutPracticeSetInput[]
+  createMany?: Prisma.AttemptCreateManyPracticeSetInputEnvelope
   set?: Prisma.AttemptWhereUniqueInput | Prisma.AttemptWhereUniqueInput[]
   disconnect?: Prisma.AttemptWhereUniqueInput | Prisma.AttemptWhereUniqueInput[]
   delete?: Prisma.AttemptWhereUniqueInput | Prisma.AttemptWhereUniqueInput[]
   connect?: Prisma.AttemptWhereUniqueInput | Prisma.AttemptWhereUniqueInput[]
-  update?: Prisma.AttemptUpdateWithWhereUniqueWithoutExamInput | Prisma.AttemptUpdateWithWhereUniqueWithoutExamInput[]
-  updateMany?: Prisma.AttemptUpdateManyWithWhereWithoutExamInput | Prisma.AttemptUpdateManyWithWhereWithoutExamInput[]
+  update?: Prisma.AttemptUpdateWithWhereUniqueWithoutPracticeSetInput | Prisma.AttemptUpdateWithWhereUniqueWithoutPracticeSetInput[]
+  updateMany?: Prisma.AttemptUpdateManyWithWhereWithoutPracticeSetInput | Prisma.AttemptUpdateManyWithWhereWithoutPracticeSetInput[]
   deleteMany?: Prisma.AttemptScalarWhereInput | Prisma.AttemptScalarWhereInput[]
 }
 
-export type AttemptUncheckedUpdateManyWithoutExamNestedInput = {
-  create?: Prisma.XOR<Prisma.AttemptCreateWithoutExamInput, Prisma.AttemptUncheckedCreateWithoutExamInput> | Prisma.AttemptCreateWithoutExamInput[] | Prisma.AttemptUncheckedCreateWithoutExamInput[]
-  connectOrCreate?: Prisma.AttemptCreateOrConnectWithoutExamInput | Prisma.AttemptCreateOrConnectWithoutExamInput[]
-  upsert?: Prisma.AttemptUpsertWithWhereUniqueWithoutExamInput | Prisma.AttemptUpsertWithWhereUniqueWithoutExamInput[]
-  createMany?: Prisma.AttemptCreateManyExamInputEnvelope
+export type AttemptUncheckedUpdateManyWithoutPracticeSetNestedInput = {
+  create?: Prisma.XOR<Prisma.AttemptCreateWithoutPracticeSetInput, Prisma.AttemptUncheckedCreateWithoutPracticeSetInput> | Prisma.AttemptCreateWithoutPracticeSetInput[] | Prisma.AttemptUncheckedCreateWithoutPracticeSetInput[]
+  connectOrCreate?: Prisma.AttemptCreateOrConnectWithoutPracticeSetInput | Prisma.AttemptCreateOrConnectWithoutPracticeSetInput[]
+  upsert?: Prisma.AttemptUpsertWithWhereUniqueWithoutPracticeSetInput | Prisma.AttemptUpsertWithWhereUniqueWithoutPracticeSetInput[]
+  createMany?: Prisma.AttemptCreateManyPracticeSetInputEnvelope
   set?: Prisma.AttemptWhereUniqueInput | Prisma.AttemptWhereUniqueInput[]
   disconnect?: Prisma.AttemptWhereUniqueInput | Prisma.AttemptWhereUniqueInput[]
   delete?: Prisma.AttemptWhereUniqueInput | Prisma.AttemptWhereUniqueInput[]
   connect?: Prisma.AttemptWhereUniqueInput | Prisma.AttemptWhereUniqueInput[]
-  update?: Prisma.AttemptUpdateWithWhereUniqueWithoutExamInput | Prisma.AttemptUpdateWithWhereUniqueWithoutExamInput[]
-  updateMany?: Prisma.AttemptUpdateManyWithWhereWithoutExamInput | Prisma.AttemptUpdateManyWithWhereWithoutExamInput[]
+  update?: Prisma.AttemptUpdateWithWhereUniqueWithoutPracticeSetInput | Prisma.AttemptUpdateWithWhereUniqueWithoutPracticeSetInput[]
+  updateMany?: Prisma.AttemptUpdateManyWithWhereWithoutPracticeSetInput | Prisma.AttemptUpdateManyWithWhereWithoutPracticeSetInput[]
   deleteMany?: Prisma.AttemptScalarWhereInput | Prisma.AttemptScalarWhereInput[]
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
+export type EnumAttemptTypeFieldUpdateOperationsInput = {
+  set?: $Enums.AttemptType
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
+export type EnumAttemptStatusFieldUpdateOperationsInput = {
+  set?: $Enums.AttemptStatus
+}
+
+export type NullableFloatFieldUpdateOperationsInput = {
   set?: number | null
   increment?: number
   decrement?: number
@@ -529,24 +718,54 @@ export type AttemptUpdateOneRequiredWithoutAnswersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AttemptUpdateToOneWithWhereWithoutAnswersInput, Prisma.AttemptUpdateWithoutAnswersInput>, Prisma.AttemptUncheckedUpdateWithoutAnswersInput>
 }
 
+export type AttemptCreateNestedOneWithoutWrongRetrySetInput = {
+  create?: Prisma.XOR<Prisma.AttemptCreateWithoutWrongRetrySetInput, Prisma.AttemptUncheckedCreateWithoutWrongRetrySetInput>
+  connectOrCreate?: Prisma.AttemptCreateOrConnectWithoutWrongRetrySetInput
+  connect?: Prisma.AttemptWhereUniqueInput
+}
+
+export type AttemptUpdateOneRequiredWithoutWrongRetrySetNestedInput = {
+  create?: Prisma.XOR<Prisma.AttemptCreateWithoutWrongRetrySetInput, Prisma.AttemptUncheckedCreateWithoutWrongRetrySetInput>
+  connectOrCreate?: Prisma.AttemptCreateOrConnectWithoutWrongRetrySetInput
+  upsert?: Prisma.AttemptUpsertWithoutWrongRetrySetInput
+  connect?: Prisma.AttemptWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AttemptUpdateToOneWithWhereWithoutWrongRetrySetInput, Prisma.AttemptUpdateWithoutWrongRetrySetInput>, Prisma.AttemptUncheckedUpdateWithoutWrongRetrySetInput>
+}
+
 export type AttemptCreateWithoutUserInput = {
   id?: string
+  type?: $Enums.AttemptType
+  status?: $Enums.AttemptStatus
   startedAt?: Date | string
   submittedAt?: Date | string | null
   totalScore?: number | null
+  totalQuestions?: number | null
+  correctCount?: number | null
+  accuracy?: number | null
   resultLabel?: string | null
-  exam: Prisma.ExamCreateNestedOneWithoutAttemptsInput
+  timeSpentSec?: number | null
+  parentAttemptId?: string | null
+  practiceSet: Prisma.PracticeSetCreateNestedOneWithoutAttemptsInput
   answers?: Prisma.AttemptAnswerCreateNestedManyWithoutAttemptInput
+  wrongRetrySet?: Prisma.WrongRetrySetCreateNestedOneWithoutSourceAttemptInput
 }
 
 export type AttemptUncheckedCreateWithoutUserInput = {
   id?: string
-  examId: string
+  practiceSetId: string
+  type?: $Enums.AttemptType
+  status?: $Enums.AttemptStatus
   startedAt?: Date | string
   submittedAt?: Date | string | null
   totalScore?: number | null
+  totalQuestions?: number | null
+  correctCount?: number | null
+  accuracy?: number | null
   resultLabel?: string | null
+  timeSpentSec?: number | null
+  parentAttemptId?: string | null
   answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutAttemptInput
+  wrongRetrySet?: Prisma.WrongRetrySetUncheckedCreateNestedOneWithoutSourceAttemptInput
 }
 
 export type AttemptCreateOrConnectWithoutUserInput = {
@@ -581,77 +800,116 @@ export type AttemptScalarWhereInput = {
   NOT?: Prisma.AttemptScalarWhereInput | Prisma.AttemptScalarWhereInput[]
   id?: Prisma.StringFilter<"Attempt"> | string
   userId?: Prisma.StringFilter<"Attempt"> | string
-  examId?: Prisma.StringFilter<"Attempt"> | string
+  practiceSetId?: Prisma.StringFilter<"Attempt"> | string
+  type?: Prisma.EnumAttemptTypeFilter<"Attempt"> | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFilter<"Attempt"> | $Enums.AttemptStatus
   startedAt?: Prisma.DateTimeFilter<"Attempt"> | Date | string
   submittedAt?: Prisma.DateTimeNullableFilter<"Attempt"> | Date | string | null
   totalScore?: Prisma.IntNullableFilter<"Attempt"> | number | null
+  totalQuestions?: Prisma.IntNullableFilter<"Attempt"> | number | null
+  correctCount?: Prisma.IntNullableFilter<"Attempt"> | number | null
+  accuracy?: Prisma.FloatNullableFilter<"Attempt"> | number | null
   resultLabel?: Prisma.StringNullableFilter<"Attempt"> | string | null
+  timeSpentSec?: Prisma.IntNullableFilter<"Attempt"> | number | null
+  parentAttemptId?: Prisma.StringNullableFilter<"Attempt"> | string | null
 }
 
-export type AttemptCreateWithoutExamInput = {
+export type AttemptCreateWithoutPracticeSetInput = {
   id?: string
+  type?: $Enums.AttemptType
+  status?: $Enums.AttemptStatus
   startedAt?: Date | string
   submittedAt?: Date | string | null
   totalScore?: number | null
+  totalQuestions?: number | null
+  correctCount?: number | null
+  accuracy?: number | null
   resultLabel?: string | null
+  timeSpentSec?: number | null
+  parentAttemptId?: string | null
   user: Prisma.UserCreateNestedOneWithoutAttemptsInput
   answers?: Prisma.AttemptAnswerCreateNestedManyWithoutAttemptInput
+  wrongRetrySet?: Prisma.WrongRetrySetCreateNestedOneWithoutSourceAttemptInput
 }
 
-export type AttemptUncheckedCreateWithoutExamInput = {
+export type AttemptUncheckedCreateWithoutPracticeSetInput = {
   id?: string
   userId: string
+  type?: $Enums.AttemptType
+  status?: $Enums.AttemptStatus
   startedAt?: Date | string
   submittedAt?: Date | string | null
   totalScore?: number | null
+  totalQuestions?: number | null
+  correctCount?: number | null
+  accuracy?: number | null
   resultLabel?: string | null
+  timeSpentSec?: number | null
+  parentAttemptId?: string | null
   answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutAttemptInput
+  wrongRetrySet?: Prisma.WrongRetrySetUncheckedCreateNestedOneWithoutSourceAttemptInput
 }
 
-export type AttemptCreateOrConnectWithoutExamInput = {
+export type AttemptCreateOrConnectWithoutPracticeSetInput = {
   where: Prisma.AttemptWhereUniqueInput
-  create: Prisma.XOR<Prisma.AttemptCreateWithoutExamInput, Prisma.AttemptUncheckedCreateWithoutExamInput>
+  create: Prisma.XOR<Prisma.AttemptCreateWithoutPracticeSetInput, Prisma.AttemptUncheckedCreateWithoutPracticeSetInput>
 }
 
-export type AttemptCreateManyExamInputEnvelope = {
-  data: Prisma.AttemptCreateManyExamInput | Prisma.AttemptCreateManyExamInput[]
+export type AttemptCreateManyPracticeSetInputEnvelope = {
+  data: Prisma.AttemptCreateManyPracticeSetInput | Prisma.AttemptCreateManyPracticeSetInput[]
   skipDuplicates?: boolean
 }
 
-export type AttemptUpsertWithWhereUniqueWithoutExamInput = {
+export type AttemptUpsertWithWhereUniqueWithoutPracticeSetInput = {
   where: Prisma.AttemptWhereUniqueInput
-  update: Prisma.XOR<Prisma.AttemptUpdateWithoutExamInput, Prisma.AttemptUncheckedUpdateWithoutExamInput>
-  create: Prisma.XOR<Prisma.AttemptCreateWithoutExamInput, Prisma.AttemptUncheckedCreateWithoutExamInput>
+  update: Prisma.XOR<Prisma.AttemptUpdateWithoutPracticeSetInput, Prisma.AttemptUncheckedUpdateWithoutPracticeSetInput>
+  create: Prisma.XOR<Prisma.AttemptCreateWithoutPracticeSetInput, Prisma.AttemptUncheckedCreateWithoutPracticeSetInput>
 }
 
-export type AttemptUpdateWithWhereUniqueWithoutExamInput = {
+export type AttemptUpdateWithWhereUniqueWithoutPracticeSetInput = {
   where: Prisma.AttemptWhereUniqueInput
-  data: Prisma.XOR<Prisma.AttemptUpdateWithoutExamInput, Prisma.AttemptUncheckedUpdateWithoutExamInput>
+  data: Prisma.XOR<Prisma.AttemptUpdateWithoutPracticeSetInput, Prisma.AttemptUncheckedUpdateWithoutPracticeSetInput>
 }
 
-export type AttemptUpdateManyWithWhereWithoutExamInput = {
+export type AttemptUpdateManyWithWhereWithoutPracticeSetInput = {
   where: Prisma.AttemptScalarWhereInput
-  data: Prisma.XOR<Prisma.AttemptUpdateManyMutationInput, Prisma.AttemptUncheckedUpdateManyWithoutExamInput>
+  data: Prisma.XOR<Prisma.AttemptUpdateManyMutationInput, Prisma.AttemptUncheckedUpdateManyWithoutPracticeSetInput>
 }
 
 export type AttemptCreateWithoutAnswersInput = {
   id?: string
+  type?: $Enums.AttemptType
+  status?: $Enums.AttemptStatus
   startedAt?: Date | string
   submittedAt?: Date | string | null
   totalScore?: number | null
+  totalQuestions?: number | null
+  correctCount?: number | null
+  accuracy?: number | null
   resultLabel?: string | null
+  timeSpentSec?: number | null
+  parentAttemptId?: string | null
   user: Prisma.UserCreateNestedOneWithoutAttemptsInput
-  exam: Prisma.ExamCreateNestedOneWithoutAttemptsInput
+  practiceSet: Prisma.PracticeSetCreateNestedOneWithoutAttemptsInput
+  wrongRetrySet?: Prisma.WrongRetrySetCreateNestedOneWithoutSourceAttemptInput
 }
 
 export type AttemptUncheckedCreateWithoutAnswersInput = {
   id?: string
   userId: string
-  examId: string
+  practiceSetId: string
+  type?: $Enums.AttemptType
+  status?: $Enums.AttemptStatus
   startedAt?: Date | string
   submittedAt?: Date | string | null
   totalScore?: number | null
+  totalQuestions?: number | null
+  correctCount?: number | null
+  accuracy?: number | null
   resultLabel?: string | null
+  timeSpentSec?: number | null
+  parentAttemptId?: string | null
+  wrongRetrySet?: Prisma.WrongRetrySetUncheckedCreateNestedOneWithoutSourceAttemptInput
 }
 
 export type AttemptCreateOrConnectWithoutAnswersInput = {
@@ -672,98 +930,262 @@ export type AttemptUpdateToOneWithWhereWithoutAnswersInput = {
 
 export type AttemptUpdateWithoutAnswersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAttemptTypeFieldUpdateOperationsInput | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalQuestions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  correctCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accuracy?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   resultLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAttemptsNestedInput
-  exam?: Prisma.ExamUpdateOneRequiredWithoutAttemptsNestedInput
+  practiceSet?: Prisma.PracticeSetUpdateOneRequiredWithoutAttemptsNestedInput
+  wrongRetrySet?: Prisma.WrongRetrySetUpdateOneWithoutSourceAttemptNestedInput
 }
 
 export type AttemptUncheckedUpdateWithoutAnswersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
-  examId?: Prisma.StringFieldUpdateOperationsInput | string
+  practiceSetId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAttemptTypeFieldUpdateOperationsInput | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalQuestions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  correctCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accuracy?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   resultLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  wrongRetrySet?: Prisma.WrongRetrySetUncheckedUpdateOneWithoutSourceAttemptNestedInput
+}
+
+export type AttemptCreateWithoutWrongRetrySetInput = {
+  id?: string
+  type?: $Enums.AttemptType
+  status?: $Enums.AttemptStatus
+  startedAt?: Date | string
+  submittedAt?: Date | string | null
+  totalScore?: number | null
+  totalQuestions?: number | null
+  correctCount?: number | null
+  accuracy?: number | null
+  resultLabel?: string | null
+  timeSpentSec?: number | null
+  parentAttemptId?: string | null
+  user: Prisma.UserCreateNestedOneWithoutAttemptsInput
+  practiceSet: Prisma.PracticeSetCreateNestedOneWithoutAttemptsInput
+  answers?: Prisma.AttemptAnswerCreateNestedManyWithoutAttemptInput
+}
+
+export type AttemptUncheckedCreateWithoutWrongRetrySetInput = {
+  id?: string
+  userId: string
+  practiceSetId: string
+  type?: $Enums.AttemptType
+  status?: $Enums.AttemptStatus
+  startedAt?: Date | string
+  submittedAt?: Date | string | null
+  totalScore?: number | null
+  totalQuestions?: number | null
+  correctCount?: number | null
+  accuracy?: number | null
+  resultLabel?: string | null
+  timeSpentSec?: number | null
+  parentAttemptId?: string | null
+  answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutAttemptInput
+}
+
+export type AttemptCreateOrConnectWithoutWrongRetrySetInput = {
+  where: Prisma.AttemptWhereUniqueInput
+  create: Prisma.XOR<Prisma.AttemptCreateWithoutWrongRetrySetInput, Prisma.AttemptUncheckedCreateWithoutWrongRetrySetInput>
+}
+
+export type AttemptUpsertWithoutWrongRetrySetInput = {
+  update: Prisma.XOR<Prisma.AttemptUpdateWithoutWrongRetrySetInput, Prisma.AttemptUncheckedUpdateWithoutWrongRetrySetInput>
+  create: Prisma.XOR<Prisma.AttemptCreateWithoutWrongRetrySetInput, Prisma.AttemptUncheckedCreateWithoutWrongRetrySetInput>
+  where?: Prisma.AttemptWhereInput
+}
+
+export type AttemptUpdateToOneWithWhereWithoutWrongRetrySetInput = {
+  where?: Prisma.AttemptWhereInput
+  data: Prisma.XOR<Prisma.AttemptUpdateWithoutWrongRetrySetInput, Prisma.AttemptUncheckedUpdateWithoutWrongRetrySetInput>
+}
+
+export type AttemptUpdateWithoutWrongRetrySetInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAttemptTypeFieldUpdateOperationsInput | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalQuestions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  correctCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accuracy?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  resultLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user?: Prisma.UserUpdateOneRequiredWithoutAttemptsNestedInput
+  practiceSet?: Prisma.PracticeSetUpdateOneRequiredWithoutAttemptsNestedInput
+  answers?: Prisma.AttemptAnswerUpdateManyWithoutAttemptNestedInput
+}
+
+export type AttemptUncheckedUpdateWithoutWrongRetrySetInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  practiceSetId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAttemptTypeFieldUpdateOperationsInput | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalQuestions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  correctCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accuracy?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  resultLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutAttemptNestedInput
 }
 
 export type AttemptCreateManyUserInput = {
   id?: string
-  examId: string
+  practiceSetId: string
+  type?: $Enums.AttemptType
+  status?: $Enums.AttemptStatus
   startedAt?: Date | string
   submittedAt?: Date | string | null
   totalScore?: number | null
+  totalQuestions?: number | null
+  correctCount?: number | null
+  accuracy?: number | null
   resultLabel?: string | null
+  timeSpentSec?: number | null
+  parentAttemptId?: string | null
 }
 
 export type AttemptUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAttemptTypeFieldUpdateOperationsInput | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalQuestions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  correctCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accuracy?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   resultLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  exam?: Prisma.ExamUpdateOneRequiredWithoutAttemptsNestedInput
+  timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  practiceSet?: Prisma.PracticeSetUpdateOneRequiredWithoutAttemptsNestedInput
   answers?: Prisma.AttemptAnswerUpdateManyWithoutAttemptNestedInput
+  wrongRetrySet?: Prisma.WrongRetrySetUpdateOneWithoutSourceAttemptNestedInput
 }
 
 export type AttemptUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  examId?: Prisma.StringFieldUpdateOperationsInput | string
+  practiceSetId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAttemptTypeFieldUpdateOperationsInput | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalQuestions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  correctCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accuracy?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   resultLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutAttemptNestedInput
+  wrongRetrySet?: Prisma.WrongRetrySetUncheckedUpdateOneWithoutSourceAttemptNestedInput
 }
 
 export type AttemptUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  examId?: Prisma.StringFieldUpdateOperationsInput | string
+  practiceSetId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAttemptTypeFieldUpdateOperationsInput | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalQuestions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  correctCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accuracy?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   resultLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type AttemptCreateManyExamInput = {
+export type AttemptCreateManyPracticeSetInput = {
   id?: string
   userId: string
+  type?: $Enums.AttemptType
+  status?: $Enums.AttemptStatus
   startedAt?: Date | string
   submittedAt?: Date | string | null
   totalScore?: number | null
+  totalQuestions?: number | null
+  correctCount?: number | null
+  accuracy?: number | null
   resultLabel?: string | null
+  timeSpentSec?: number | null
+  parentAttemptId?: string | null
 }
 
-export type AttemptUpdateWithoutExamInput = {
+export type AttemptUpdateWithoutPracticeSetInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAttemptTypeFieldUpdateOperationsInput | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalQuestions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  correctCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accuracy?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   resultLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutAttemptsNestedInput
   answers?: Prisma.AttemptAnswerUpdateManyWithoutAttemptNestedInput
+  wrongRetrySet?: Prisma.WrongRetrySetUpdateOneWithoutSourceAttemptNestedInput
 }
 
-export type AttemptUncheckedUpdateWithoutExamInput = {
+export type AttemptUncheckedUpdateWithoutPracticeSetInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAttemptTypeFieldUpdateOperationsInput | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalQuestions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  correctCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accuracy?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   resultLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutAttemptNestedInput
+  wrongRetrySet?: Prisma.WrongRetrySetUncheckedUpdateOneWithoutSourceAttemptNestedInput
 }
 
-export type AttemptUncheckedUpdateManyWithoutExamInput = {
+export type AttemptUncheckedUpdateManyWithoutPracticeSetInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAttemptTypeFieldUpdateOperationsInput | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalQuestions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  correctCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accuracy?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   resultLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -800,82 +1222,120 @@ export type AttemptCountOutputTypeCountAnswersArgs<ExtArgs extends runtime.Types
 export type AttemptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  examId?: boolean
+  practiceSetId?: boolean
+  type?: boolean
+  status?: boolean
   startedAt?: boolean
   submittedAt?: boolean
   totalScore?: boolean
+  totalQuestions?: boolean
+  correctCount?: boolean
+  accuracy?: boolean
   resultLabel?: boolean
+  timeSpentSec?: boolean
+  parentAttemptId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
+  practiceSet?: boolean | Prisma.PracticeSetDefaultArgs<ExtArgs>
   answers?: boolean | Prisma.Attempt$answersArgs<ExtArgs>
+  wrongRetrySet?: boolean | Prisma.Attempt$wrongRetrySetArgs<ExtArgs>
   _count?: boolean | Prisma.AttemptCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attempt"]>
 
 export type AttemptSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  examId?: boolean
+  practiceSetId?: boolean
+  type?: boolean
+  status?: boolean
   startedAt?: boolean
   submittedAt?: boolean
   totalScore?: boolean
+  totalQuestions?: boolean
+  correctCount?: boolean
+  accuracy?: boolean
   resultLabel?: boolean
+  timeSpentSec?: boolean
+  parentAttemptId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
+  practiceSet?: boolean | Prisma.PracticeSetDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attempt"]>
 
 export type AttemptSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
-  examId?: boolean
+  practiceSetId?: boolean
+  type?: boolean
+  status?: boolean
   startedAt?: boolean
   submittedAt?: boolean
   totalScore?: boolean
+  totalQuestions?: boolean
+  correctCount?: boolean
+  accuracy?: boolean
   resultLabel?: boolean
+  timeSpentSec?: boolean
+  parentAttemptId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
+  practiceSet?: boolean | Prisma.PracticeSetDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attempt"]>
 
 export type AttemptSelectScalar = {
   id?: boolean
   userId?: boolean
-  examId?: boolean
+  practiceSetId?: boolean
+  type?: boolean
+  status?: boolean
   startedAt?: boolean
   submittedAt?: boolean
   totalScore?: boolean
+  totalQuestions?: boolean
+  correctCount?: boolean
+  accuracy?: boolean
   resultLabel?: boolean
+  timeSpentSec?: boolean
+  parentAttemptId?: boolean
 }
 
-export type AttemptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "examId" | "startedAt" | "submittedAt" | "totalScore" | "resultLabel", ExtArgs["result"]["attempt"]>
+export type AttemptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "practiceSetId" | "type" | "status" | "startedAt" | "submittedAt" | "totalScore" | "totalQuestions" | "correctCount" | "accuracy" | "resultLabel" | "timeSpentSec" | "parentAttemptId", ExtArgs["result"]["attempt"]>
 export type AttemptInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
+  practiceSet?: boolean | Prisma.PracticeSetDefaultArgs<ExtArgs>
   answers?: boolean | Prisma.Attempt$answersArgs<ExtArgs>
+  wrongRetrySet?: boolean | Prisma.Attempt$wrongRetrySetArgs<ExtArgs>
   _count?: boolean | Prisma.AttemptCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AttemptIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
+  practiceSet?: boolean | Prisma.PracticeSetDefaultArgs<ExtArgs>
 }
 export type AttemptIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  exam?: boolean | Prisma.ExamDefaultArgs<ExtArgs>
+  practiceSet?: boolean | Prisma.PracticeSetDefaultArgs<ExtArgs>
 }
 
 export type $AttemptPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Attempt"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
-    exam: Prisma.$ExamPayload<ExtArgs>
+    practiceSet: Prisma.$PracticeSetPayload<ExtArgs>
     answers: Prisma.$AttemptAnswerPayload<ExtArgs>[]
+    wrongRetrySet: Prisma.$WrongRetrySetPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
-    examId: string
+    practiceSetId: string
+    type: $Enums.AttemptType
+    status: $Enums.AttemptStatus
     startedAt: Date
     submittedAt: Date | null
     totalScore: number | null
+    totalQuestions: number | null
+    correctCount: number | null
+    accuracy: number | null
     resultLabel: string | null
+    timeSpentSec: number | null
+    parentAttemptId: string | null
   }, ExtArgs["result"]["attempt"]>
   composites: {}
 }
@@ -1271,8 +1731,9 @@ readonly fields: AttemptFieldRefs;
 export interface Prisma__AttemptClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  exam<T extends Prisma.ExamDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ExamDefaultArgs<ExtArgs>>): Prisma.Prisma__ExamClient<runtime.Types.Result.GetResult<Prisma.$ExamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  practiceSet<T extends Prisma.PracticeSetDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PracticeSetDefaultArgs<ExtArgs>>): Prisma.Prisma__PracticeSetClient<runtime.Types.Result.GetResult<Prisma.$PracticeSetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   answers<T extends Prisma.Attempt$answersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Attempt$answersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttemptAnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  wrongRetrySet<T extends Prisma.Attempt$wrongRetrySetArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Attempt$wrongRetrySetArgs<ExtArgs>>): Prisma.Prisma__WrongRetrySetClient<runtime.Types.Result.GetResult<Prisma.$WrongRetrySetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1304,11 +1765,18 @@ export interface Prisma__AttemptClient<T, Null = never, ExtArgs extends runtime.
 export interface AttemptFieldRefs {
   readonly id: Prisma.FieldRef<"Attempt", 'String'>
   readonly userId: Prisma.FieldRef<"Attempt", 'String'>
-  readonly examId: Prisma.FieldRef<"Attempt", 'String'>
+  readonly practiceSetId: Prisma.FieldRef<"Attempt", 'String'>
+  readonly type: Prisma.FieldRef<"Attempt", 'AttemptType'>
+  readonly status: Prisma.FieldRef<"Attempt", 'AttemptStatus'>
   readonly startedAt: Prisma.FieldRef<"Attempt", 'DateTime'>
   readonly submittedAt: Prisma.FieldRef<"Attempt", 'DateTime'>
   readonly totalScore: Prisma.FieldRef<"Attempt", 'Int'>
+  readonly totalQuestions: Prisma.FieldRef<"Attempt", 'Int'>
+  readonly correctCount: Prisma.FieldRef<"Attempt", 'Int'>
+  readonly accuracy: Prisma.FieldRef<"Attempt", 'Float'>
   readonly resultLabel: Prisma.FieldRef<"Attempt", 'String'>
+  readonly timeSpentSec: Prisma.FieldRef<"Attempt", 'Int'>
+  readonly parentAttemptId: Prisma.FieldRef<"Attempt", 'String'>
 }
     
 
@@ -1731,6 +2199,25 @@ export type Attempt$answersArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.AttemptAnswerScalarFieldEnum | Prisma.AttemptAnswerScalarFieldEnum[]
+}
+
+/**
+ * Attempt.wrongRetrySet
+ */
+export type Attempt$wrongRetrySetArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WrongRetrySet
+   */
+  select?: Prisma.WrongRetrySetSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WrongRetrySet
+   */
+  omit?: Prisma.WrongRetrySetOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WrongRetrySetInclude<ExtArgs> | null
+  where?: Prisma.WrongRetrySetWhereInput
 }
 
 /**

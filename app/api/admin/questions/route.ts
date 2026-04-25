@@ -1,13 +1,25 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/session";
+import { UserRole } from "@/generated/prisma/client";
 
-export async function GET() {
+export async function GET(req: Request) {
+  const user = await getCurrentUser();
+
+  if (!user || user.role !== UserRole.ADMIN) {
+    return NextResponse.json({ error: "Admin only" }, { status: 403 });
+  }
+
+  const { searchParams } = new URL(req.url);
+  const practiceSetId = searchParams.get("practiceSetId");
+
   const questions = await prisma.question.findMany({
+    where: practiceSetId ? { practiceSetId } : {},
     include: {
-      exam: true,
+      practiceSet: true,
     },
     orderBy: {
-      id: "desc",
+      createdAt: "desc",
     },
   });
 
@@ -15,35 +27,28 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const body = await req.json();
+  const user = await getCurrentUser();
 
-  const {
-    examId,
-    text,
-    category,
-    type,
-    options,
-    answer,
-    imageUrl,
-    audioUrl,
-    explanation,
-  } = body;
-
-  if (!examId || !text || !category || !type || !answer) {
-    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+  if (!user || user.role !== UserRole.ADMIN) {
+    return NextResponse.json({ error: "Admin only" }, { status: 403 });
   }
+
+  const body = await req.json();
 
   const question = await prisma.question.create({
     data: {
-      examId,
-      text,
-      category,
-      type,
-      options,
-      answer,
-      imageUrl: imageUrl || null,
-      audioUrl: audioUrl || null,
-      explanation: explanation || null,
+      practiceSetId: body.practiceSetId,
+      text: body.text,
+      category: body.category,
+      difficulty: body.difficulty || "MEDIUM",
+      type: body.type || "mcq",
+      options: body.options,
+      answer: body.answer,
+      imageUrl: body.imageUrl || null,
+      audioUrl: body.audioUrl || null,
+      explanation: body.explanation || null,
+      tags: body.tags || [],
+      points: body.points ? Number(body.points) : 1,
     },
   });
 

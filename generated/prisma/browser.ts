@@ -28,15 +28,30 @@ export type User = Prisma.UserModel
  */
 export type Session = Prisma.SessionModel
 /**
- * Model Exam
+ * Model ClassRoom
  * 
  */
-export type Exam = Prisma.ExamModel
+export type ClassRoom = Prisma.ClassRoomModel
+/**
+ * Model ClassMember
+ * 
+ */
+export type ClassMember = Prisma.ClassMemberModel
+/**
+ * Model PracticeSet
+ * 
+ */
+export type PracticeSet = Prisma.PracticeSetModel
 /**
  * Model Question
  * 
  */
 export type Question = Prisma.QuestionModel
+/**
+ * Model Assignment
+ * 
+ */
+export type Assignment = Prisma.AssignmentModel
 /**
  * Model Attempt
  * 
@@ -48,17 +63,22 @@ export type Attempt = Prisma.AttemptModel
  */
 export type AttemptAnswer = Prisma.AttemptAnswerModel
 /**
+ * Model WrongRetrySet
+ * 
+ */
+export type WrongRetrySet = Prisma.WrongRetrySetModel
+/**
+ * Model WrongQuestionItem
+ * 
+ */
+export type WrongQuestionItem = Prisma.WrongQuestionItemModel
+/**
  * Model WeaknessProfile
  * 
  */
 export type WeaknessProfile = Prisma.WeaknessProfileModel
 /**
- * Model ClassRoom
+ * Model GeneratorJob
  * 
  */
-export type ClassRoom = Prisma.ClassRoomModel
-/**
- * Model ClassMember
- * 
- */
-export type ClassMember = Prisma.ClassMemberModel
+export type GeneratorJob = Prisma.GeneratorJobModel

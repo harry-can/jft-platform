@@ -46,6 +46,7 @@ export type WeaknessProfileMinAggregateOutputType = {
   correctCount: number | null
   accuracy: number | null
   weaknessLevel: string | null
+  updatedAt: Date | null
 }
 
 export type WeaknessProfileMaxAggregateOutputType = {
@@ -56,6 +57,7 @@ export type WeaknessProfileMaxAggregateOutputType = {
   correctCount: number | null
   accuracy: number | null
   weaknessLevel: string | null
+  updatedAt: Date | null
 }
 
 export type WeaknessProfileCountAggregateOutputType = {
@@ -66,6 +68,7 @@ export type WeaknessProfileCountAggregateOutputType = {
   correctCount: number
   accuracy: number
   weaknessLevel: number
+  updatedAt: number
   _all: number
 }
 
@@ -90,6 +93,7 @@ export type WeaknessProfileMinAggregateInputType = {
   correctCount?: true
   accuracy?: true
   weaknessLevel?: true
+  updatedAt?: true
 }
 
 export type WeaknessProfileMaxAggregateInputType = {
@@ -100,6 +104,7 @@ export type WeaknessProfileMaxAggregateInputType = {
   correctCount?: true
   accuracy?: true
   weaknessLevel?: true
+  updatedAt?: true
 }
 
 export type WeaknessProfileCountAggregateInputType = {
@@ -110,6 +115,7 @@ export type WeaknessProfileCountAggregateInputType = {
   correctCount?: true
   accuracy?: true
   weaknessLevel?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -207,6 +213,7 @@ export type WeaknessProfileGroupByOutputType = {
   correctCount: number
   accuracy: number
   weaknessLevel: string | null
+  updatedAt: Date
   _count: WeaknessProfileCountAggregateOutputType | null
   _avg: WeaknessProfileAvgAggregateOutputType | null
   _sum: WeaknessProfileSumAggregateOutputType | null
@@ -240,6 +247,7 @@ export type WeaknessProfileWhereInput = {
   correctCount?: Prisma.IntFilter<"WeaknessProfile"> | number
   accuracy?: Prisma.FloatFilter<"WeaknessProfile"> | number
   weaknessLevel?: Prisma.StringNullableFilter<"WeaknessProfile"> | string | null
+  updatedAt?: Prisma.DateTimeFilter<"WeaknessProfile"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -251,6 +259,7 @@ export type WeaknessProfileOrderByWithRelationInput = {
   correctCount?: Prisma.SortOrder
   accuracy?: Prisma.SortOrder
   weaknessLevel?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -266,6 +275,7 @@ export type WeaknessProfileWhereUniqueInput = Prisma.AtLeast<{
   correctCount?: Prisma.IntFilter<"WeaknessProfile"> | number
   accuracy?: Prisma.FloatFilter<"WeaknessProfile"> | number
   weaknessLevel?: Prisma.StringNullableFilter<"WeaknessProfile"> | string | null
+  updatedAt?: Prisma.DateTimeFilter<"WeaknessProfile"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId_category">
 
@@ -277,6 +287,7 @@ export type WeaknessProfileOrderByWithAggregationInput = {
   correctCount?: Prisma.SortOrder
   accuracy?: Prisma.SortOrder
   weaknessLevel?: Prisma.SortOrderInput | Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.WeaknessProfileCountOrderByAggregateInput
   _avg?: Prisma.WeaknessProfileAvgOrderByAggregateInput
   _max?: Prisma.WeaknessProfileMaxOrderByAggregateInput
@@ -295,6 +306,7 @@ export type WeaknessProfileScalarWhereWithAggregatesInput = {
   correctCount?: Prisma.IntWithAggregatesFilter<"WeaknessProfile"> | number
   accuracy?: Prisma.FloatWithAggregatesFilter<"WeaknessProfile"> | number
   weaknessLevel?: Prisma.StringNullableWithAggregatesFilter<"WeaknessProfile"> | string | null
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"WeaknessProfile"> | Date | string
 }
 
 export type WeaknessProfileCreateInput = {
@@ -304,6 +316,7 @@ export type WeaknessProfileCreateInput = {
   correctCount?: number
   accuracy?: number
   weaknessLevel?: string | null
+  updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutWeaknessProfilesInput
 }
 
@@ -315,6 +328,7 @@ export type WeaknessProfileUncheckedCreateInput = {
   correctCount?: number
   accuracy?: number
   weaknessLevel?: string | null
+  updatedAt?: Date | string
 }
 
 export type WeaknessProfileUpdateInput = {
@@ -324,6 +338,7 @@ export type WeaknessProfileUpdateInput = {
   correctCount?: Prisma.IntFieldUpdateOperationsInput | number
   accuracy?: Prisma.FloatFieldUpdateOperationsInput | number
   weaknessLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutWeaknessProfilesNestedInput
 }
 
@@ -335,6 +350,7 @@ export type WeaknessProfileUncheckedUpdateInput = {
   correctCount?: Prisma.IntFieldUpdateOperationsInput | number
   accuracy?: Prisma.FloatFieldUpdateOperationsInput | number
   weaknessLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type WeaknessProfileCreateManyInput = {
@@ -345,6 +361,7 @@ export type WeaknessProfileCreateManyInput = {
   correctCount?: number
   accuracy?: number
   weaknessLevel?: string | null
+  updatedAt?: Date | string
 }
 
 export type WeaknessProfileUpdateManyMutationInput = {
@@ -354,6 +371,7 @@ export type WeaknessProfileUpdateManyMutationInput = {
   correctCount?: Prisma.IntFieldUpdateOperationsInput | number
   accuracy?: Prisma.FloatFieldUpdateOperationsInput | number
   weaknessLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type WeaknessProfileUncheckedUpdateManyInput = {
@@ -364,6 +382,7 @@ export type WeaknessProfileUncheckedUpdateManyInput = {
   correctCount?: Prisma.IntFieldUpdateOperationsInput | number
   accuracy?: Prisma.FloatFieldUpdateOperationsInput | number
   weaknessLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type WeaknessProfileListRelationFilter = {
@@ -389,6 +408,7 @@ export type WeaknessProfileCountOrderByAggregateInput = {
   correctCount?: Prisma.SortOrder
   accuracy?: Prisma.SortOrder
   weaknessLevel?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type WeaknessProfileAvgOrderByAggregateInput = {
@@ -405,6 +425,7 @@ export type WeaknessProfileMaxOrderByAggregateInput = {
   correctCount?: Prisma.SortOrder
   accuracy?: Prisma.SortOrder
   weaknessLevel?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type WeaknessProfileMinOrderByAggregateInput = {
@@ -415,6 +436,7 @@ export type WeaknessProfileMinOrderByAggregateInput = {
   correctCount?: Prisma.SortOrder
   accuracy?: Prisma.SortOrder
   weaknessLevel?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type WeaknessProfileSumOrderByAggregateInput = {
@@ -465,14 +487,6 @@ export type WeaknessProfileUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.WeaknessProfileScalarWhereInput | Prisma.WeaknessProfileScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type FloatFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -488,6 +502,7 @@ export type WeaknessProfileCreateWithoutUserInput = {
   correctCount?: number
   accuracy?: number
   weaknessLevel?: string | null
+  updatedAt?: Date | string
 }
 
 export type WeaknessProfileUncheckedCreateWithoutUserInput = {
@@ -497,6 +512,7 @@ export type WeaknessProfileUncheckedCreateWithoutUserInput = {
   correctCount?: number
   accuracy?: number
   weaknessLevel?: string | null
+  updatedAt?: Date | string
 }
 
 export type WeaknessProfileCreateOrConnectWithoutUserInput = {
@@ -536,6 +552,7 @@ export type WeaknessProfileScalarWhereInput = {
   correctCount?: Prisma.IntFilter<"WeaknessProfile"> | number
   accuracy?: Prisma.FloatFilter<"WeaknessProfile"> | number
   weaknessLevel?: Prisma.StringNullableFilter<"WeaknessProfile"> | string | null
+  updatedAt?: Prisma.DateTimeFilter<"WeaknessProfile"> | Date | string
 }
 
 export type WeaknessProfileCreateManyUserInput = {
@@ -545,6 +562,7 @@ export type WeaknessProfileCreateManyUserInput = {
   correctCount?: number
   accuracy?: number
   weaknessLevel?: string | null
+  updatedAt?: Date | string
 }
 
 export type WeaknessProfileUpdateWithoutUserInput = {
@@ -554,6 +572,7 @@ export type WeaknessProfileUpdateWithoutUserInput = {
   correctCount?: Prisma.IntFieldUpdateOperationsInput | number
   accuracy?: Prisma.FloatFieldUpdateOperationsInput | number
   weaknessLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type WeaknessProfileUncheckedUpdateWithoutUserInput = {
@@ -563,6 +582,7 @@ export type WeaknessProfileUncheckedUpdateWithoutUserInput = {
   correctCount?: Prisma.IntFieldUpdateOperationsInput | number
   accuracy?: Prisma.FloatFieldUpdateOperationsInput | number
   weaknessLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type WeaknessProfileUncheckedUpdateManyWithoutUserInput = {
@@ -572,6 +592,7 @@ export type WeaknessProfileUncheckedUpdateManyWithoutUserInput = {
   correctCount?: Prisma.IntFieldUpdateOperationsInput | number
   accuracy?: Prisma.FloatFieldUpdateOperationsInput | number
   weaknessLevel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -584,6 +605,7 @@ export type WeaknessProfileSelect<ExtArgs extends runtime.Types.Extensions.Inter
   correctCount?: boolean
   accuracy?: boolean
   weaknessLevel?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["weaknessProfile"]>
 
@@ -595,6 +617,7 @@ export type WeaknessProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   correctCount?: boolean
   accuracy?: boolean
   weaknessLevel?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["weaknessProfile"]>
 
@@ -606,6 +629,7 @@ export type WeaknessProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   correctCount?: boolean
   accuracy?: boolean
   weaknessLevel?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["weaknessProfile"]>
 
@@ -617,9 +641,10 @@ export type WeaknessProfileSelectScalar = {
   correctCount?: boolean
   accuracy?: boolean
   weaknessLevel?: boolean
+  updatedAt?: boolean
 }
 
-export type WeaknessProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "category" | "attemptsCount" | "correctCount" | "accuracy" | "weaknessLevel", ExtArgs["result"]["weaknessProfile"]>
+export type WeaknessProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "category" | "attemptsCount" | "correctCount" | "accuracy" | "weaknessLevel" | "updatedAt", ExtArgs["result"]["weaknessProfile"]>
 export type WeaknessProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -643,6 +668,7 @@ export type $WeaknessProfilePayload<ExtArgs extends runtime.Types.Extensions.Int
     correctCount: number
     accuracy: number
     weaknessLevel: string | null
+    updatedAt: Date
   }, ExtArgs["result"]["weaknessProfile"]>
   composites: {}
 }
@@ -1074,6 +1100,7 @@ export interface WeaknessProfileFieldRefs {
   readonly correctCount: Prisma.FieldRef<"WeaknessProfile", 'Int'>
   readonly accuracy: Prisma.FieldRef<"WeaknessProfile", 'Float'>
   readonly weaknessLevel: Prisma.FieldRef<"WeaknessProfile", 'String'>
+  readonly updatedAt: Prisma.FieldRef<"WeaknessProfile", 'DateTime'>
 }
     
 

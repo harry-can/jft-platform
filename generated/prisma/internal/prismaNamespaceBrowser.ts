@@ -53,13 +53,17 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   Session: 'Session',
-  Exam: 'Exam',
+  ClassRoom: 'ClassRoom',
+  ClassMember: 'ClassMember',
+  PracticeSet: 'PracticeSet',
   Question: 'Question',
+  Assignment: 'Assignment',
   Attempt: 'Attempt',
   AttemptAnswer: 'AttemptAnswer',
+  WrongRetrySet: 'WrongRetrySet',
+  WrongQuestionItem: 'WrongQuestionItem',
   WeaknessProfile: 'WeaknessProfile',
-  ClassRoom: 'ClassRoom',
-  ClassMember: 'ClassMember'
+  GeneratorJob: 'GeneratorJob'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -83,7 +87,13 @@ export const UserScalarFieldEnum = {
   name: 'name',
   email: 'email',
   password: 'password',
-  role: 'role'
+  role: 'role',
+  phone: 'phone',
+  address: 'address',
+  avatarUrl: 'avatarUrl',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -100,39 +110,96 @@ export const SessionScalarFieldEnum = {
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
 
 
-export const ExamScalarFieldEnum = {
+export const ClassRoomScalarFieldEnum = {
   id: 'id',
-  title: 'title',
-  description: 'description'
+  name: 'name',
+  description: 'description',
+  teacherId: 'teacherId',
+  joinCode: 'joinCode',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
-export type ExamScalarFieldEnum = (typeof ExamScalarFieldEnum)[keyof typeof ExamScalarFieldEnum]
+export type ClassRoomScalarFieldEnum = (typeof ClassRoomScalarFieldEnum)[keyof typeof ClassRoomScalarFieldEnum]
+
+
+export const ClassMemberScalarFieldEnum = {
+  id: 'id',
+  classRoomId: 'classRoomId',
+  userId: 'userId',
+  joinedAt: 'joinedAt'
+} as const
+
+export type ClassMemberScalarFieldEnum = (typeof ClassMemberScalarFieldEnum)[keyof typeof ClassMemberScalarFieldEnum]
+
+
+export const PracticeSetScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  type: 'type',
+  category: 'category',
+  difficulty: 'difficulty',
+  isPublished: 'isPublished',
+  timeLimitMin: 'timeLimitMin',
+  audioReplayLimit: 'audioReplayLimit',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PracticeSetScalarFieldEnum = (typeof PracticeSetScalarFieldEnum)[keyof typeof PracticeSetScalarFieldEnum]
 
 
 export const QuestionScalarFieldEnum = {
   id: 'id',
-  examId: 'examId',
+  practiceSetId: 'practiceSetId',
   text: 'text',
   category: 'category',
+  difficulty: 'difficulty',
   type: 'type',
   options: 'options',
   answer: 'answer',
   imageUrl: 'imageUrl',
   audioUrl: 'audioUrl',
-  explanation: 'explanation'
+  explanation: 'explanation',
+  tags: 'tags',
+  points: 'points',
+  orderIndex: 'orderIndex',
+  isPublished: 'isPublished',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type QuestionScalarFieldEnum = (typeof QuestionScalarFieldEnum)[keyof typeof QuestionScalarFieldEnum]
 
 
+export const AssignmentScalarFieldEnum = {
+  id: 'id',
+  classRoomId: 'classRoomId',
+  practiceSetId: 'practiceSetId',
+  dueDate: 'dueDate',
+  createdAt: 'createdAt'
+} as const
+
+export type AssignmentScalarFieldEnum = (typeof AssignmentScalarFieldEnum)[keyof typeof AssignmentScalarFieldEnum]
+
+
 export const AttemptScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  examId: 'examId',
+  practiceSetId: 'practiceSetId',
+  type: 'type',
+  status: 'status',
   startedAt: 'startedAt',
   submittedAt: 'submittedAt',
   totalScore: 'totalScore',
-  resultLabel: 'resultLabel'
+  totalQuestions: 'totalQuestions',
+  correctCount: 'correctCount',
+  accuracy: 'accuracy',
+  resultLabel: 'resultLabel',
+  timeSpentSec: 'timeSpentSec',
+  parentAttemptId: 'parentAttemptId'
 } as const
 
 export type AttemptScalarFieldEnum = (typeof AttemptScalarFieldEnum)[keyof typeof AttemptScalarFieldEnum]
@@ -145,10 +212,35 @@ export const AttemptAnswerScalarFieldEnum = {
   selectedChoiceId: 'selectedChoiceId',
   isCorrect: 'isCorrect',
   timeSpentSec: 'timeSpentSec',
-  flagged: 'flagged'
+  flagged: 'flagged',
+  createdAt: 'createdAt'
 } as const
 
 export type AttemptAnswerScalarFieldEnum = (typeof AttemptAnswerScalarFieldEnum)[keyof typeof AttemptAnswerScalarFieldEnum]
+
+
+export const WrongRetrySetScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  sourceAttemptId: 'sourceAttemptId',
+  isCompleted: 'isCompleted',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WrongRetrySetScalarFieldEnum = (typeof WrongRetrySetScalarFieldEnum)[keyof typeof WrongRetrySetScalarFieldEnum]
+
+
+export const WrongQuestionItemScalarFieldEnum = {
+  id: 'id',
+  wrongRetrySetId: 'wrongRetrySetId',
+  questionId: 'questionId',
+  retryCount: 'retryCount',
+  isResolved: 'isResolved',
+  lastTriedAt: 'lastTriedAt'
+} as const
+
+export type WrongQuestionItemScalarFieldEnum = (typeof WrongQuestionItemScalarFieldEnum)[keyof typeof WrongQuestionItemScalarFieldEnum]
 
 
 export const WeaknessProfileScalarFieldEnum = {
@@ -158,28 +250,27 @@ export const WeaknessProfileScalarFieldEnum = {
   attemptsCount: 'attemptsCount',
   correctCount: 'correctCount',
   accuracy: 'accuracy',
-  weaknessLevel: 'weaknessLevel'
+  weaknessLevel: 'weaknessLevel',
+  updatedAt: 'updatedAt'
 } as const
 
 export type WeaknessProfileScalarFieldEnum = (typeof WeaknessProfileScalarFieldEnum)[keyof typeof WeaknessProfileScalarFieldEnum]
 
 
-export const ClassRoomScalarFieldEnum = {
+export const GeneratorJobScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  teacherId: 'teacherId'
+  userId: 'userId',
+  sourceType: 'sourceType',
+  prompt: 'prompt',
+  fileUrl: 'fileUrl',
+  status: 'status',
+  outputJson: 'outputJson',
+  error: 'error',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
-export type ClassRoomScalarFieldEnum = (typeof ClassRoomScalarFieldEnum)[keyof typeof ClassRoomScalarFieldEnum]
-
-
-export const ClassMemberScalarFieldEnum = {
-  id: 'id',
-  classRoomId: 'classRoomId',
-  userId: 'userId'
-} as const
-
-export type ClassMemberScalarFieldEnum = (typeof ClassMemberScalarFieldEnum)[keyof typeof ClassMemberScalarFieldEnum]
+export type GeneratorJobScalarFieldEnum = (typeof GeneratorJobScalarFieldEnum)[keyof typeof GeneratorJobScalarFieldEnum]
 
 
 export const SortOrder = {

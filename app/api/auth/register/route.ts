@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/auth";
+import { createSession } from "@/lib/session";
+import { UserRole } from "@/generated/prisma/client";
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { name, email, password } = body;
+  const { name, email, password, role } = body;
 
   if (!name || !email || !password) {
     return NextResponse.json(
@@ -18,22 +20,21 @@ export async function POST(req: Request) {
   });
 
   if (existing) {
-    return NextResponse.json(
-      { error: "Email already exists" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Email already exists" }, { status: 400 });
   }
 
-  const hashedPassword = await hashPassword(password);
+  const safeRole = role === "teacher" ? UserRole.TEACHER : UserRole.STUDENT;
 
   const user = await prisma.user.create({
     data: {
       name,
       email,
-      password: hashedPassword,
-      role: "student",
+      password: await hashPassword(password),
+      role: safeRole,
     },
   });
+
+  await createSession(user.id);
 
   return NextResponse.json({
     id: user.id,

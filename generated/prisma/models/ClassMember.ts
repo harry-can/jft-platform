@@ -28,18 +28,21 @@ export type ClassMemberMinAggregateOutputType = {
   id: string | null
   classRoomId: string | null
   userId: string | null
+  joinedAt: Date | null
 }
 
 export type ClassMemberMaxAggregateOutputType = {
   id: string | null
   classRoomId: string | null
   userId: string | null
+  joinedAt: Date | null
 }
 
 export type ClassMemberCountAggregateOutputType = {
   id: number
   classRoomId: number
   userId: number
+  joinedAt: number
   _all: number
 }
 
@@ -48,18 +51,21 @@ export type ClassMemberMinAggregateInputType = {
   id?: true
   classRoomId?: true
   userId?: true
+  joinedAt?: true
 }
 
 export type ClassMemberMaxAggregateInputType = {
   id?: true
   classRoomId?: true
   userId?: true
+  joinedAt?: true
 }
 
 export type ClassMemberCountAggregateInputType = {
   id?: true
   classRoomId?: true
   userId?: true
+  joinedAt?: true
   _all?: true
 }
 
@@ -139,6 +145,7 @@ export type ClassMemberGroupByOutputType = {
   id: string
   classRoomId: string
   userId: string
+  joinedAt: Date
   _count: ClassMemberCountAggregateOutputType | null
   _min: ClassMemberMinAggregateOutputType | null
   _max: ClassMemberMaxAggregateOutputType | null
@@ -166,6 +173,7 @@ export type ClassMemberWhereInput = {
   id?: Prisma.StringFilter<"ClassMember"> | string
   classRoomId?: Prisma.StringFilter<"ClassMember"> | string
   userId?: Prisma.StringFilter<"ClassMember"> | string
+  joinedAt?: Prisma.DateTimeFilter<"ClassMember"> | Date | string
   classRoom?: Prisma.XOR<Prisma.ClassRoomScalarRelationFilter, Prisma.ClassRoomWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -174,6 +182,7 @@ export type ClassMemberOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   classRoomId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  joinedAt?: Prisma.SortOrder
   classRoom?: Prisma.ClassRoomOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -186,6 +195,7 @@ export type ClassMemberWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ClassMemberWhereInput | Prisma.ClassMemberWhereInput[]
   classRoomId?: Prisma.StringFilter<"ClassMember"> | string
   userId?: Prisma.StringFilter<"ClassMember"> | string
+  joinedAt?: Prisma.DateTimeFilter<"ClassMember"> | Date | string
   classRoom?: Prisma.XOR<Prisma.ClassRoomScalarRelationFilter, Prisma.ClassRoomWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "classRoomId_userId">
@@ -194,6 +204,7 @@ export type ClassMemberOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   classRoomId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  joinedAt?: Prisma.SortOrder
   _count?: Prisma.ClassMemberCountOrderByAggregateInput
   _max?: Prisma.ClassMemberMaxOrderByAggregateInput
   _min?: Prisma.ClassMemberMinOrderByAggregateInput
@@ -206,10 +217,12 @@ export type ClassMemberScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"ClassMember"> | string
   classRoomId?: Prisma.StringWithAggregatesFilter<"ClassMember"> | string
   userId?: Prisma.StringWithAggregatesFilter<"ClassMember"> | string
+  joinedAt?: Prisma.DateTimeWithAggregatesFilter<"ClassMember"> | Date | string
 }
 
 export type ClassMemberCreateInput = {
   id?: string
+  joinedAt?: Date | string
   classRoom: Prisma.ClassRoomCreateNestedOneWithoutMembersInput
   user: Prisma.UserCreateNestedOneWithoutMembershipsInput
 }
@@ -218,10 +231,12 @@ export type ClassMemberUncheckedCreateInput = {
   id?: string
   classRoomId: string
   userId: string
+  joinedAt?: Date | string
 }
 
 export type ClassMemberUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classRoom?: Prisma.ClassRoomUpdateOneRequiredWithoutMembersNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
 }
@@ -230,22 +245,26 @@ export type ClassMemberUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   classRoomId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ClassMemberCreateManyInput = {
   id?: string
   classRoomId: string
   userId: string
+  joinedAt?: Date | string
 }
 
 export type ClassMemberUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ClassMemberUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   classRoomId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ClassMemberListRelationFilter = {
@@ -267,18 +286,21 @@ export type ClassMemberCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   classRoomId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  joinedAt?: Prisma.SortOrder
 }
 
 export type ClassMemberMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   classRoomId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  joinedAt?: Prisma.SortOrder
 }
 
 export type ClassMemberMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   classRoomId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  joinedAt?: Prisma.SortOrder
 }
 
 export type ClassMemberCreateNestedManyWithoutUserInput = {
@@ -367,12 +389,14 @@ export type ClassMemberUncheckedUpdateManyWithoutClassRoomNestedInput = {
 
 export type ClassMemberCreateWithoutUserInput = {
   id?: string
+  joinedAt?: Date | string
   classRoom: Prisma.ClassRoomCreateNestedOneWithoutMembersInput
 }
 
 export type ClassMemberUncheckedCreateWithoutUserInput = {
   id?: string
   classRoomId: string
+  joinedAt?: Date | string
 }
 
 export type ClassMemberCreateOrConnectWithoutUserInput = {
@@ -408,16 +432,19 @@ export type ClassMemberScalarWhereInput = {
   id?: Prisma.StringFilter<"ClassMember"> | string
   classRoomId?: Prisma.StringFilter<"ClassMember"> | string
   userId?: Prisma.StringFilter<"ClassMember"> | string
+  joinedAt?: Prisma.DateTimeFilter<"ClassMember"> | Date | string
 }
 
 export type ClassMemberCreateWithoutClassRoomInput = {
   id?: string
+  joinedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutMembershipsInput
 }
 
 export type ClassMemberUncheckedCreateWithoutClassRoomInput = {
   id?: string
   userId: string
+  joinedAt?: Date | string
 }
 
 export type ClassMemberCreateOrConnectWithoutClassRoomInput = {
@@ -449,41 +476,49 @@ export type ClassMemberUpdateManyWithWhereWithoutClassRoomInput = {
 export type ClassMemberCreateManyUserInput = {
   id?: string
   classRoomId: string
+  joinedAt?: Date | string
 }
 
 export type ClassMemberUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classRoom?: Prisma.ClassRoomUpdateOneRequiredWithoutMembersNestedInput
 }
 
 export type ClassMemberUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   classRoomId?: Prisma.StringFieldUpdateOperationsInput | string
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ClassMemberUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   classRoomId?: Prisma.StringFieldUpdateOperationsInput | string
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ClassMemberCreateManyClassRoomInput = {
   id?: string
   userId: string
+  joinedAt?: Date | string
 }
 
 export type ClassMemberUpdateWithoutClassRoomInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutMembershipsNestedInput
 }
 
 export type ClassMemberUncheckedUpdateWithoutClassRoomInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ClassMemberUncheckedUpdateManyWithoutClassRoomInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  joinedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -492,6 +527,7 @@ export type ClassMemberSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   id?: boolean
   classRoomId?: boolean
   userId?: boolean
+  joinedAt?: boolean
   classRoom?: boolean | Prisma.ClassRoomDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["classMember"]>
@@ -500,6 +536,7 @@ export type ClassMemberSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   classRoomId?: boolean
   userId?: boolean
+  joinedAt?: boolean
   classRoom?: boolean | Prisma.ClassRoomDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["classMember"]>
@@ -508,6 +545,7 @@ export type ClassMemberSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   classRoomId?: boolean
   userId?: boolean
+  joinedAt?: boolean
   classRoom?: boolean | Prisma.ClassRoomDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["classMember"]>
@@ -516,9 +554,10 @@ export type ClassMemberSelectScalar = {
   id?: boolean
   classRoomId?: boolean
   userId?: boolean
+  joinedAt?: boolean
 }
 
-export type ClassMemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "classRoomId" | "userId", ExtArgs["result"]["classMember"]>
+export type ClassMemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "classRoomId" | "userId" | "joinedAt", ExtArgs["result"]["classMember"]>
 export type ClassMemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   classRoom?: boolean | Prisma.ClassRoomDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -542,6 +581,7 @@ export type $ClassMemberPayload<ExtArgs extends runtime.Types.Extensions.Interna
     id: string
     classRoomId: string
     userId: string
+    joinedAt: Date
   }, ExtArgs["result"]["classMember"]>
   composites: {}
 }
@@ -970,6 +1010,7 @@ export interface ClassMemberFieldRefs {
   readonly id: Prisma.FieldRef<"ClassMember", 'String'>
   readonly classRoomId: Prisma.FieldRef<"ClassMember", 'String'>
   readonly userId: Prisma.FieldRef<"ClassMember", 'String'>
+  readonly joinedAt: Prisma.FieldRef<"ClassMember", 'DateTime'>
 }
     
 
