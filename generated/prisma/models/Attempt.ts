@@ -308,6 +308,7 @@ export type AttemptWhereInput = {
   practiceSet?: Prisma.XOR<Prisma.PracticeSetScalarRelationFilter, Prisma.PracticeSetWhereInput>
   answers?: Prisma.AttemptAnswerListRelationFilter
   wrongRetrySet?: Prisma.XOR<Prisma.WrongRetrySetNullableScalarRelationFilter, Prisma.WrongRetrySetWhereInput> | null
+  certificates?: Prisma.CertificateListRelationFilter
 }
 
 export type AttemptOrderByWithRelationInput = {
@@ -329,6 +330,7 @@ export type AttemptOrderByWithRelationInput = {
   practiceSet?: Prisma.PracticeSetOrderByWithRelationInput
   answers?: Prisma.AttemptAnswerOrderByRelationAggregateInput
   wrongRetrySet?: Prisma.WrongRetrySetOrderByWithRelationInput
+  certificates?: Prisma.CertificateOrderByRelationAggregateInput
 }
 
 export type AttemptWhereUniqueInput = Prisma.AtLeast<{
@@ -353,6 +355,7 @@ export type AttemptWhereUniqueInput = Prisma.AtLeast<{
   practiceSet?: Prisma.XOR<Prisma.PracticeSetScalarRelationFilter, Prisma.PracticeSetWhereInput>
   answers?: Prisma.AttemptAnswerListRelationFilter
   wrongRetrySet?: Prisma.XOR<Prisma.WrongRetrySetNullableScalarRelationFilter, Prisma.WrongRetrySetWhereInput> | null
+  certificates?: Prisma.CertificateListRelationFilter
 }, "id">
 
 export type AttemptOrderByWithAggregationInput = {
@@ -414,6 +417,7 @@ export type AttemptCreateInput = {
   practiceSet: Prisma.PracticeSetCreateNestedOneWithoutAttemptsInput
   answers?: Prisma.AttemptAnswerCreateNestedManyWithoutAttemptInput
   wrongRetrySet?: Prisma.WrongRetrySetCreateNestedOneWithoutSourceAttemptInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutAttemptInput
 }
 
 export type AttemptUncheckedCreateInput = {
@@ -433,6 +437,7 @@ export type AttemptUncheckedCreateInput = {
   parentAttemptId?: string | null
   answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutAttemptInput
   wrongRetrySet?: Prisma.WrongRetrySetUncheckedCreateNestedOneWithoutSourceAttemptInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutAttemptInput
 }
 
 export type AttemptUpdateInput = {
@@ -452,6 +457,7 @@ export type AttemptUpdateInput = {
   practiceSet?: Prisma.PracticeSetUpdateOneRequiredWithoutAttemptsNestedInput
   answers?: Prisma.AttemptAnswerUpdateManyWithoutAttemptNestedInput
   wrongRetrySet?: Prisma.WrongRetrySetUpdateOneWithoutSourceAttemptNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutAttemptNestedInput
 }
 
 export type AttemptUncheckedUpdateInput = {
@@ -471,6 +477,7 @@ export type AttemptUncheckedUpdateInput = {
   parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutAttemptNestedInput
   wrongRetrySet?: Prisma.WrongRetrySetUncheckedUpdateOneWithoutSourceAttemptNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutAttemptNestedInput
 }
 
 export type AttemptCreateManyInput = {
@@ -604,6 +611,11 @@ export type AttemptScalarRelationFilter = {
   isNot?: Prisma.AttemptWhereInput
 }
 
+export type AttemptNullableScalarRelationFilter = {
+  is?: Prisma.AttemptWhereInput | null
+  isNot?: Prisma.AttemptWhereInput | null
+}
+
 export type AttemptCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.AttemptCreateWithoutUserInput, Prisma.AttemptUncheckedCreateWithoutUserInput> | Prisma.AttemptCreateWithoutUserInput[] | Prisma.AttemptUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.AttemptCreateOrConnectWithoutUserInput | Prisma.AttemptCreateOrConnectWithoutUserInput[]
@@ -732,6 +744,22 @@ export type AttemptUpdateOneRequiredWithoutWrongRetrySetNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AttemptUpdateToOneWithWhereWithoutWrongRetrySetInput, Prisma.AttemptUpdateWithoutWrongRetrySetInput>, Prisma.AttemptUncheckedUpdateWithoutWrongRetrySetInput>
 }
 
+export type AttemptCreateNestedOneWithoutCertificatesInput = {
+  create?: Prisma.XOR<Prisma.AttemptCreateWithoutCertificatesInput, Prisma.AttemptUncheckedCreateWithoutCertificatesInput>
+  connectOrCreate?: Prisma.AttemptCreateOrConnectWithoutCertificatesInput
+  connect?: Prisma.AttemptWhereUniqueInput
+}
+
+export type AttemptUpdateOneWithoutCertificatesNestedInput = {
+  create?: Prisma.XOR<Prisma.AttemptCreateWithoutCertificatesInput, Prisma.AttemptUncheckedCreateWithoutCertificatesInput>
+  connectOrCreate?: Prisma.AttemptCreateOrConnectWithoutCertificatesInput
+  upsert?: Prisma.AttemptUpsertWithoutCertificatesInput
+  disconnect?: Prisma.AttemptWhereInput | boolean
+  delete?: Prisma.AttemptWhereInput | boolean
+  connect?: Prisma.AttemptWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AttemptUpdateToOneWithWhereWithoutCertificatesInput, Prisma.AttemptUpdateWithoutCertificatesInput>, Prisma.AttemptUncheckedUpdateWithoutCertificatesInput>
+}
+
 export type AttemptCreateWithoutUserInput = {
   id?: string
   type?: $Enums.AttemptType
@@ -748,6 +776,7 @@ export type AttemptCreateWithoutUserInput = {
   practiceSet: Prisma.PracticeSetCreateNestedOneWithoutAttemptsInput
   answers?: Prisma.AttemptAnswerCreateNestedManyWithoutAttemptInput
   wrongRetrySet?: Prisma.WrongRetrySetCreateNestedOneWithoutSourceAttemptInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutAttemptInput
 }
 
 export type AttemptUncheckedCreateWithoutUserInput = {
@@ -766,6 +795,7 @@ export type AttemptUncheckedCreateWithoutUserInput = {
   parentAttemptId?: string | null
   answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutAttemptInput
   wrongRetrySet?: Prisma.WrongRetrySetUncheckedCreateNestedOneWithoutSourceAttemptInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutAttemptInput
 }
 
 export type AttemptCreateOrConnectWithoutUserInput = {
@@ -830,6 +860,7 @@ export type AttemptCreateWithoutPracticeSetInput = {
   user: Prisma.UserCreateNestedOneWithoutAttemptsInput
   answers?: Prisma.AttemptAnswerCreateNestedManyWithoutAttemptInput
   wrongRetrySet?: Prisma.WrongRetrySetCreateNestedOneWithoutSourceAttemptInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutAttemptInput
 }
 
 export type AttemptUncheckedCreateWithoutPracticeSetInput = {
@@ -848,6 +879,7 @@ export type AttemptUncheckedCreateWithoutPracticeSetInput = {
   parentAttemptId?: string | null
   answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutAttemptInput
   wrongRetrySet?: Prisma.WrongRetrySetUncheckedCreateNestedOneWithoutSourceAttemptInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutAttemptInput
 }
 
 export type AttemptCreateOrConnectWithoutPracticeSetInput = {
@@ -892,6 +924,7 @@ export type AttemptCreateWithoutAnswersInput = {
   user: Prisma.UserCreateNestedOneWithoutAttemptsInput
   practiceSet: Prisma.PracticeSetCreateNestedOneWithoutAttemptsInput
   wrongRetrySet?: Prisma.WrongRetrySetCreateNestedOneWithoutSourceAttemptInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutAttemptInput
 }
 
 export type AttemptUncheckedCreateWithoutAnswersInput = {
@@ -910,6 +943,7 @@ export type AttemptUncheckedCreateWithoutAnswersInput = {
   timeSpentSec?: number | null
   parentAttemptId?: string | null
   wrongRetrySet?: Prisma.WrongRetrySetUncheckedCreateNestedOneWithoutSourceAttemptInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutAttemptInput
 }
 
 export type AttemptCreateOrConnectWithoutAnswersInput = {
@@ -944,6 +978,7 @@ export type AttemptUpdateWithoutAnswersInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutAttemptsNestedInput
   practiceSet?: Prisma.PracticeSetUpdateOneRequiredWithoutAttemptsNestedInput
   wrongRetrySet?: Prisma.WrongRetrySetUpdateOneWithoutSourceAttemptNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutAttemptNestedInput
 }
 
 export type AttemptUncheckedUpdateWithoutAnswersInput = {
@@ -962,6 +997,7 @@ export type AttemptUncheckedUpdateWithoutAnswersInput = {
   timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wrongRetrySet?: Prisma.WrongRetrySetUncheckedUpdateOneWithoutSourceAttemptNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutAttemptNestedInput
 }
 
 export type AttemptCreateWithoutWrongRetrySetInput = {
@@ -980,6 +1016,7 @@ export type AttemptCreateWithoutWrongRetrySetInput = {
   user: Prisma.UserCreateNestedOneWithoutAttemptsInput
   practiceSet: Prisma.PracticeSetCreateNestedOneWithoutAttemptsInput
   answers?: Prisma.AttemptAnswerCreateNestedManyWithoutAttemptInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutAttemptInput
 }
 
 export type AttemptUncheckedCreateWithoutWrongRetrySetInput = {
@@ -998,6 +1035,7 @@ export type AttemptUncheckedCreateWithoutWrongRetrySetInput = {
   timeSpentSec?: number | null
   parentAttemptId?: string | null
   answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutAttemptInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutAttemptInput
 }
 
 export type AttemptCreateOrConnectWithoutWrongRetrySetInput = {
@@ -1032,6 +1070,7 @@ export type AttemptUpdateWithoutWrongRetrySetInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutAttemptsNestedInput
   practiceSet?: Prisma.PracticeSetUpdateOneRequiredWithoutAttemptsNestedInput
   answers?: Prisma.AttemptAnswerUpdateManyWithoutAttemptNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutAttemptNestedInput
 }
 
 export type AttemptUncheckedUpdateWithoutWrongRetrySetInput = {
@@ -1050,6 +1089,99 @@ export type AttemptUncheckedUpdateWithoutWrongRetrySetInput = {
   timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutAttemptNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutAttemptNestedInput
+}
+
+export type AttemptCreateWithoutCertificatesInput = {
+  id?: string
+  type?: $Enums.AttemptType
+  status?: $Enums.AttemptStatus
+  startedAt?: Date | string
+  submittedAt?: Date | string | null
+  totalScore?: number | null
+  totalQuestions?: number | null
+  correctCount?: number | null
+  accuracy?: number | null
+  resultLabel?: string | null
+  timeSpentSec?: number | null
+  parentAttemptId?: string | null
+  user: Prisma.UserCreateNestedOneWithoutAttemptsInput
+  practiceSet: Prisma.PracticeSetCreateNestedOneWithoutAttemptsInput
+  answers?: Prisma.AttemptAnswerCreateNestedManyWithoutAttemptInput
+  wrongRetrySet?: Prisma.WrongRetrySetCreateNestedOneWithoutSourceAttemptInput
+}
+
+export type AttemptUncheckedCreateWithoutCertificatesInput = {
+  id?: string
+  userId: string
+  practiceSetId: string
+  type?: $Enums.AttemptType
+  status?: $Enums.AttemptStatus
+  startedAt?: Date | string
+  submittedAt?: Date | string | null
+  totalScore?: number | null
+  totalQuestions?: number | null
+  correctCount?: number | null
+  accuracy?: number | null
+  resultLabel?: string | null
+  timeSpentSec?: number | null
+  parentAttemptId?: string | null
+  answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutAttemptInput
+  wrongRetrySet?: Prisma.WrongRetrySetUncheckedCreateNestedOneWithoutSourceAttemptInput
+}
+
+export type AttemptCreateOrConnectWithoutCertificatesInput = {
+  where: Prisma.AttemptWhereUniqueInput
+  create: Prisma.XOR<Prisma.AttemptCreateWithoutCertificatesInput, Prisma.AttemptUncheckedCreateWithoutCertificatesInput>
+}
+
+export type AttemptUpsertWithoutCertificatesInput = {
+  update: Prisma.XOR<Prisma.AttemptUpdateWithoutCertificatesInput, Prisma.AttemptUncheckedUpdateWithoutCertificatesInput>
+  create: Prisma.XOR<Prisma.AttemptCreateWithoutCertificatesInput, Prisma.AttemptUncheckedCreateWithoutCertificatesInput>
+  where?: Prisma.AttemptWhereInput
+}
+
+export type AttemptUpdateToOneWithWhereWithoutCertificatesInput = {
+  where?: Prisma.AttemptWhereInput
+  data: Prisma.XOR<Prisma.AttemptUpdateWithoutCertificatesInput, Prisma.AttemptUncheckedUpdateWithoutCertificatesInput>
+}
+
+export type AttemptUpdateWithoutCertificatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAttemptTypeFieldUpdateOperationsInput | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalQuestions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  correctCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accuracy?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  resultLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user?: Prisma.UserUpdateOneRequiredWithoutAttemptsNestedInput
+  practiceSet?: Prisma.PracticeSetUpdateOneRequiredWithoutAttemptsNestedInput
+  answers?: Prisma.AttemptAnswerUpdateManyWithoutAttemptNestedInput
+  wrongRetrySet?: Prisma.WrongRetrySetUpdateOneWithoutSourceAttemptNestedInput
+}
+
+export type AttemptUncheckedUpdateWithoutCertificatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  practiceSetId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumAttemptTypeFieldUpdateOperationsInput | $Enums.AttemptType
+  status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  submittedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  totalScore?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  totalQuestions?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  correctCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accuracy?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  resultLabel?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timeSpentSec?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutAttemptNestedInput
+  wrongRetrySet?: Prisma.WrongRetrySetUncheckedUpdateOneWithoutSourceAttemptNestedInput
 }
 
 export type AttemptCreateManyUserInput = {
@@ -1084,6 +1216,7 @@ export type AttemptUpdateWithoutUserInput = {
   practiceSet?: Prisma.PracticeSetUpdateOneRequiredWithoutAttemptsNestedInput
   answers?: Prisma.AttemptAnswerUpdateManyWithoutAttemptNestedInput
   wrongRetrySet?: Prisma.WrongRetrySetUpdateOneWithoutSourceAttemptNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutAttemptNestedInput
 }
 
 export type AttemptUncheckedUpdateWithoutUserInput = {
@@ -1102,6 +1235,7 @@ export type AttemptUncheckedUpdateWithoutUserInput = {
   parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutAttemptNestedInput
   wrongRetrySet?: Prisma.WrongRetrySetUncheckedUpdateOneWithoutSourceAttemptNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutAttemptNestedInput
 }
 
 export type AttemptUncheckedUpdateManyWithoutUserInput = {
@@ -1152,6 +1286,7 @@ export type AttemptUpdateWithoutPracticeSetInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutAttemptsNestedInput
   answers?: Prisma.AttemptAnswerUpdateManyWithoutAttemptNestedInput
   wrongRetrySet?: Prisma.WrongRetrySetUpdateOneWithoutSourceAttemptNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutAttemptNestedInput
 }
 
 export type AttemptUncheckedUpdateWithoutPracticeSetInput = {
@@ -1170,6 +1305,7 @@ export type AttemptUncheckedUpdateWithoutPracticeSetInput = {
   parentAttemptId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutAttemptNestedInput
   wrongRetrySet?: Prisma.WrongRetrySetUncheckedUpdateOneWithoutSourceAttemptNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutAttemptNestedInput
 }
 
 export type AttemptUncheckedUpdateManyWithoutPracticeSetInput = {
@@ -1195,10 +1331,12 @@ export type AttemptUncheckedUpdateManyWithoutPracticeSetInput = {
 
 export type AttemptCountOutputType = {
   answers: number
+  certificates: number
 }
 
 export type AttemptCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   answers?: boolean | AttemptCountOutputTypeCountAnswersArgs
+  certificates?: boolean | AttemptCountOutputTypeCountCertificatesArgs
 }
 
 /**
@@ -1216,6 +1354,13 @@ export type AttemptCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
  */
 export type AttemptCountOutputTypeCountAnswersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AttemptAnswerWhereInput
+}
+
+/**
+ * AttemptCountOutputType without action
+ */
+export type AttemptCountOutputTypeCountCertificatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CertificateWhereInput
 }
 
 
@@ -1238,6 +1383,7 @@ export type AttemptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   practiceSet?: boolean | Prisma.PracticeSetDefaultArgs<ExtArgs>
   answers?: boolean | Prisma.Attempt$answersArgs<ExtArgs>
   wrongRetrySet?: boolean | Prisma.Attempt$wrongRetrySetArgs<ExtArgs>
+  certificates?: boolean | Prisma.Attempt$certificatesArgs<ExtArgs>
   _count?: boolean | Prisma.AttemptCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attempt"]>
 
@@ -1302,6 +1448,7 @@ export type AttemptInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   practiceSet?: boolean | Prisma.PracticeSetDefaultArgs<ExtArgs>
   answers?: boolean | Prisma.Attempt$answersArgs<ExtArgs>
   wrongRetrySet?: boolean | Prisma.Attempt$wrongRetrySetArgs<ExtArgs>
+  certificates?: boolean | Prisma.Attempt$certificatesArgs<ExtArgs>
   _count?: boolean | Prisma.AttemptCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AttemptIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1320,6 +1467,7 @@ export type $AttemptPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     practiceSet: Prisma.$PracticeSetPayload<ExtArgs>
     answers: Prisma.$AttemptAnswerPayload<ExtArgs>[]
     wrongRetrySet: Prisma.$WrongRetrySetPayload<ExtArgs> | null
+    certificates: Prisma.$CertificatePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1734,6 +1882,7 @@ export interface Prisma__AttemptClient<T, Null = never, ExtArgs extends runtime.
   practiceSet<T extends Prisma.PracticeSetDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PracticeSetDefaultArgs<ExtArgs>>): Prisma.Prisma__PracticeSetClient<runtime.Types.Result.GetResult<Prisma.$PracticeSetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   answers<T extends Prisma.Attempt$answersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Attempt$answersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttemptAnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   wrongRetrySet<T extends Prisma.Attempt$wrongRetrySetArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Attempt$wrongRetrySetArgs<ExtArgs>>): Prisma.Prisma__WrongRetrySetClient<runtime.Types.Result.GetResult<Prisma.$WrongRetrySetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  certificates<T extends Prisma.Attempt$certificatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Attempt$certificatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2218,6 +2367,30 @@ export type Attempt$wrongRetrySetArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   include?: Prisma.WrongRetrySetInclude<ExtArgs> | null
   where?: Prisma.WrongRetrySetWhereInput
+}
+
+/**
+ * Attempt.certificates
+ */
+export type Attempt$certificatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Certificate
+   */
+  select?: Prisma.CertificateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Certificate
+   */
+  omit?: Prisma.CertificateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CertificateInclude<ExtArgs> | null
+  where?: Prisma.CertificateWhereInput
+  orderBy?: Prisma.CertificateOrderByWithRelationInput | Prisma.CertificateOrderByWithRelationInput[]
+  cursor?: Prisma.CertificateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CertificateScalarFieldEnum | Prisma.CertificateScalarFieldEnum[]
 }
 
 /**

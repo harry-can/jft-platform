@@ -6,32 +6,35 @@ type Question = {
   id: string;
   text: string;
   category: string;
+  difficulty?: string;
   type: string;
   options: any;
   answer: string | null;
   imageUrl?: string | null;
   audioUrl?: string | null;
   explanation?: string | null;
-  exam: {
+  practiceSet?: {
     id: string;
     title: string;
   };
 };
 
-type Exam = {
+type PracticeSet = {
   id: string;
   title: string;
 };
 
 export default function AdminQuestionsPage() {
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [exams, setExams] = useState<Exam[]>([]);
+  const [sets, setSets] = useState<PracticeSet[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const [form, setForm] = useState({
-    examId: "",
+    practiceSetId: "",
     text: "",
     category: "VOCAB",
+    difficulty: "MEDIUM",
     type: "mcq",
     optionA: "",
     optionB: "",
@@ -45,17 +48,34 @@ export default function AdminQuestionsPage() {
 
   async function loadData() {
     setLoading(true);
-    const [qRes, eRes] = await Promise.all([
-      fetch("/api/admin/questions"),
-      fetch("/api/exams"),
-    ]);
+    setError("");
 
-    const qData = await qRes.json();
-    const eData = await eRes.json();
+    try {
+      const [qRes, sRes] = await Promise.all([
+        fetch("/api/admin/questions"),
+        fetch("/api/admin/practice-sets"),
+      ]);
 
-    setQuestions(qData);
-    setExams(eData);
-    setLoading(false);
+      const qData = await qRes.json();
+      const sData = await sRes.json();
+
+      if (!qRes.ok) {
+        throw new Error(qData.error || "Failed to load questions");
+      }
+
+      if (!sRes.ok) {
+        throw new Error(sData.error || "Failed to load practice sets");
+      }
+
+      setQuestions(Array.isArray(qData) ? qData : []);
+      setSets(Array.isArray(sData) ? sData : []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+      setQuestions([]);
+      setSets([]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -65,10 +85,16 @@ export default function AdminQuestionsPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
+    if (!form.practiceSetId) {
+      alert("Please select a practice/exam set");
+      return;
+    }
+
     const payload = {
-      examId: form.examId,
+      practiceSetId: form.practiceSetId,
       text: form.text,
       category: form.category,
+      difficulty: form.difficulty,
       type: form.type,
       options: {
         A: form.optionA,
@@ -80,6 +106,8 @@ export default function AdminQuestionsPage() {
       imageUrl: form.imageUrl,
       audioUrl: form.audioUrl,
       explanation: form.explanation,
+      tags: [],
+      points: 1,
     };
 
     const res = await fetch("/api/admin/questions", {
@@ -90,16 +118,18 @@ export default function AdminQuestionsPage() {
       body: JSON.stringify(payload),
     });
 
+    const data = await res.json();
+
     if (!res.ok) {
-      const err = await res.json();
-      alert(err.error || "Failed to create question");
+      alert(data.error || "Failed to create question");
       return;
     }
 
     setForm({
-      examId: "",
+      practiceSetId: "",
       text: "",
       category: "VOCAB",
+      difficulty: "MEDIUM",
       type: "mcq",
       optionA: "",
       optionB: "",
@@ -114,12 +144,48 @@ export default function AdminQuestionsPage() {
     await loadData();
   }
 
+  if (loading) {
+    return <div className="p-6">Loading admin questions...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-zinc-100 p-6">
+        <div className="mx-auto max-w-4xl rounded-3xl bg-white p-6 shadow">
+          <h1 className="text-2xl font-bold text-red-600">Admin Access Error</h1>
+          <p className="mt-3">{error}</p>
+
+          <a
+            href="/login"
+            className="mt-5 inline-block rounded-xl bg-black px-4 py-2 text-white"
+          >
+            Login as Admin
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-zinc-100">
       <div className="mx-auto max-w-7xl px-6 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Admin Question Manager</h1>
-          <p className="mt-2 text-zinc-600">Create text, image, and audio questions.</p>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Admin Question Manager</h1>
+            <p className="mt-2 text-zinc-600">
+              Create text, image, and audio questions.
+            </p>
+          </div>
+
+          <button
+            onClick={async () => {
+              await fetch("/api/auth/logout", { method: "POST" });
+              window.location.href = "/login";
+            }}
+            className="rounded-xl border bg-white px-4 py-2"
+          >
+            Logout
+          </button>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-3">
@@ -129,13 +195,15 @@ export default function AdminQuestionsPage() {
             <form onSubmit={handleSubmit} className="mt-4 space-y-4">
               <select
                 className="w-full rounded-2xl border p-3"
-                value={form.examId}
-                onChange={(e) => setForm({ ...form, examId: e.target.value })}
+                value={form.practiceSetId}
+                onChange={(e) =>
+                  setForm({ ...form, practiceSetId: e.target.value })
+                }
               >
-                <option value="">Select Exam</option>
-                {exams.map((exam) => (
-                  <option key={exam.id} value={exam.id}>
-                    {exam.title}
+                <option value="">Select Practice/Exam Set</option>
+                {sets.map((set) => (
+                  <option key={set.id} value={set.id}>
+                    {set.title}
                   </option>
                 ))}
               </select>
@@ -156,9 +224,23 @@ export default function AdminQuestionsPage() {
                 <option value="GRAMMAR">GRAMMAR</option>
                 <option value="READING">READING</option>
                 <option value="LISTENING">LISTENING</option>
+                <option value="KANJI">KANJI</option>
                 <option value="INFO">INFO</option>
                 <option value="SPEAKING">SPEAKING</option>
                 <option value="OTHER">OTHER</option>
+              </select>
+
+              <select
+                className="w-full rounded-2xl border p-3"
+                value={form.difficulty}
+                onChange={(e) =>
+                  setForm({ ...form, difficulty: e.target.value })
+                }
+              >
+                <option value="EASY">EASY</option>
+                <option value="MEDIUM">MEDIUM</option>
+                <option value="HARD">HARD</option>
+                <option value="OFFICIAL">OFFICIAL</option>
               </select>
 
               <input
@@ -167,18 +249,21 @@ export default function AdminQuestionsPage() {
                 value={form.optionA}
                 onChange={(e) => setForm({ ...form, optionA: e.target.value })}
               />
+
               <input
                 className="w-full rounded-2xl border p-3"
                 placeholder="Option B"
                 value={form.optionB}
                 onChange={(e) => setForm({ ...form, optionB: e.target.value })}
               />
+
               <input
                 className="w-full rounded-2xl border p-3"
                 placeholder="Option C"
                 value={form.optionC}
                 onChange={(e) => setForm({ ...form, optionC: e.target.value })}
               />
+
               <input
                 className="w-full rounded-2xl border p-3"
                 placeholder="Option D"
@@ -199,28 +284,30 @@ export default function AdminQuestionsPage() {
 
               <input
                 className="w-full rounded-2xl border p-3"
-                placeholder="Image URL (optional)"
+                placeholder="Image URL optional"
                 value={form.imageUrl}
                 onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
               />
 
               <input
                 className="w-full rounded-2xl border p-3"
-                placeholder="Audio URL (optional)"
+                placeholder="Audio URL optional"
                 value={form.audioUrl}
                 onChange={(e) => setForm({ ...form, audioUrl: e.target.value })}
               />
 
               <textarea
                 className="w-full rounded-2xl border p-3"
-                placeholder="Explanation (optional)"
+                placeholder="Explanation optional"
                 value={form.explanation}
-                onChange={(e) => setForm({ ...form, explanation: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, explanation: e.target.value })
+                }
               />
 
               <button
                 type="submit"
-                className="w-full rounded-2xl bg-black px-5 py-3 font-medium text-white transition hover:bg-zinc-800"
+                className="w-full rounded-2xl bg-black px-5 py-3 font-medium text-white"
               >
                 Create Question
               </button>
@@ -230,15 +317,17 @@ export default function AdminQuestionsPage() {
           <div className="rounded-3xl bg-white p-6 shadow lg:col-span-2">
             <h2 className="text-xl font-semibold">Question List</h2>
 
-            {loading ? (
-              <div className="mt-4">Loading questions...</div>
+            {questions.length === 0 ? (
+              <div className="mt-4 text-zinc-500">No questions found.</div>
             ) : (
               <div className="mt-4 space-y-4">
                 {questions.map((q) => (
                   <div key={q.id} className="rounded-2xl border p-5">
                     <div className="font-medium">{q.text}</div>
+
                     <div className="mt-1 text-sm text-zinc-500">
-                      Exam: {q.exam.title} | Category: {q.category} | Type: {q.type}
+                      Set: {q.practiceSet?.title || "-"} | Category:{" "}
+                      {q.category} | Type: {q.type}
                     </div>
 
                     {q.imageUrl && (
@@ -265,7 +354,9 @@ export default function AdminQuestionsPage() {
                       </div>
                     )}
 
-                    <div className="mt-3 font-semibold">Correct Answer: {q.answer}</div>
+                    <div className="mt-3 font-semibold">
+                      Correct Answer: {q.answer}
+                    </div>
                   </div>
                 ))}
               </div>

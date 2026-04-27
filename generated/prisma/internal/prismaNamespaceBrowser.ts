@@ -56,6 +56,7 @@ export const ModelName = {
   ClassRoom: 'ClassRoom',
   ClassMember: 'ClassMember',
   PracticeSet: 'PracticeSet',
+  ReadingPassage: 'ReadingPassage',
   Question: 'Question',
   Assignment: 'Assignment',
   Attempt: 'Attempt',
@@ -63,7 +64,15 @@ export const ModelName = {
   WrongRetrySet: 'WrongRetrySet',
   WrongQuestionItem: 'WrongQuestionItem',
   WeaknessProfile: 'WeaknessProfile',
-  GeneratorJob: 'GeneratorJob'
+  GeneratorJob: 'GeneratorJob',
+  Lesson: 'Lesson',
+  LessonProgress: 'LessonProgress',
+  StudyPlan: 'StudyPlan',
+  StudyPlanItem: 'StudyPlanItem',
+  Notification: 'Notification',
+  UserBadge: 'UserBadge',
+  Certificate: 'Certificate',
+  AuditLog: 'AuditLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -92,6 +101,10 @@ export const UserScalarFieldEnum = {
   address: 'address',
   avatarUrl: 'avatarUrl',
   isActive: 'isActive',
+  subscriptionPlan: 'subscriptionPlan',
+  xp: 'xp',
+  streakDays: 'streakDays',
+  lastStudyDate: 'lastStudyDate',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -143,12 +156,29 @@ export const PracticeSetScalarFieldEnum = {
   isPublished: 'isPublished',
   timeLimitMin: 'timeLimitMin',
   audioReplayLimit: 'audioReplayLimit',
+  accessLevel: 'accessLevel',
+  releaseAt: 'releaseAt',
+  sectionConfig: 'sectionConfig',
   createdById: 'createdById',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type PracticeSetScalarFieldEnum = (typeof PracticeSetScalarFieldEnum)[keyof typeof PracticeSetScalarFieldEnum]
+
+
+export const ReadingPassageScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  body: 'body',
+  imageUrl: 'imageUrl',
+  level: 'level',
+  source: 'source',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReadingPassageScalarFieldEnum = (typeof ReadingPassageScalarFieldEnum)[keyof typeof ReadingPassageScalarFieldEnum]
 
 
 export const QuestionScalarFieldEnum = {
@@ -162,11 +192,17 @@ export const QuestionScalarFieldEnum = {
   answer: 'answer',
   imageUrl: 'imageUrl',
   audioUrl: 'audioUrl',
+  transcript: 'transcript',
+  replayLimit: 'replayLimit',
   explanation: 'explanation',
   tags: 'tags',
   points: 'points',
   orderIndex: 'orderIndex',
   isPublished: 'isPublished',
+  passageId: 'passageId',
+  grammarPoint: 'grammarPoint',
+  kanjiTarget: 'kanjiTarget',
+  accessLevel: 'accessLevel',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -271,6 +307,121 @@ export const GeneratorJobScalarFieldEnum = {
 } as const
 
 export type GeneratorJobScalarFieldEnum = (typeof GeneratorJobScalarFieldEnum)[keyof typeof GeneratorJobScalarFieldEnum]
+
+
+export const LessonScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  slug: 'slug',
+  type: 'type',
+  category: 'category',
+  content: 'content',
+  examples: 'examples',
+  orderIndex: 'orderIndex',
+  accessLevel: 'accessLevel',
+  isPublished: 'isPublished',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LessonScalarFieldEnum = (typeof LessonScalarFieldEnum)[keyof typeof LessonScalarFieldEnum]
+
+
+export const LessonProgressScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  lessonId: 'lessonId',
+  completed: 'completed',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LessonProgressScalarFieldEnum = (typeof LessonProgressScalarFieldEnum)[keyof typeof LessonProgressScalarFieldEnum]
+
+
+export const StudyPlanScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  status: 'status',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudyPlanScalarFieldEnum = (typeof StudyPlanScalarFieldEnum)[keyof typeof StudyPlanScalarFieldEnum]
+
+
+export const StudyPlanItemScalarFieldEnum = {
+  id: 'id',
+  studyPlanId: 'studyPlanId',
+  dayNumber: 'dayNumber',
+  title: 'title',
+  description: 'description',
+  targetUrl: 'targetUrl',
+  completed: 'completed',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudyPlanItemScalarFieldEnum = (typeof StudyPlanItemScalarFieldEnum)[keyof typeof StudyPlanItemScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  message: 'message',
+  href: 'href',
+  isRead: 'isRead',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const UserBadgeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  message: 'message',
+  createdAt: 'createdAt'
+} as const
+
+export type UserBadgeScalarFieldEnum = (typeof UserBadgeScalarFieldEnum)[keyof typeof UserBadgeScalarFieldEnum]
+
+
+export const CertificateScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  attemptId: 'attemptId',
+  type: 'type',
+  title: 'title',
+  score: 'score',
+  verificationCode: 'verificationCode',
+  issuedAt: 'issuedAt'
+} as const
+
+export type CertificateScalarFieldEnum = (typeof CertificateScalarFieldEnum)[keyof typeof CertificateScalarFieldEnum]
+
+
+export const AuditLogScalarFieldEnum = {
+  id: 'id',
+  actorId: 'actorId',
+  action: 'action',
+  entityType: 'entityType',
+  entityId: 'entityId',
+  message: 'message',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -6,114 +7,185 @@ import Link from "next/link";
 type ClassRoom = {
   id: string;
   name: string;
-  teacherId: string;
+  description: string | null;
+  joinCode: string;
+  members: { id: string; user: { id: string; name: string | null; email: string } }[];
+  assignments: { id: string; practiceSet: { id: string; title: string; type: string } }[];
 };
 
 export default function TeacherClassesPage() {
   const [classes, setClasses] = useState<ClassRoom[]>([]);
   const [loading, setLoading] = useState(true);
-  const [name, setName] = useState("");
-  const [teacherId, setTeacherId] = useState("teacher-demo-id");
+  const [saving, setSaving] = useState(false);
+
+  const [form, setForm] = useState({
+    name: "",
+    description: "",
+    joinCode: "",
+  });
 
   async function loadClasses() {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/teacher/classes");
-      const data = await res.json();
-      setClasses(data);
-    } catch (err) {
-      console.error("Failed to load classes:", err);
-    } finally {
-      setLoading(false);
+    const res = await fetch("/api/teacher/classes");
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || "Failed to load classes");
+      return;
     }
+
+    setClasses(data);
+    setLoading(false);
   }
 
   useEffect(() => {
     loadClasses();
   }, []);
 
-  async function handleCreate(e: React.FormEvent) {
+  async function createClass(e: React.FormEvent) {
     e.preventDefault();
+    setSaving(true);
 
-    const res = await fetch("/api/teacher/classes/create", {
+    const res = await fetch("/api/teacher/classes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, teacherId }),
+      body: JSON.stringify(form),
     });
 
+    const data = await res.json();
+
     if (!res.ok) {
-      const err = await res.json();
-      alert(err.error || "Failed to create class");
-      return;
+      alert(data.error || "Failed to create class");
+    } else {
+      setForm({
+        name: "",
+        description: "",
+        joinCode: "",
+      });
+      await loadClasses();
     }
 
-    setName("");
-    await loadClasses();
+    setSaving(false);
   }
 
+  if (loading) return <div className="p-6">Loading classes...</div>;
+
   return (
-    <div className="min-h-screen bg-zinc-100">
-      <div className="mx-auto max-w-6xl px-6 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Teacher Dashboard</h1>
-          <p className="mt-2 text-zinc-600">
-            Create classes and monitor student progress.
+    <main className="min-h-screen bg-slate-100">
+      <div className="mx-auto max-w-7xl px-6 py-10">
+        <section className="rounded-[2rem] bg-white p-8 shadow">
+          <p className="font-bold text-blue-700">Teacher / Admin</p>
+          <h1 className="mt-2 text-4xl font-black">Class Assignment Builder</h1>
+          <p className="mt-3 max-w-3xl text-slate-600">
+            Create classes, add students, assign practice sets, and track class performance.
           </p>
-        </div>
 
-        <div className="grid gap-8 lg:grid-cols-3">
-          <div className="rounded-3xl bg-white p-6 shadow lg:col-span-1">
-            <h2 className="text-xl font-semibold">Create New Class</h2>
-            <form onSubmit={handleCreate} className="mt-4 space-y-4">
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link
+              href="/admin/practice-sets"
+              className="rounded-2xl bg-black px-5 py-3 font-bold text-white"
+            >
+              Practice Set Builder
+            </Link>
+            <Link
+                href="/teacher/calendar"
+                className="rounded-2xl border bg-white px-5 py-3 font-bold"
+>
+                    Assignment Calendar
+            </Link>
+            <Link
+              href="/admin"
+              className="rounded-2xl border bg-white px-5 py-3 font-bold"
+            >
+              Admin Dashboard
+            </Link>
+          </div>
+        </section>
+
+        <form onSubmit={createClass} className="mt-8 rounded-[2rem] bg-white p-6 shadow">
+          <h2 className="text-2xl font-black">Create Class</h2>
+
+          <div className="mt-5 grid gap-5 md:grid-cols-3">
+            <label className="block">
+              <span className="font-bold">Class Name</span>
               <input
-                className="w-full rounded-2xl border p-3"
-                placeholder="Class name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                className="mt-2 w-full rounded-2xl border p-3"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                placeholder="JFT N4 Morning Batch"
+                required
               />
+            </label>
 
+            <label className="block">
+              <span className="font-bold">Join Code</span>
               <input
-                className="w-full rounded-2xl border p-3"
-                placeholder="Teacher ID"
-                value={teacherId}
-                onChange={(e) => setTeacherId(e.target.value)}
+                className="mt-2 w-full rounded-2xl border p-3 uppercase"
+                value={form.joinCode}
+                onChange={(e) =>
+                  setForm({ ...form, joinCode: e.target.value.toUpperCase() })
+                }
+                placeholder="Optional, e.g. JFTMORNING"
               />
+            </label>
 
-              <button
-                type="submit"
-                className="w-full rounded-2xl bg-black px-5 py-3 font-medium text-white transition hover:bg-zinc-800"
-              >
-                Create Class
-              </button>
-            </form>
+            <label className="block">
+              <span className="font-bold">Description</span>
+              <input
+                className="mt-2 w-full rounded-2xl border p-3"
+                value={form.description}
+                onChange={(e) =>
+                  setForm({ ...form, description: e.target.value })
+                }
+                placeholder="Demo class"
+              />
+            </label>
           </div>
 
-          <div className="rounded-3xl bg-white p-6 shadow lg:col-span-2">
-            <h2 className="text-xl font-semibold">Classes</h2>
+          <button
+            disabled={saving}
+            className="mt-6 rounded-2xl bg-black px-6 py-3 font-bold text-white disabled:opacity-50"
+          >
+            {saving ? "Creating..." : "Create Class"}
+          </button>
+        </form>
 
-            {loading ? (
-              <div className="mt-4">Loading classes...</div>
-            ) : classes.length === 0 ? (
-              <div className="mt-4 rounded-2xl border p-4 text-zinc-500">No classes found.</div>
-            ) : (
-              <div className="mt-4 grid gap-4">
-                {classes.map((cls) => (
-                  <Link
-                    key={cls.id}
-                    href={`/teacher/classes/${cls.id}`}
-                    className="rounded-2xl border p-5 transition hover:bg-zinc-50"
-                  >
-                    <div className="text-lg font-semibold">{cls.name}</div>
-                    <div className="mt-1 text-sm text-zinc-500">Class ID: {cls.id}</div>
-                  </Link>
-                ))}
+        <section className="mt-8 grid gap-6 md:grid-cols-2">
+          {classes.map((classRoom) => (
+            <Link
+              key={classRoom.id}
+              href={`/teacher/classes/${classRoom.id}`}
+              className="rounded-[2rem] bg-white p-6 shadow transition hover:-translate-y-1 hover:shadow-xl"
+            >
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <h2 className="text-2xl font-black">{classRoom.name}</h2>
+                <span className="rounded-full bg-blue-50 px-3 py-1 text-sm font-bold text-blue-700">
+                  {classRoom.joinCode}
+                </span>
               </div>
-            )}
-          </div>
-        </div>
+
+              <p className="mt-3 text-slate-600">{classRoom.description}</p>
+
+              <div className="mt-5 flex flex-wrap gap-2 text-sm">
+                <span className="rounded-xl bg-slate-100 px-3 py-2">
+                  {classRoom.members.length} students
+                </span>
+                <span className="rounded-xl bg-slate-100 px-3 py-2">
+                  {classRoom.assignments.length} assignments
+                </span>
+              </div>
+            </Link>
+          ))}
+
+          {classes.length === 0 && (
+            <div className="rounded-[2rem] bg-white p-8 text-center shadow md:col-span-2">
+              <h2 className="text-2xl font-black">No classes yet</h2>
+              <p className="mt-2 text-slate-500">Create your first class above.</p>
+            </div>
+          )}
+        </section>
       </div>
-    </div>
+    </main>
   );
 }

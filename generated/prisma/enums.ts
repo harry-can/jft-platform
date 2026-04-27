@@ -68,3 +68,81 @@ export const AttemptStatus = {
 } as const
 
 export type AttemptStatus = (typeof AttemptStatus)[keyof typeof AttemptStatus]
+
+
+export const AccessLevel = {
+  FREE: 'FREE',
+  PREMIUM: 'PREMIUM',
+  CLASS_ONLY: 'CLASS_ONLY'
+} as const
+
+export type AccessLevel = (typeof AccessLevel)[keyof typeof AccessLevel]
+
+
+export const LessonType = {
+  VOCAB: 'VOCAB',
+  GRAMMAR: 'GRAMMAR',
+  KANJI: 'KANJI',
+  READING: 'READING',
+  LISTENING: 'LISTENING',
+  INFO: 'INFO'
+} as const
+
+export type LessonType = (typeof LessonType)[keyof typeof LessonType]
+
+
+export const NotificationType = {
+  INFO: 'INFO',
+  ASSIGNMENT: 'ASSIGNMENT',
+  WEAKNESS: 'WEAKNESS',
+  RESULT: 'RESULT',
+  STREAK: 'STREAK',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+
+export const StudyPlanStatus = {
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type StudyPlanStatus = (typeof StudyPlanStatus)[keyof typeof StudyPlanStatus]
+
+
+export const BadgeType = {
+  FIRST_TEST: 'FIRST_TEST',
+  SEVEN_DAY_STREAK: 'SEVEN_DAY_STREAK',
+  WRONG_RETRY_100: 'WRONG_RETRY_100',
+  GRAMMAR_MASTER: 'GRAMMAR_MASTER',
+  KANJI_MASTER: 'KANJI_MASTER',
+  LISTENING_MASTER: 'LISTENING_MASTER',
+  EXAM_READY: 'EXAM_READY'
+} as const
+
+export type BadgeType = (typeof BadgeType)[keyof typeof BadgeType]
+
+
+export const CertificateType = {
+  MOCK_PASS: 'MOCK_PASS',
+  COURSE_COMPLETE: 'COURSE_COMPLETE'
+} as const
+
+export type CertificateType = (typeof CertificateType)[keyof typeof CertificateType]
+
+
+export const AuditAction = {
+  CREATE: 'CREATE',
+  UPDATE: 'UPDATE',
+  DELETE: 'DELETE',
+  PUBLISH: 'PUBLISH',
+  UNPUBLISH: 'UNPUBLISH',
+  IMPORT: 'IMPORT',
+  ROLE_CHANGE: 'ROLE_CHANGE',
+  LOGIN: 'LOGIN',
+  EXPORT: 'EXPORT'
+} as const
+
+export type AuditAction = (typeof AuditAction)[keyof typeof AuditAction]

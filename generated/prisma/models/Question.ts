@@ -27,11 +27,13 @@ export type AggregateQuestion = {
 }
 
 export type QuestionAvgAggregateOutputType = {
+  replayLimit: number | null
   points: number | null
   orderIndex: number | null
 }
 
 export type QuestionSumAggregateOutputType = {
+  replayLimit: number | null
   points: number | null
   orderIndex: number | null
 }
@@ -46,10 +48,16 @@ export type QuestionMinAggregateOutputType = {
   answer: string | null
   imageUrl: string | null
   audioUrl: string | null
+  transcript: string | null
+  replayLimit: number | null
   explanation: string | null
   points: number | null
   orderIndex: number | null
   isPublished: boolean | null
+  passageId: string | null
+  grammarPoint: string | null
+  kanjiTarget: string | null
+  accessLevel: $Enums.AccessLevel | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -64,10 +72,16 @@ export type QuestionMaxAggregateOutputType = {
   answer: string | null
   imageUrl: string | null
   audioUrl: string | null
+  transcript: string | null
+  replayLimit: number | null
   explanation: string | null
   points: number | null
   orderIndex: number | null
   isPublished: boolean | null
+  passageId: string | null
+  grammarPoint: string | null
+  kanjiTarget: string | null
+  accessLevel: $Enums.AccessLevel | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -83,11 +97,17 @@ export type QuestionCountAggregateOutputType = {
   answer: number
   imageUrl: number
   audioUrl: number
+  transcript: number
+  replayLimit: number
   explanation: number
   tags: number
   points: number
   orderIndex: number
   isPublished: number
+  passageId: number
+  grammarPoint: number
+  kanjiTarget: number
+  accessLevel: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -95,11 +115,13 @@ export type QuestionCountAggregateOutputType = {
 
 
 export type QuestionAvgAggregateInputType = {
+  replayLimit?: true
   points?: true
   orderIndex?: true
 }
 
 export type QuestionSumAggregateInputType = {
+  replayLimit?: true
   points?: true
   orderIndex?: true
 }
@@ -114,10 +136,16 @@ export type QuestionMinAggregateInputType = {
   answer?: true
   imageUrl?: true
   audioUrl?: true
+  transcript?: true
+  replayLimit?: true
   explanation?: true
   points?: true
   orderIndex?: true
   isPublished?: true
+  passageId?: true
+  grammarPoint?: true
+  kanjiTarget?: true
+  accessLevel?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -132,10 +160,16 @@ export type QuestionMaxAggregateInputType = {
   answer?: true
   imageUrl?: true
   audioUrl?: true
+  transcript?: true
+  replayLimit?: true
   explanation?: true
   points?: true
   orderIndex?: true
   isPublished?: true
+  passageId?: true
+  grammarPoint?: true
+  kanjiTarget?: true
+  accessLevel?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -151,11 +185,17 @@ export type QuestionCountAggregateInputType = {
   answer?: true
   imageUrl?: true
   audioUrl?: true
+  transcript?: true
+  replayLimit?: true
   explanation?: true
   tags?: true
   points?: true
   orderIndex?: true
   isPublished?: true
+  passageId?: true
+  grammarPoint?: true
+  kanjiTarget?: true
+  accessLevel?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -258,11 +298,17 @@ export type QuestionGroupByOutputType = {
   answer: string | null
   imageUrl: string | null
   audioUrl: string | null
+  transcript: string | null
+  replayLimit: number | null
   explanation: string | null
   tags: string[]
   points: number
   orderIndex: number
   isPublished: boolean
+  passageId: string | null
+  grammarPoint: string | null
+  kanjiTarget: string | null
+  accessLevel: $Enums.AccessLevel
   createdAt: Date
   updatedAt: Date
   _count: QuestionCountAggregateOutputType | null
@@ -301,14 +347,21 @@ export type QuestionWhereInput = {
   answer?: Prisma.StringNullableFilter<"Question"> | string | null
   imageUrl?: Prisma.StringNullableFilter<"Question"> | string | null
   audioUrl?: Prisma.StringNullableFilter<"Question"> | string | null
+  transcript?: Prisma.StringNullableFilter<"Question"> | string | null
+  replayLimit?: Prisma.IntNullableFilter<"Question"> | number | null
   explanation?: Prisma.StringNullableFilter<"Question"> | string | null
   tags?: Prisma.StringNullableListFilter<"Question">
   points?: Prisma.IntFilter<"Question"> | number
   orderIndex?: Prisma.IntFilter<"Question"> | number
   isPublished?: Prisma.BoolFilter<"Question"> | boolean
+  passageId?: Prisma.StringNullableFilter<"Question"> | string | null
+  grammarPoint?: Prisma.StringNullableFilter<"Question"> | string | null
+  kanjiTarget?: Prisma.StringNullableFilter<"Question"> | string | null
+  accessLevel?: Prisma.EnumAccessLevelFilter<"Question"> | $Enums.AccessLevel
   createdAt?: Prisma.DateTimeFilter<"Question"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Question"> | Date | string
   practiceSet?: Prisma.XOR<Prisma.PracticeSetScalarRelationFilter, Prisma.PracticeSetWhereInput>
+  passage?: Prisma.XOR<Prisma.ReadingPassageNullableScalarRelationFilter, Prisma.ReadingPassageWhereInput> | null
   answers?: Prisma.AttemptAnswerListRelationFilter
   wrongItems?: Prisma.WrongQuestionItemListRelationFilter
 }
@@ -324,14 +377,21 @@ export type QuestionOrderByWithRelationInput = {
   answer?: Prisma.SortOrderInput | Prisma.SortOrder
   imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   audioUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  transcript?: Prisma.SortOrderInput | Prisma.SortOrder
+  replayLimit?: Prisma.SortOrderInput | Prisma.SortOrder
   explanation?: Prisma.SortOrderInput | Prisma.SortOrder
   tags?: Prisma.SortOrder
   points?: Prisma.SortOrder
   orderIndex?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
+  passageId?: Prisma.SortOrderInput | Prisma.SortOrder
+  grammarPoint?: Prisma.SortOrderInput | Prisma.SortOrder
+  kanjiTarget?: Prisma.SortOrderInput | Prisma.SortOrder
+  accessLevel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   practiceSet?: Prisma.PracticeSetOrderByWithRelationInput
+  passage?: Prisma.ReadingPassageOrderByWithRelationInput
   answers?: Prisma.AttemptAnswerOrderByRelationAggregateInput
   wrongItems?: Prisma.WrongQuestionItemOrderByRelationAggregateInput
 }
@@ -350,14 +410,21 @@ export type QuestionWhereUniqueInput = Prisma.AtLeast<{
   answer?: Prisma.StringNullableFilter<"Question"> | string | null
   imageUrl?: Prisma.StringNullableFilter<"Question"> | string | null
   audioUrl?: Prisma.StringNullableFilter<"Question"> | string | null
+  transcript?: Prisma.StringNullableFilter<"Question"> | string | null
+  replayLimit?: Prisma.IntNullableFilter<"Question"> | number | null
   explanation?: Prisma.StringNullableFilter<"Question"> | string | null
   tags?: Prisma.StringNullableListFilter<"Question">
   points?: Prisma.IntFilter<"Question"> | number
   orderIndex?: Prisma.IntFilter<"Question"> | number
   isPublished?: Prisma.BoolFilter<"Question"> | boolean
+  passageId?: Prisma.StringNullableFilter<"Question"> | string | null
+  grammarPoint?: Prisma.StringNullableFilter<"Question"> | string | null
+  kanjiTarget?: Prisma.StringNullableFilter<"Question"> | string | null
+  accessLevel?: Prisma.EnumAccessLevelFilter<"Question"> | $Enums.AccessLevel
   createdAt?: Prisma.DateTimeFilter<"Question"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Question"> | Date | string
   practiceSet?: Prisma.XOR<Prisma.PracticeSetScalarRelationFilter, Prisma.PracticeSetWhereInput>
+  passage?: Prisma.XOR<Prisma.ReadingPassageNullableScalarRelationFilter, Prisma.ReadingPassageWhereInput> | null
   answers?: Prisma.AttemptAnswerListRelationFilter
   wrongItems?: Prisma.WrongQuestionItemListRelationFilter
 }, "id">
@@ -373,11 +440,17 @@ export type QuestionOrderByWithAggregationInput = {
   answer?: Prisma.SortOrderInput | Prisma.SortOrder
   imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   audioUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  transcript?: Prisma.SortOrderInput | Prisma.SortOrder
+  replayLimit?: Prisma.SortOrderInput | Prisma.SortOrder
   explanation?: Prisma.SortOrderInput | Prisma.SortOrder
   tags?: Prisma.SortOrder
   points?: Prisma.SortOrder
   orderIndex?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
+  passageId?: Prisma.SortOrderInput | Prisma.SortOrder
+  grammarPoint?: Prisma.SortOrderInput | Prisma.SortOrder
+  kanjiTarget?: Prisma.SortOrderInput | Prisma.SortOrder
+  accessLevel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.QuestionCountOrderByAggregateInput
@@ -401,11 +474,17 @@ export type QuestionScalarWhereWithAggregatesInput = {
   answer?: Prisma.StringNullableWithAggregatesFilter<"Question"> | string | null
   imageUrl?: Prisma.StringNullableWithAggregatesFilter<"Question"> | string | null
   audioUrl?: Prisma.StringNullableWithAggregatesFilter<"Question"> | string | null
+  transcript?: Prisma.StringNullableWithAggregatesFilter<"Question"> | string | null
+  replayLimit?: Prisma.IntNullableWithAggregatesFilter<"Question"> | number | null
   explanation?: Prisma.StringNullableWithAggregatesFilter<"Question"> | string | null
   tags?: Prisma.StringNullableListFilter<"Question">
   points?: Prisma.IntWithAggregatesFilter<"Question"> | number
   orderIndex?: Prisma.IntWithAggregatesFilter<"Question"> | number
   isPublished?: Prisma.BoolWithAggregatesFilter<"Question"> | boolean
+  passageId?: Prisma.StringNullableWithAggregatesFilter<"Question"> | string | null
+  grammarPoint?: Prisma.StringNullableWithAggregatesFilter<"Question"> | string | null
+  kanjiTarget?: Prisma.StringNullableWithAggregatesFilter<"Question"> | string | null
+  accessLevel?: Prisma.EnumAccessLevelWithAggregatesFilter<"Question"> | $Enums.AccessLevel
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Question"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Question"> | Date | string
 }
@@ -420,14 +499,20 @@ export type QuestionCreateInput = {
   answer?: string | null
   imageUrl?: string | null
   audioUrl?: string | null
+  transcript?: string | null
+  replayLimit?: number | null
   explanation?: string | null
   tags?: Prisma.QuestionCreatetagsInput | string[]
   points?: number
   orderIndex?: number
   isPublished?: boolean
+  grammarPoint?: string | null
+  kanjiTarget?: string | null
+  accessLevel?: $Enums.AccessLevel
   createdAt?: Date | string
   updatedAt?: Date | string
   practiceSet: Prisma.PracticeSetCreateNestedOneWithoutQuestionsInput
+  passage?: Prisma.ReadingPassageCreateNestedOneWithoutQuestionsInput
   answers?: Prisma.AttemptAnswerCreateNestedManyWithoutQuestionInput
   wrongItems?: Prisma.WrongQuestionItemCreateNestedManyWithoutQuestionInput
 }
@@ -443,11 +528,17 @@ export type QuestionUncheckedCreateInput = {
   answer?: string | null
   imageUrl?: string | null
   audioUrl?: string | null
+  transcript?: string | null
+  replayLimit?: number | null
   explanation?: string | null
   tags?: Prisma.QuestionCreatetagsInput | string[]
   points?: number
   orderIndex?: number
   isPublished?: boolean
+  passageId?: string | null
+  grammarPoint?: string | null
+  kanjiTarget?: string | null
+  accessLevel?: $Enums.AccessLevel
   createdAt?: Date | string
   updatedAt?: Date | string
   answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutQuestionInput
@@ -464,14 +555,20 @@ export type QuestionUpdateInput = {
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.QuestionUpdatetagsInput | string[]
   points?: Prisma.IntFieldUpdateOperationsInput | number
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  grammarPoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kanjiTarget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   practiceSet?: Prisma.PracticeSetUpdateOneRequiredWithoutQuestionsNestedInput
+  passage?: Prisma.ReadingPassageUpdateOneWithoutQuestionsNestedInput
   answers?: Prisma.AttemptAnswerUpdateManyWithoutQuestionNestedInput
   wrongItems?: Prisma.WrongQuestionItemUpdateManyWithoutQuestionNestedInput
 }
@@ -487,11 +584,17 @@ export type QuestionUncheckedUpdateInput = {
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.QuestionUpdatetagsInput | string[]
   points?: Prisma.IntFieldUpdateOperationsInput | number
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  grammarPoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kanjiTarget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutQuestionNestedInput
@@ -509,11 +612,17 @@ export type QuestionCreateManyInput = {
   answer?: string | null
   imageUrl?: string | null
   audioUrl?: string | null
+  transcript?: string | null
+  replayLimit?: number | null
   explanation?: string | null
   tags?: Prisma.QuestionCreatetagsInput | string[]
   points?: number
   orderIndex?: number
   isPublished?: boolean
+  passageId?: string | null
+  grammarPoint?: string | null
+  kanjiTarget?: string | null
+  accessLevel?: $Enums.AccessLevel
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -528,11 +637,16 @@ export type QuestionUpdateManyMutationInput = {
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.QuestionUpdatetagsInput | string[]
   points?: Prisma.IntFieldUpdateOperationsInput | number
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  grammarPoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kanjiTarget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -548,11 +662,17 @@ export type QuestionUncheckedUpdateManyInput = {
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.QuestionUpdatetagsInput | string[]
   points?: Prisma.IntFieldUpdateOperationsInput | number
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  grammarPoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kanjiTarget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -586,16 +706,23 @@ export type QuestionCountOrderByAggregateInput = {
   answer?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   audioUrl?: Prisma.SortOrder
+  transcript?: Prisma.SortOrder
+  replayLimit?: Prisma.SortOrder
   explanation?: Prisma.SortOrder
   tags?: Prisma.SortOrder
   points?: Prisma.SortOrder
   orderIndex?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
+  passageId?: Prisma.SortOrder
+  grammarPoint?: Prisma.SortOrder
+  kanjiTarget?: Prisma.SortOrder
+  accessLevel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type QuestionAvgOrderByAggregateInput = {
+  replayLimit?: Prisma.SortOrder
   points?: Prisma.SortOrder
   orderIndex?: Prisma.SortOrder
 }
@@ -610,10 +737,16 @@ export type QuestionMaxOrderByAggregateInput = {
   answer?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   audioUrl?: Prisma.SortOrder
+  transcript?: Prisma.SortOrder
+  replayLimit?: Prisma.SortOrder
   explanation?: Prisma.SortOrder
   points?: Prisma.SortOrder
   orderIndex?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
+  passageId?: Prisma.SortOrder
+  grammarPoint?: Prisma.SortOrder
+  kanjiTarget?: Prisma.SortOrder
+  accessLevel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -628,15 +761,22 @@ export type QuestionMinOrderByAggregateInput = {
   answer?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   audioUrl?: Prisma.SortOrder
+  transcript?: Prisma.SortOrder
+  replayLimit?: Prisma.SortOrder
   explanation?: Prisma.SortOrder
   points?: Prisma.SortOrder
   orderIndex?: Prisma.SortOrder
   isPublished?: Prisma.SortOrder
+  passageId?: Prisma.SortOrder
+  grammarPoint?: Prisma.SortOrder
+  kanjiTarget?: Prisma.SortOrder
+  accessLevel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type QuestionSumOrderByAggregateInput = {
+  replayLimit?: Prisma.SortOrder
   points?: Prisma.SortOrder
   orderIndex?: Prisma.SortOrder
 }
@@ -688,6 +828,48 @@ export type QuestionUncheckedUpdateManyWithoutPracticeSetNestedInput = {
   deleteMany?: Prisma.QuestionScalarWhereInput | Prisma.QuestionScalarWhereInput[]
 }
 
+export type QuestionCreateNestedManyWithoutPassageInput = {
+  create?: Prisma.XOR<Prisma.QuestionCreateWithoutPassageInput, Prisma.QuestionUncheckedCreateWithoutPassageInput> | Prisma.QuestionCreateWithoutPassageInput[] | Prisma.QuestionUncheckedCreateWithoutPassageInput[]
+  connectOrCreate?: Prisma.QuestionCreateOrConnectWithoutPassageInput | Prisma.QuestionCreateOrConnectWithoutPassageInput[]
+  createMany?: Prisma.QuestionCreateManyPassageInputEnvelope
+  connect?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+}
+
+export type QuestionUncheckedCreateNestedManyWithoutPassageInput = {
+  create?: Prisma.XOR<Prisma.QuestionCreateWithoutPassageInput, Prisma.QuestionUncheckedCreateWithoutPassageInput> | Prisma.QuestionCreateWithoutPassageInput[] | Prisma.QuestionUncheckedCreateWithoutPassageInput[]
+  connectOrCreate?: Prisma.QuestionCreateOrConnectWithoutPassageInput | Prisma.QuestionCreateOrConnectWithoutPassageInput[]
+  createMany?: Prisma.QuestionCreateManyPassageInputEnvelope
+  connect?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+}
+
+export type QuestionUpdateManyWithoutPassageNestedInput = {
+  create?: Prisma.XOR<Prisma.QuestionCreateWithoutPassageInput, Prisma.QuestionUncheckedCreateWithoutPassageInput> | Prisma.QuestionCreateWithoutPassageInput[] | Prisma.QuestionUncheckedCreateWithoutPassageInput[]
+  connectOrCreate?: Prisma.QuestionCreateOrConnectWithoutPassageInput | Prisma.QuestionCreateOrConnectWithoutPassageInput[]
+  upsert?: Prisma.QuestionUpsertWithWhereUniqueWithoutPassageInput | Prisma.QuestionUpsertWithWhereUniqueWithoutPassageInput[]
+  createMany?: Prisma.QuestionCreateManyPassageInputEnvelope
+  set?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+  disconnect?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+  delete?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+  connect?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+  update?: Prisma.QuestionUpdateWithWhereUniqueWithoutPassageInput | Prisma.QuestionUpdateWithWhereUniqueWithoutPassageInput[]
+  updateMany?: Prisma.QuestionUpdateManyWithWhereWithoutPassageInput | Prisma.QuestionUpdateManyWithWhereWithoutPassageInput[]
+  deleteMany?: Prisma.QuestionScalarWhereInput | Prisma.QuestionScalarWhereInput[]
+}
+
+export type QuestionUncheckedUpdateManyWithoutPassageNestedInput = {
+  create?: Prisma.XOR<Prisma.QuestionCreateWithoutPassageInput, Prisma.QuestionUncheckedCreateWithoutPassageInput> | Prisma.QuestionCreateWithoutPassageInput[] | Prisma.QuestionUncheckedCreateWithoutPassageInput[]
+  connectOrCreate?: Prisma.QuestionCreateOrConnectWithoutPassageInput | Prisma.QuestionCreateOrConnectWithoutPassageInput[]
+  upsert?: Prisma.QuestionUpsertWithWhereUniqueWithoutPassageInput | Prisma.QuestionUpsertWithWhereUniqueWithoutPassageInput[]
+  createMany?: Prisma.QuestionCreateManyPassageInputEnvelope
+  set?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+  disconnect?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+  delete?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+  connect?: Prisma.QuestionWhereUniqueInput | Prisma.QuestionWhereUniqueInput[]
+  update?: Prisma.QuestionUpdateWithWhereUniqueWithoutPassageInput | Prisma.QuestionUpdateWithWhereUniqueWithoutPassageInput[]
+  updateMany?: Prisma.QuestionUpdateManyWithWhereWithoutPassageInput | Prisma.QuestionUpdateManyWithWhereWithoutPassageInput[]
+  deleteMany?: Prisma.QuestionScalarWhereInput | Prisma.QuestionScalarWhereInput[]
+}
+
 export type QuestionCreatetagsInput = {
   set: string[]
 }
@@ -703,14 +885,6 @@ export type EnumQuestionDifficultyFieldUpdateOperationsInput = {
 export type QuestionUpdatetagsInput = {
   set?: string[]
   push?: string | string[]
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
 }
 
 export type QuestionCreateNestedOneWithoutAnswersInput = {
@@ -751,13 +925,19 @@ export type QuestionCreateWithoutPracticeSetInput = {
   answer?: string | null
   imageUrl?: string | null
   audioUrl?: string | null
+  transcript?: string | null
+  replayLimit?: number | null
   explanation?: string | null
   tags?: Prisma.QuestionCreatetagsInput | string[]
   points?: number
   orderIndex?: number
   isPublished?: boolean
+  grammarPoint?: string | null
+  kanjiTarget?: string | null
+  accessLevel?: $Enums.AccessLevel
   createdAt?: Date | string
   updatedAt?: Date | string
+  passage?: Prisma.ReadingPassageCreateNestedOneWithoutQuestionsInput
   answers?: Prisma.AttemptAnswerCreateNestedManyWithoutQuestionInput
   wrongItems?: Prisma.WrongQuestionItemCreateNestedManyWithoutQuestionInput
 }
@@ -772,11 +952,17 @@ export type QuestionUncheckedCreateWithoutPracticeSetInput = {
   answer?: string | null
   imageUrl?: string | null
   audioUrl?: string | null
+  transcript?: string | null
+  replayLimit?: number | null
   explanation?: string | null
   tags?: Prisma.QuestionCreatetagsInput | string[]
   points?: number
   orderIndex?: number
   isPublished?: boolean
+  passageId?: string | null
+  grammarPoint?: string | null
+  kanjiTarget?: string | null
+  accessLevel?: $Enums.AccessLevel
   createdAt?: Date | string
   updatedAt?: Date | string
   answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutQuestionInput
@@ -823,13 +1009,99 @@ export type QuestionScalarWhereInput = {
   answer?: Prisma.StringNullableFilter<"Question"> | string | null
   imageUrl?: Prisma.StringNullableFilter<"Question"> | string | null
   audioUrl?: Prisma.StringNullableFilter<"Question"> | string | null
+  transcript?: Prisma.StringNullableFilter<"Question"> | string | null
+  replayLimit?: Prisma.IntNullableFilter<"Question"> | number | null
   explanation?: Prisma.StringNullableFilter<"Question"> | string | null
   tags?: Prisma.StringNullableListFilter<"Question">
   points?: Prisma.IntFilter<"Question"> | number
   orderIndex?: Prisma.IntFilter<"Question"> | number
   isPublished?: Prisma.BoolFilter<"Question"> | boolean
+  passageId?: Prisma.StringNullableFilter<"Question"> | string | null
+  grammarPoint?: Prisma.StringNullableFilter<"Question"> | string | null
+  kanjiTarget?: Prisma.StringNullableFilter<"Question"> | string | null
+  accessLevel?: Prisma.EnumAccessLevelFilter<"Question"> | $Enums.AccessLevel
   createdAt?: Prisma.DateTimeFilter<"Question"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Question"> | Date | string
+}
+
+export type QuestionCreateWithoutPassageInput = {
+  id?: string
+  text: string
+  category?: $Enums.QuestionCategory
+  difficulty?: $Enums.QuestionDifficulty
+  type?: string
+  options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  answer?: string | null
+  imageUrl?: string | null
+  audioUrl?: string | null
+  transcript?: string | null
+  replayLimit?: number | null
+  explanation?: string | null
+  tags?: Prisma.QuestionCreatetagsInput | string[]
+  points?: number
+  orderIndex?: number
+  isPublished?: boolean
+  grammarPoint?: string | null
+  kanjiTarget?: string | null
+  accessLevel?: $Enums.AccessLevel
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  practiceSet: Prisma.PracticeSetCreateNestedOneWithoutQuestionsInput
+  answers?: Prisma.AttemptAnswerCreateNestedManyWithoutQuestionInput
+  wrongItems?: Prisma.WrongQuestionItemCreateNestedManyWithoutQuestionInput
+}
+
+export type QuestionUncheckedCreateWithoutPassageInput = {
+  id?: string
+  practiceSetId: string
+  text: string
+  category?: $Enums.QuestionCategory
+  difficulty?: $Enums.QuestionDifficulty
+  type?: string
+  options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  answer?: string | null
+  imageUrl?: string | null
+  audioUrl?: string | null
+  transcript?: string | null
+  replayLimit?: number | null
+  explanation?: string | null
+  tags?: Prisma.QuestionCreatetagsInput | string[]
+  points?: number
+  orderIndex?: number
+  isPublished?: boolean
+  grammarPoint?: string | null
+  kanjiTarget?: string | null
+  accessLevel?: $Enums.AccessLevel
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutQuestionInput
+  wrongItems?: Prisma.WrongQuestionItemUncheckedCreateNestedManyWithoutQuestionInput
+}
+
+export type QuestionCreateOrConnectWithoutPassageInput = {
+  where: Prisma.QuestionWhereUniqueInput
+  create: Prisma.XOR<Prisma.QuestionCreateWithoutPassageInput, Prisma.QuestionUncheckedCreateWithoutPassageInput>
+}
+
+export type QuestionCreateManyPassageInputEnvelope = {
+  data: Prisma.QuestionCreateManyPassageInput | Prisma.QuestionCreateManyPassageInput[]
+  skipDuplicates?: boolean
+}
+
+export type QuestionUpsertWithWhereUniqueWithoutPassageInput = {
+  where: Prisma.QuestionWhereUniqueInput
+  update: Prisma.XOR<Prisma.QuestionUpdateWithoutPassageInput, Prisma.QuestionUncheckedUpdateWithoutPassageInput>
+  create: Prisma.XOR<Prisma.QuestionCreateWithoutPassageInput, Prisma.QuestionUncheckedCreateWithoutPassageInput>
+}
+
+export type QuestionUpdateWithWhereUniqueWithoutPassageInput = {
+  where: Prisma.QuestionWhereUniqueInput
+  data: Prisma.XOR<Prisma.QuestionUpdateWithoutPassageInput, Prisma.QuestionUncheckedUpdateWithoutPassageInput>
+}
+
+export type QuestionUpdateManyWithWhereWithoutPassageInput = {
+  where: Prisma.QuestionScalarWhereInput
+  data: Prisma.XOR<Prisma.QuestionUpdateManyMutationInput, Prisma.QuestionUncheckedUpdateManyWithoutPassageInput>
 }
 
 export type QuestionCreateWithoutAnswersInput = {
@@ -842,14 +1114,20 @@ export type QuestionCreateWithoutAnswersInput = {
   answer?: string | null
   imageUrl?: string | null
   audioUrl?: string | null
+  transcript?: string | null
+  replayLimit?: number | null
   explanation?: string | null
   tags?: Prisma.QuestionCreatetagsInput | string[]
   points?: number
   orderIndex?: number
   isPublished?: boolean
+  grammarPoint?: string | null
+  kanjiTarget?: string | null
+  accessLevel?: $Enums.AccessLevel
   createdAt?: Date | string
   updatedAt?: Date | string
   practiceSet: Prisma.PracticeSetCreateNestedOneWithoutQuestionsInput
+  passage?: Prisma.ReadingPassageCreateNestedOneWithoutQuestionsInput
   wrongItems?: Prisma.WrongQuestionItemCreateNestedManyWithoutQuestionInput
 }
 
@@ -864,11 +1142,17 @@ export type QuestionUncheckedCreateWithoutAnswersInput = {
   answer?: string | null
   imageUrl?: string | null
   audioUrl?: string | null
+  transcript?: string | null
+  replayLimit?: number | null
   explanation?: string | null
   tags?: Prisma.QuestionCreatetagsInput | string[]
   points?: number
   orderIndex?: number
   isPublished?: boolean
+  passageId?: string | null
+  grammarPoint?: string | null
+  kanjiTarget?: string | null
+  accessLevel?: $Enums.AccessLevel
   createdAt?: Date | string
   updatedAt?: Date | string
   wrongItems?: Prisma.WrongQuestionItemUncheckedCreateNestedManyWithoutQuestionInput
@@ -900,14 +1184,20 @@ export type QuestionUpdateWithoutAnswersInput = {
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.QuestionUpdatetagsInput | string[]
   points?: Prisma.IntFieldUpdateOperationsInput | number
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  grammarPoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kanjiTarget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   practiceSet?: Prisma.PracticeSetUpdateOneRequiredWithoutQuestionsNestedInput
+  passage?: Prisma.ReadingPassageUpdateOneWithoutQuestionsNestedInput
   wrongItems?: Prisma.WrongQuestionItemUpdateManyWithoutQuestionNestedInput
 }
 
@@ -922,11 +1212,17 @@ export type QuestionUncheckedUpdateWithoutAnswersInput = {
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.QuestionUpdatetagsInput | string[]
   points?: Prisma.IntFieldUpdateOperationsInput | number
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  grammarPoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kanjiTarget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   wrongItems?: Prisma.WrongQuestionItemUncheckedUpdateManyWithoutQuestionNestedInput
@@ -942,14 +1238,20 @@ export type QuestionCreateWithoutWrongItemsInput = {
   answer?: string | null
   imageUrl?: string | null
   audioUrl?: string | null
+  transcript?: string | null
+  replayLimit?: number | null
   explanation?: string | null
   tags?: Prisma.QuestionCreatetagsInput | string[]
   points?: number
   orderIndex?: number
   isPublished?: boolean
+  grammarPoint?: string | null
+  kanjiTarget?: string | null
+  accessLevel?: $Enums.AccessLevel
   createdAt?: Date | string
   updatedAt?: Date | string
   practiceSet: Prisma.PracticeSetCreateNestedOneWithoutQuestionsInput
+  passage?: Prisma.ReadingPassageCreateNestedOneWithoutQuestionsInput
   answers?: Prisma.AttemptAnswerCreateNestedManyWithoutQuestionInput
 }
 
@@ -964,11 +1266,17 @@ export type QuestionUncheckedCreateWithoutWrongItemsInput = {
   answer?: string | null
   imageUrl?: string | null
   audioUrl?: string | null
+  transcript?: string | null
+  replayLimit?: number | null
   explanation?: string | null
   tags?: Prisma.QuestionCreatetagsInput | string[]
   points?: number
   orderIndex?: number
   isPublished?: boolean
+  passageId?: string | null
+  grammarPoint?: string | null
+  kanjiTarget?: string | null
+  accessLevel?: $Enums.AccessLevel
   createdAt?: Date | string
   updatedAt?: Date | string
   answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutQuestionInput
@@ -1000,14 +1308,20 @@ export type QuestionUpdateWithoutWrongItemsInput = {
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.QuestionUpdatetagsInput | string[]
   points?: Prisma.IntFieldUpdateOperationsInput | number
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  grammarPoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kanjiTarget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   practiceSet?: Prisma.PracticeSetUpdateOneRequiredWithoutQuestionsNestedInput
+  passage?: Prisma.ReadingPassageUpdateOneWithoutQuestionsNestedInput
   answers?: Prisma.AttemptAnswerUpdateManyWithoutQuestionNestedInput
 }
 
@@ -1022,11 +1336,17 @@ export type QuestionUncheckedUpdateWithoutWrongItemsInput = {
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.QuestionUpdatetagsInput | string[]
   points?: Prisma.IntFieldUpdateOperationsInput | number
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  grammarPoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kanjiTarget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutQuestionNestedInput
@@ -1042,11 +1362,17 @@ export type QuestionCreateManyPracticeSetInput = {
   answer?: string | null
   imageUrl?: string | null
   audioUrl?: string | null
+  transcript?: string | null
+  replayLimit?: number | null
   explanation?: string | null
   tags?: Prisma.QuestionCreatetagsInput | string[]
   points?: number
   orderIndex?: number
   isPublished?: boolean
+  passageId?: string | null
+  grammarPoint?: string | null
+  kanjiTarget?: string | null
+  accessLevel?: $Enums.AccessLevel
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1061,13 +1387,19 @@ export type QuestionUpdateWithoutPracticeSetInput = {
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.QuestionUpdatetagsInput | string[]
   points?: Prisma.IntFieldUpdateOperationsInput | number
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  grammarPoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kanjiTarget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passage?: Prisma.ReadingPassageUpdateOneWithoutQuestionsNestedInput
   answers?: Prisma.AttemptAnswerUpdateManyWithoutQuestionNestedInput
   wrongItems?: Prisma.WrongQuestionItemUpdateManyWithoutQuestionNestedInput
 }
@@ -1082,11 +1414,17 @@ export type QuestionUncheckedUpdateWithoutPracticeSetInput = {
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.QuestionUpdatetagsInput | string[]
   points?: Prisma.IntFieldUpdateOperationsInput | number
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  grammarPoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kanjiTarget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutQuestionNestedInput
@@ -1103,11 +1441,121 @@ export type QuestionUncheckedUpdateManyWithoutPracticeSetInput = {
   answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tags?: Prisma.QuestionUpdatetagsInput | string[]
   points?: Prisma.IntFieldUpdateOperationsInput | number
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  passageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  grammarPoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kanjiTarget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type QuestionCreateManyPassageInput = {
+  id?: string
+  practiceSetId: string
+  text: string
+  category?: $Enums.QuestionCategory
+  difficulty?: $Enums.QuestionDifficulty
+  type?: string
+  options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  answer?: string | null
+  imageUrl?: string | null
+  audioUrl?: string | null
+  transcript?: string | null
+  replayLimit?: number | null
+  explanation?: string | null
+  tags?: Prisma.QuestionCreatetagsInput | string[]
+  points?: number
+  orderIndex?: number
+  isPublished?: boolean
+  grammarPoint?: string | null
+  kanjiTarget?: string | null
+  accessLevel?: $Enums.AccessLevel
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type QuestionUpdateWithoutPassageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumQuestionCategoryFieldUpdateOperationsInput | $Enums.QuestionCategory
+  difficulty?: Prisma.EnumQuestionDifficultyFieldUpdateOperationsInput | $Enums.QuestionDifficulty
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.QuestionUpdatetagsInput | string[]
+  points?: Prisma.IntFieldUpdateOperationsInput | number
+  orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  grammarPoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kanjiTarget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  practiceSet?: Prisma.PracticeSetUpdateOneRequiredWithoutQuestionsNestedInput
+  answers?: Prisma.AttemptAnswerUpdateManyWithoutQuestionNestedInput
+  wrongItems?: Prisma.WrongQuestionItemUpdateManyWithoutQuestionNestedInput
+}
+
+export type QuestionUncheckedUpdateWithoutPassageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  practiceSetId?: Prisma.StringFieldUpdateOperationsInput | string
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumQuestionCategoryFieldUpdateOperationsInput | $Enums.QuestionCategory
+  difficulty?: Prisma.EnumQuestionDifficultyFieldUpdateOperationsInput | $Enums.QuestionDifficulty
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.QuestionUpdatetagsInput | string[]
+  points?: Prisma.IntFieldUpdateOperationsInput | number
+  orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  grammarPoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kanjiTarget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutQuestionNestedInput
+  wrongItems?: Prisma.WrongQuestionItemUncheckedUpdateManyWithoutQuestionNestedInput
+}
+
+export type QuestionUncheckedUpdateManyWithoutPassageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  practiceSetId?: Prisma.StringFieldUpdateOperationsInput | string
+  text?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumQuestionCategoryFieldUpdateOperationsInput | $Enums.QuestionCategory
+  difficulty?: Prisma.EnumQuestionDifficultyFieldUpdateOperationsInput | $Enums.QuestionDifficulty
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  options?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  answer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  audioUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transcript?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  replayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  explanation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.QuestionUpdatetagsInput | string[]
+  points?: Prisma.IntFieldUpdateOperationsInput | number
+  orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  grammarPoint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kanjiTarget?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1163,14 +1611,21 @@ export type QuestionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   answer?: boolean
   imageUrl?: boolean
   audioUrl?: boolean
+  transcript?: boolean
+  replayLimit?: boolean
   explanation?: boolean
   tags?: boolean
   points?: boolean
   orderIndex?: boolean
   isPublished?: boolean
+  passageId?: boolean
+  grammarPoint?: boolean
+  kanjiTarget?: boolean
+  accessLevel?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   practiceSet?: boolean | Prisma.PracticeSetDefaultArgs<ExtArgs>
+  passage?: boolean | Prisma.Question$passageArgs<ExtArgs>
   answers?: boolean | Prisma.Question$answersArgs<ExtArgs>
   wrongItems?: boolean | Prisma.Question$wrongItemsArgs<ExtArgs>
   _count?: boolean | Prisma.QuestionCountOutputTypeDefaultArgs<ExtArgs>
@@ -1187,14 +1642,21 @@ export type QuestionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   answer?: boolean
   imageUrl?: boolean
   audioUrl?: boolean
+  transcript?: boolean
+  replayLimit?: boolean
   explanation?: boolean
   tags?: boolean
   points?: boolean
   orderIndex?: boolean
   isPublished?: boolean
+  passageId?: boolean
+  grammarPoint?: boolean
+  kanjiTarget?: boolean
+  accessLevel?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   practiceSet?: boolean | Prisma.PracticeSetDefaultArgs<ExtArgs>
+  passage?: boolean | Prisma.Question$passageArgs<ExtArgs>
 }, ExtArgs["result"]["question"]>
 
 export type QuestionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1208,14 +1670,21 @@ export type QuestionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   answer?: boolean
   imageUrl?: boolean
   audioUrl?: boolean
+  transcript?: boolean
+  replayLimit?: boolean
   explanation?: boolean
   tags?: boolean
   points?: boolean
   orderIndex?: boolean
   isPublished?: boolean
+  passageId?: boolean
+  grammarPoint?: boolean
+  kanjiTarget?: boolean
+  accessLevel?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   practiceSet?: boolean | Prisma.PracticeSetDefaultArgs<ExtArgs>
+  passage?: boolean | Prisma.Question$passageArgs<ExtArgs>
 }, ExtArgs["result"]["question"]>
 
 export type QuestionSelectScalar = {
@@ -1229,33 +1698,43 @@ export type QuestionSelectScalar = {
   answer?: boolean
   imageUrl?: boolean
   audioUrl?: boolean
+  transcript?: boolean
+  replayLimit?: boolean
   explanation?: boolean
   tags?: boolean
   points?: boolean
   orderIndex?: boolean
   isPublished?: boolean
+  passageId?: boolean
+  grammarPoint?: boolean
+  kanjiTarget?: boolean
+  accessLevel?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type QuestionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "practiceSetId" | "text" | "category" | "difficulty" | "type" | "options" | "answer" | "imageUrl" | "audioUrl" | "explanation" | "tags" | "points" | "orderIndex" | "isPublished" | "createdAt" | "updatedAt", ExtArgs["result"]["question"]>
+export type QuestionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "practiceSetId" | "text" | "category" | "difficulty" | "type" | "options" | "answer" | "imageUrl" | "audioUrl" | "transcript" | "replayLimit" | "explanation" | "tags" | "points" | "orderIndex" | "isPublished" | "passageId" | "grammarPoint" | "kanjiTarget" | "accessLevel" | "createdAt" | "updatedAt", ExtArgs["result"]["question"]>
 export type QuestionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   practiceSet?: boolean | Prisma.PracticeSetDefaultArgs<ExtArgs>
+  passage?: boolean | Prisma.Question$passageArgs<ExtArgs>
   answers?: boolean | Prisma.Question$answersArgs<ExtArgs>
   wrongItems?: boolean | Prisma.Question$wrongItemsArgs<ExtArgs>
   _count?: boolean | Prisma.QuestionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type QuestionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   practiceSet?: boolean | Prisma.PracticeSetDefaultArgs<ExtArgs>
+  passage?: boolean | Prisma.Question$passageArgs<ExtArgs>
 }
 export type QuestionIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   practiceSet?: boolean | Prisma.PracticeSetDefaultArgs<ExtArgs>
+  passage?: boolean | Prisma.Question$passageArgs<ExtArgs>
 }
 
 export type $QuestionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Question"
   objects: {
     practiceSet: Prisma.$PracticeSetPayload<ExtArgs>
+    passage: Prisma.$ReadingPassagePayload<ExtArgs> | null
     answers: Prisma.$AttemptAnswerPayload<ExtArgs>[]
     wrongItems: Prisma.$WrongQuestionItemPayload<ExtArgs>[]
   }
@@ -1270,11 +1749,17 @@ export type $QuestionPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     answer: string | null
     imageUrl: string | null
     audioUrl: string | null
+    transcript: string | null
+    replayLimit: number | null
     explanation: string | null
     tags: string[]
     points: number
     orderIndex: number
     isPublished: boolean
+    passageId: string | null
+    grammarPoint: string | null
+    kanjiTarget: string | null
+    accessLevel: $Enums.AccessLevel
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["question"]>
@@ -1672,6 +2157,7 @@ readonly fields: QuestionFieldRefs;
 export interface Prisma__QuestionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   practiceSet<T extends Prisma.PracticeSetDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PracticeSetDefaultArgs<ExtArgs>>): Prisma.Prisma__PracticeSetClient<runtime.Types.Result.GetResult<Prisma.$PracticeSetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  passage<T extends Prisma.Question$passageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Question$passageArgs<ExtArgs>>): Prisma.Prisma__ReadingPassageClient<runtime.Types.Result.GetResult<Prisma.$ReadingPassagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   answers<T extends Prisma.Question$answersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Question$answersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttemptAnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   wrongItems<T extends Prisma.Question$wrongItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Question$wrongItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WrongQuestionItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1713,11 +2199,17 @@ export interface QuestionFieldRefs {
   readonly answer: Prisma.FieldRef<"Question", 'String'>
   readonly imageUrl: Prisma.FieldRef<"Question", 'String'>
   readonly audioUrl: Prisma.FieldRef<"Question", 'String'>
+  readonly transcript: Prisma.FieldRef<"Question", 'String'>
+  readonly replayLimit: Prisma.FieldRef<"Question", 'Int'>
   readonly explanation: Prisma.FieldRef<"Question", 'String'>
   readonly tags: Prisma.FieldRef<"Question", 'String[]'>
   readonly points: Prisma.FieldRef<"Question", 'Int'>
   readonly orderIndex: Prisma.FieldRef<"Question", 'Int'>
   readonly isPublished: Prisma.FieldRef<"Question", 'Boolean'>
+  readonly passageId: Prisma.FieldRef<"Question", 'String'>
+  readonly grammarPoint: Prisma.FieldRef<"Question", 'String'>
+  readonly kanjiTarget: Prisma.FieldRef<"Question", 'String'>
+  readonly accessLevel: Prisma.FieldRef<"Question", 'AccessLevel'>
   readonly createdAt: Prisma.FieldRef<"Question", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Question", 'DateTime'>
 }
@@ -2118,6 +2610,25 @@ export type QuestionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Questions to delete.
    */
   limit?: number
+}
+
+/**
+ * Question.passage
+ */
+export type Question$passageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ReadingPassage
+   */
+  select?: Prisma.ReadingPassageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ReadingPassage
+   */
+  omit?: Prisma.ReadingPassageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReadingPassageInclude<ExtArgs> | null
+  where?: Prisma.ReadingPassageWhereInput
 }
 
 /**

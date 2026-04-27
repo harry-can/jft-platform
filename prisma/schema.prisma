@@ -50,18 +50,81 @@ enum AttemptStatus {
   AUTO_SUBMITTED
 }
 
+enum AccessLevel {
+  FREE
+  PREMIUM
+  CLASS_ONLY
+}
+
+enum LessonType {
+  VOCAB
+  GRAMMAR
+  KANJI
+  READING
+  LISTENING
+  INFO
+}
+
+enum NotificationType {
+  INFO
+  ASSIGNMENT
+  WEAKNESS
+  RESULT
+  STREAK
+  SYSTEM
+}
+
+enum StudyPlanStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum BadgeType {
+  FIRST_TEST
+  SEVEN_DAY_STREAK
+  WRONG_RETRY_100
+  GRAMMAR_MASTER
+  KANJI_MASTER
+  LISTENING_MASTER
+  EXAM_READY
+}
+
+enum CertificateType {
+  MOCK_PASS
+  COURSE_COMPLETE
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  PUBLISH
+  UNPUBLISH
+  IMPORT
+  ROLE_CHANGE
+  LOGIN
+  EXPORT
+}
+
 model User {
-  id               String            @id @default(cuid())
-  name             String?
-  email            String            @unique
-  password         String?
-  role             UserRole          @default(STUDENT)
-  phone            String?
-  address          String?
-  avatarUrl        String?
-  isActive         Boolean           @default(true)
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  password  String?
+  role      UserRole @default(STUDENT)
+  phone     String?
+  address   String?
+  avatarUrl String?
+  isActive  Boolean  @default(true)
+
+  subscriptionPlan String    @default("FREE")
+  xp               Int       @default(0)
+  streakDays       Int       @default(0)
+  lastStudyDate    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   sessions         Session[]
   attempts         Attempt[]
@@ -69,6 +132,13 @@ model User {
   memberships      ClassMember[]
   createdSets      PracticeSet[]     @relation("SetCreator")
   generatedJobs    GeneratorJob[]
+
+  lessons       LessonProgress[]
+  notifications Notification[]
+  studyPlans    StudyPlan[]
+  badges        UserBadge[]
+  certificates  Certificate[]
+  auditLogs     AuditLog[]
 }
 
 model Session {
@@ -78,156 +148,187 @@ model Session {
   expiresAt DateTime
   createdAt DateTime @default(now())
 
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
 
 model ClassRoom {
-  id          String        @id @default(cuid())
+  id          String   @id @default(cuid())
   name        String
   description String?
   teacherId   String
-  joinCode    String        @unique
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  joinCode    String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   members     ClassMember[]
   assignments Assignment[]
 }
 
 model ClassMember {
-  id          String    @id @default(cuid())
+  id          String   @id @default(cuid())
   classRoomId String
   userId      String
-  joinedAt    DateTime  @default(now())
+  joinedAt    DateTime @default(now())
 
-  classRoom   ClassRoom @relation(fields: [classRoomId], references: [id], onDelete: Cascade)
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  classRoom ClassRoom @relation(fields: [classRoomId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([classRoomId, userId])
 }
 
 model PracticeSet {
-  id             String       @id @default(cuid())
-  title          String
-  description    String?
-  type           SetType      @default(CATEGORY_PRACTICE)
-  category       QuestionCategory?
-  difficulty     QuestionDifficulty?
-  isPublished    Boolean      @default(false)
-  timeLimitMin   Int?
+  id               String              @id @default(cuid())
+  title            String
+  description      String?
+  type             SetType             @default(CATEGORY_PRACTICE)
+  category         QuestionCategory?
+  difficulty       QuestionDifficulty?
+  isPublished      Boolean             @default(false)
+  timeLimitMin     Int?
   audioReplayLimit Int?
-  createdById    String?
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
 
-  createdBy      User?        @relation("SetCreator", fields: [createdById], references: [id], onDelete: SetNull)
-  questions      Question[]
-  attempts       Attempt[]
-  assignments    Assignment[]
+  accessLevel   AccessLevel @default(FREE)
+  releaseAt     DateTime?
+  sectionConfig Json?
+
+  createdById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  createdBy   User?        @relation("SetCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  questions   Question[]
+  attempts    Attempt[]
+  assignments Assignment[]
+}
+
+model ReadingPassage {
+  id       String  @id @default(cuid())
+  title    String
+  body     String  @db.Text
+  imageUrl String?
+  level    String  @default("N4")
+  source   String?
+
+  questions Question[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Question {
-  id             String              @id @default(cuid())
-  practiceSetId  String
-  text           String
-  category       QuestionCategory    @default(OTHER)
-  difficulty     QuestionDifficulty  @default(MEDIUM)
-  type           String              @default("mcq")
-  options        Json?
-  answer         String?
-  imageUrl       String?
-  audioUrl       String?
-  explanation    String?
-  tags           String[]
-  points         Int                 @default(1)
-  orderIndex     Int                 @default(0)
-  isPublished    Boolean             @default(true)
-  createdAt      DateTime            @default(now())
-  updatedAt      DateTime            @updatedAt
+  id            String             @id @default(cuid())
+  practiceSetId String
+  text          String
+  category      QuestionCategory   @default(OTHER)
+  difficulty    QuestionDifficulty @default(MEDIUM)
+  type          String             @default("mcq")
+  options       Json?
+  answer        String?
+  imageUrl      String?
+  audioUrl      String?
+  transcript    String?
+  replayLimit   Int?
+  explanation   String?
+  tags          String[]
+  points        Int                @default(1)
+  orderIndex    Int                @default(0)
+  isPublished   Boolean            @default(true)
 
-  practiceSet    PracticeSet         @relation(fields: [practiceSetId], references: [id], onDelete: Cascade)
-  answers        AttemptAnswer[]
-  wrongItems     WrongQuestionItem[]
+  passageId    String?
+  grammarPoint String?
+  kanjiTarget  String?
+  accessLevel  AccessLevel @default(FREE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  practiceSet PracticeSet         @relation(fields: [practiceSetId], references: [id], onDelete: Cascade)
+  passage     ReadingPassage?     @relation(fields: [passageId], references: [id])
+  answers     AttemptAnswer[]
+  wrongItems  WrongQuestionItem[]
 }
 
 model Assignment {
-  id           String      @id @default(cuid())
-  classRoomId  String
+  id            String    @id @default(cuid())
+  classRoomId   String
   practiceSetId String
-  dueDate      DateTime?
-  createdAt    DateTime    @default(now())
+  dueDate       DateTime?
+  createdAt     DateTime  @default(now())
 
-  classRoom    ClassRoom   @relation(fields: [classRoomId], references: [id], onDelete: Cascade)
-  practiceSet  PracticeSet @relation(fields: [practiceSetId], references: [id], onDelete: Cascade)
+  classRoom   ClassRoom   @relation(fields: [classRoomId], references: [id], onDelete: Cascade)
+  practiceSet PracticeSet @relation(fields: [practiceSetId], references: [id], onDelete: Cascade)
 
   @@unique([classRoomId, practiceSetId])
 }
 
 model Attempt {
-  id            String        @id @default(cuid())
-  userId        String
-  practiceSetId String
-  type          AttemptType   @default(PRACTICE)
-  status        AttemptStatus @default(STARTED)
-  startedAt     DateTime      @default(now())
-  submittedAt   DateTime?
-  totalScore    Int?
-  totalQuestions Int?
-  correctCount  Int?
-  accuracy      Float?
-  resultLabel   String?
-  timeSpentSec  Int?
+  id              String        @id @default(cuid())
+  userId          String
+  practiceSetId   String
+  type            AttemptType   @default(PRACTICE)
+  status          AttemptStatus @default(STARTED)
+  startedAt       DateTime      @default(now())
+  submittedAt     DateTime?
+  totalScore      Int?
+  totalQuestions  Int?
+  correctCount    Int?
+  accuracy        Float?
+  resultLabel     String?
+  timeSpentSec    Int?
   parentAttemptId String?
 
-  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  practiceSet   PracticeSet   @relation(fields: [practiceSetId], references: [id], onDelete: Cascade)
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  practiceSet   PracticeSet     @relation(fields: [practiceSetId], references: [id], onDelete: Cascade)
   answers       AttemptAnswer[]
   wrongRetrySet WrongRetrySet?
+  certificates  Certificate[]
 
   @@index([userId])
   @@index([practiceSetId])
 }
 
 model AttemptAnswer {
-  id               String    @id @default(cuid())
+  id               String   @id @default(cuid())
   attemptId        String
   questionId       String
   selectedChoiceId String?
   isCorrect        Boolean?
   timeSpentSec     Int?
-  flagged          Boolean   @default(false)
-  createdAt        DateTime  @default(now())
+  flagged          Boolean  @default(false)
+  createdAt        DateTime @default(now())
 
-  attempt          Attempt   @relation(fields: [attemptId], references: [id], onDelete: Cascade)
-  question         Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  attempt  Attempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@unique([attemptId, questionId])
 }
 
 model WrongRetrySet {
-  id              String              @id @default(cuid())
+  id              String   @id @default(cuid())
   userId          String
-  sourceAttemptId String              @unique
-  isCompleted     Boolean             @default(false)
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
+  sourceAttemptId String   @unique
+  isCompleted     Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  sourceAttempt    Attempt            @relation(fields: [sourceAttemptId], references: [id], onDelete: Cascade)
-  items            WrongQuestionItem[]
+  sourceAttempt Attempt             @relation(fields: [sourceAttemptId], references: [id], onDelete: Cascade)
+  items         WrongQuestionItem[]
+
+  @@index([userId])
 }
 
 model WrongQuestionItem {
-  id              String        @id @default(cuid())
+  id              String    @id @default(cuid())
   wrongRetrySetId String
   questionId      String
-  retryCount      Int           @default(0)
-  isResolved      Boolean       @default(false)
+  retryCount      Int       @default(0)
+  isResolved      Boolean   @default(false)
   lastTriedAt     DateTime?
 
-  wrongRetrySet   WrongRetrySet @relation(fields: [wrongRetrySetId], references: [id], onDelete: Cascade)
-  question        Question      @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  wrongRetrySet WrongRetrySet @relation(fields: [wrongRetrySetId], references: [id], onDelete: Cascade)
+  question      Question      @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@unique([wrongRetrySetId, questionId])
 }
@@ -242,22 +343,143 @@ model WeaknessProfile {
   weaknessLevel String?
   updatedAt     DateTime         @updatedAt
 
-  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, category])
 }
 
 model GeneratorJob {
-  id          String   @id @default(cuid())
-  userId      String
-  sourceType  String
-  prompt      String?
-  fileUrl     String?
-  status      String   @default("PENDING")
-  outputJson  Json?
-  error       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id         String   @id @default(cuid())
+  userId     String
+  sourceType String
+  prompt     String?
+  fileUrl    String?
+  status     String   @default("PENDING")
+  outputJson Json?
+  error      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Lesson {
+  id          String            @id @default(cuid())
+  title       String
+  slug        String            @unique
+  type        LessonType
+  category    QuestionCategory?
+  content     String            @db.Text
+  examples    Json?
+  orderIndex  Int               @default(0)
+  accessLevel AccessLevel       @default(FREE)
+  isPublished Boolean           @default(false)
+
+  progress LessonProgress[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LessonProgress {
+  id          String    @id @default(cuid())
+  userId      String
+  lessonId    String
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, lessonId])
+}
+
+model StudyPlan {
+  id        String          @id @default(cuid())
+  userId    String
+  title     String
+  status    StudyPlanStatus @default(ACTIVE)
+  startDate DateTime        @default(now())
+  endDate   DateTime?
+
+  user  User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items StudyPlanItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model StudyPlanItem {
+  id          String    @id @default(cuid())
+  studyPlanId String
+  dayNumber   Int
+  title       String
+  description String
+  targetUrl   String?
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+
+  studyPlan StudyPlan @relation(fields: [studyPlanId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id      String           @id @default(cuid())
+  userId  String
+  type    NotificationType @default(INFO)
+  title   String
+  message String
+  href    String?
+  isRead  Boolean          @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model UserBadge {
+  id      String    @id @default(cuid())
+  userId  String
+  type    BadgeType
+  title   String
+  message String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, type])
+}
+
+model Certificate {
+  id               String          @id @default(cuid())
+  userId           String
+  attemptId        String?
+  type             CertificateType @default(MOCK_PASS)
+  title            String
+  score            Float
+  verificationCode String          @unique
+  issuedAt         DateTime        @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attempt Attempt? @relation(fields: [attemptId], references: [id], onDelete: SetNull)
+}
+
+model AuditLog {
+  id         String      @id @default(cuid())
+  actorId    String?
+  action     AuditAction
+  entityType String
+  entityId   String?
+  message    String
+  metadata   Json?
+
+  actor User? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
 }

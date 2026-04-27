@@ -1,37 +1,56 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/session";
+import { requireUser } from "@/lib/roles";
 
 export async function GET(
   _: Request,
   { params }: { params: Promise<{ retrySetId: string }> }
 ) {
-  const user = await getCurrentUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Not logged in" }, { status: 401 });
-  }
+  const { user, response } = await requireUser();
+  if (response) return response;
 
   const { retrySetId } = await params;
 
-  const retrySet = await prisma.wrongRetrySet.findUnique({
-    where: { id: retrySetId },
+  const retrySet = await prisma.wrongRetrySet.findFirst({
+    where: {
+      id: retrySetId,
+      userId: user!.id,
+    },
     include: {
+      sourceAttempt: {
+        include: {
+          practiceSet: true,
+        },
+      },
       items: {
-        where: { isResolved: false },
+        where: {
+          isResolved: false,
+        },
         include: {
           question: true,
+        },
+        orderBy: {
+          id: "asc",
         },
       },
     },
   });
 
-  if (!retrySet || retrySet.userId !== user.id) {
-    return NextResponse.json({ error: "Retry set not found" }, { status: 404 });
+  if (!retrySet) {
+    return NextResponse.json({ error: "Wrong retry set not found" }, { status: 404 });
   }
 
   return NextResponse.json({
     id: retrySet.id,
-    questions: retrySet.items.map((item) => item.question),
+    isCompleted: retrySet.isCompleted,
+    sourceAttemptId: retrySet.sourceAttemptId,
+    practiceSetId: retrySet.sourceAttempt.practiceSetId,
+    practiceSet: retrySet.sourceAttempt.practiceSet,
+    unresolvedCount: retrySet.items.length,
+    questions: retrySet.items.map((item) => ({
+      ...item.question,
+      retryCount: item.retryCount,
+      wrongItemId: item.id,
+    })),
   });
 }

@@ -46,6 +46,8 @@ export type PracticeSetMinAggregateOutputType = {
   isPublished: boolean | null
   timeLimitMin: number | null
   audioReplayLimit: number | null
+  accessLevel: $Enums.AccessLevel | null
+  releaseAt: Date | null
   createdById: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -61,6 +63,8 @@ export type PracticeSetMaxAggregateOutputType = {
   isPublished: boolean | null
   timeLimitMin: number | null
   audioReplayLimit: number | null
+  accessLevel: $Enums.AccessLevel | null
+  releaseAt: Date | null
   createdById: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -76,6 +80,9 @@ export type PracticeSetCountAggregateOutputType = {
   isPublished: number
   timeLimitMin: number
   audioReplayLimit: number
+  accessLevel: number
+  releaseAt: number
+  sectionConfig: number
   createdById: number
   createdAt: number
   updatedAt: number
@@ -103,6 +110,8 @@ export type PracticeSetMinAggregateInputType = {
   isPublished?: true
   timeLimitMin?: true
   audioReplayLimit?: true
+  accessLevel?: true
+  releaseAt?: true
   createdById?: true
   createdAt?: true
   updatedAt?: true
@@ -118,6 +127,8 @@ export type PracticeSetMaxAggregateInputType = {
   isPublished?: true
   timeLimitMin?: true
   audioReplayLimit?: true
+  accessLevel?: true
+  releaseAt?: true
   createdById?: true
   createdAt?: true
   updatedAt?: true
@@ -133,6 +144,9 @@ export type PracticeSetCountAggregateInputType = {
   isPublished?: true
   timeLimitMin?: true
   audioReplayLimit?: true
+  accessLevel?: true
+  releaseAt?: true
+  sectionConfig?: true
   createdById?: true
   createdAt?: true
   updatedAt?: true
@@ -235,6 +249,9 @@ export type PracticeSetGroupByOutputType = {
   isPublished: boolean
   timeLimitMin: number | null
   audioReplayLimit: number | null
+  accessLevel: $Enums.AccessLevel
+  releaseAt: Date | null
+  sectionConfig: runtime.JsonValue | null
   createdById: string | null
   createdAt: Date
   updatedAt: Date
@@ -273,6 +290,9 @@ export type PracticeSetWhereInput = {
   isPublished?: Prisma.BoolFilter<"PracticeSet"> | boolean
   timeLimitMin?: Prisma.IntNullableFilter<"PracticeSet"> | number | null
   audioReplayLimit?: Prisma.IntNullableFilter<"PracticeSet"> | number | null
+  accessLevel?: Prisma.EnumAccessLevelFilter<"PracticeSet"> | $Enums.AccessLevel
+  releaseAt?: Prisma.DateTimeNullableFilter<"PracticeSet"> | Date | string | null
+  sectionConfig?: Prisma.JsonNullableFilter<"PracticeSet">
   createdById?: Prisma.StringNullableFilter<"PracticeSet"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PracticeSet"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PracticeSet"> | Date | string
@@ -292,6 +312,9 @@ export type PracticeSetOrderByWithRelationInput = {
   isPublished?: Prisma.SortOrder
   timeLimitMin?: Prisma.SortOrderInput | Prisma.SortOrder
   audioReplayLimit?: Prisma.SortOrderInput | Prisma.SortOrder
+  accessLevel?: Prisma.SortOrder
+  releaseAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  sectionConfig?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -314,6 +337,9 @@ export type PracticeSetWhereUniqueInput = Prisma.AtLeast<{
   isPublished?: Prisma.BoolFilter<"PracticeSet"> | boolean
   timeLimitMin?: Prisma.IntNullableFilter<"PracticeSet"> | number | null
   audioReplayLimit?: Prisma.IntNullableFilter<"PracticeSet"> | number | null
+  accessLevel?: Prisma.EnumAccessLevelFilter<"PracticeSet"> | $Enums.AccessLevel
+  releaseAt?: Prisma.DateTimeNullableFilter<"PracticeSet"> | Date | string | null
+  sectionConfig?: Prisma.JsonNullableFilter<"PracticeSet">
   createdById?: Prisma.StringNullableFilter<"PracticeSet"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PracticeSet"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PracticeSet"> | Date | string
@@ -333,6 +359,9 @@ export type PracticeSetOrderByWithAggregationInput = {
   isPublished?: Prisma.SortOrder
   timeLimitMin?: Prisma.SortOrderInput | Prisma.SortOrder
   audioReplayLimit?: Prisma.SortOrderInput | Prisma.SortOrder
+  accessLevel?: Prisma.SortOrder
+  releaseAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  sectionConfig?: Prisma.SortOrderInput | Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -356,6 +385,9 @@ export type PracticeSetScalarWhereWithAggregatesInput = {
   isPublished?: Prisma.BoolWithAggregatesFilter<"PracticeSet"> | boolean
   timeLimitMin?: Prisma.IntNullableWithAggregatesFilter<"PracticeSet"> | number | null
   audioReplayLimit?: Prisma.IntNullableWithAggregatesFilter<"PracticeSet"> | number | null
+  accessLevel?: Prisma.EnumAccessLevelWithAggregatesFilter<"PracticeSet"> | $Enums.AccessLevel
+  releaseAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PracticeSet"> | Date | string | null
+  sectionConfig?: Prisma.JsonNullableWithAggregatesFilter<"PracticeSet">
   createdById?: Prisma.StringNullableWithAggregatesFilter<"PracticeSet"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"PracticeSet"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"PracticeSet"> | Date | string
@@ -371,6 +403,9 @@ export type PracticeSetCreateInput = {
   isPublished?: boolean
   timeLimitMin?: number | null
   audioReplayLimit?: number | null
+  accessLevel?: $Enums.AccessLevel
+  releaseAt?: Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedSetsInput
@@ -389,6 +424,9 @@ export type PracticeSetUncheckedCreateInput = {
   isPublished?: boolean
   timeLimitMin?: number | null
   audioReplayLimit?: number | null
+  accessLevel?: $Enums.AccessLevel
+  releaseAt?: Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -407,6 +445,9 @@ export type PracticeSetUpdateInput = {
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   timeLimitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   audioReplayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneWithoutCreatedSetsNestedInput
@@ -425,6 +466,9 @@ export type PracticeSetUncheckedUpdateInput = {
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   timeLimitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   audioReplayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -443,6 +487,9 @@ export type PracticeSetCreateManyInput = {
   isPublished?: boolean
   timeLimitMin?: number | null
   audioReplayLimit?: number | null
+  accessLevel?: $Enums.AccessLevel
+  releaseAt?: Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -458,6 +505,9 @@ export type PracticeSetUpdateManyMutationInput = {
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   timeLimitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   audioReplayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -472,6 +522,9 @@ export type PracticeSetUncheckedUpdateManyInput = {
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   timeLimitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   audioReplayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -497,6 +550,9 @@ export type PracticeSetCountOrderByAggregateInput = {
   isPublished?: Prisma.SortOrder
   timeLimitMin?: Prisma.SortOrder
   audioReplayLimit?: Prisma.SortOrder
+  accessLevel?: Prisma.SortOrder
+  releaseAt?: Prisma.SortOrder
+  sectionConfig?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -517,6 +573,8 @@ export type PracticeSetMaxOrderByAggregateInput = {
   isPublished?: Prisma.SortOrder
   timeLimitMin?: Prisma.SortOrder
   audioReplayLimit?: Prisma.SortOrder
+  accessLevel?: Prisma.SortOrder
+  releaseAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -532,6 +590,8 @@ export type PracticeSetMinOrderByAggregateInput = {
   isPublished?: Prisma.SortOrder
   timeLimitMin?: Prisma.SortOrder
   audioReplayLimit?: Prisma.SortOrder
+  accessLevel?: Prisma.SortOrder
+  releaseAt?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -609,6 +669,10 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type EnumAccessLevelFieldUpdateOperationsInput = {
+  set?: $Enums.AccessLevel
+}
+
 export type PracticeSetCreateNestedOneWithoutQuestionsInput = {
   create?: Prisma.XOR<Prisma.PracticeSetCreateWithoutQuestionsInput, Prisma.PracticeSetUncheckedCreateWithoutQuestionsInput>
   connectOrCreate?: Prisma.PracticeSetCreateOrConnectWithoutQuestionsInput
@@ -661,6 +725,9 @@ export type PracticeSetCreateWithoutCreatedByInput = {
   isPublished?: boolean
   timeLimitMin?: number | null
   audioReplayLimit?: number | null
+  accessLevel?: $Enums.AccessLevel
+  releaseAt?: Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   questions?: Prisma.QuestionCreateNestedManyWithoutPracticeSetInput
@@ -678,6 +745,9 @@ export type PracticeSetUncheckedCreateWithoutCreatedByInput = {
   isPublished?: boolean
   timeLimitMin?: number | null
   audioReplayLimit?: number | null
+  accessLevel?: $Enums.AccessLevel
+  releaseAt?: Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutPracticeSetInput
@@ -724,6 +794,9 @@ export type PracticeSetScalarWhereInput = {
   isPublished?: Prisma.BoolFilter<"PracticeSet"> | boolean
   timeLimitMin?: Prisma.IntNullableFilter<"PracticeSet"> | number | null
   audioReplayLimit?: Prisma.IntNullableFilter<"PracticeSet"> | number | null
+  accessLevel?: Prisma.EnumAccessLevelFilter<"PracticeSet"> | $Enums.AccessLevel
+  releaseAt?: Prisma.DateTimeNullableFilter<"PracticeSet"> | Date | string | null
+  sectionConfig?: Prisma.JsonNullableFilter<"PracticeSet">
   createdById?: Prisma.StringNullableFilter<"PracticeSet"> | string | null
   createdAt?: Prisma.DateTimeFilter<"PracticeSet"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PracticeSet"> | Date | string
@@ -739,6 +812,9 @@ export type PracticeSetCreateWithoutQuestionsInput = {
   isPublished?: boolean
   timeLimitMin?: number | null
   audioReplayLimit?: number | null
+  accessLevel?: $Enums.AccessLevel
+  releaseAt?: Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedSetsInput
@@ -756,6 +832,9 @@ export type PracticeSetUncheckedCreateWithoutQuestionsInput = {
   isPublished?: boolean
   timeLimitMin?: number | null
   audioReplayLimit?: number | null
+  accessLevel?: $Enums.AccessLevel
+  releaseAt?: Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -789,6 +868,9 @@ export type PracticeSetUpdateWithoutQuestionsInput = {
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   timeLimitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   audioReplayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneWithoutCreatedSetsNestedInput
@@ -806,6 +888,9 @@ export type PracticeSetUncheckedUpdateWithoutQuestionsInput = {
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   timeLimitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   audioReplayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -823,6 +908,9 @@ export type PracticeSetCreateWithoutAssignmentsInput = {
   isPublished?: boolean
   timeLimitMin?: number | null
   audioReplayLimit?: number | null
+  accessLevel?: $Enums.AccessLevel
+  releaseAt?: Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedSetsInput
@@ -840,6 +928,9 @@ export type PracticeSetUncheckedCreateWithoutAssignmentsInput = {
   isPublished?: boolean
   timeLimitMin?: number | null
   audioReplayLimit?: number | null
+  accessLevel?: $Enums.AccessLevel
+  releaseAt?: Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -873,6 +964,9 @@ export type PracticeSetUpdateWithoutAssignmentsInput = {
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   timeLimitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   audioReplayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneWithoutCreatedSetsNestedInput
@@ -890,6 +984,9 @@ export type PracticeSetUncheckedUpdateWithoutAssignmentsInput = {
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   timeLimitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   audioReplayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -907,6 +1004,9 @@ export type PracticeSetCreateWithoutAttemptsInput = {
   isPublished?: boolean
   timeLimitMin?: number | null
   audioReplayLimit?: number | null
+  accessLevel?: $Enums.AccessLevel
+  releaseAt?: Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedSetsInput
@@ -924,6 +1024,9 @@ export type PracticeSetUncheckedCreateWithoutAttemptsInput = {
   isPublished?: boolean
   timeLimitMin?: number | null
   audioReplayLimit?: number | null
+  accessLevel?: $Enums.AccessLevel
+  releaseAt?: Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -957,6 +1060,9 @@ export type PracticeSetUpdateWithoutAttemptsInput = {
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   timeLimitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   audioReplayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneWithoutCreatedSetsNestedInput
@@ -974,6 +1080,9 @@ export type PracticeSetUncheckedUpdateWithoutAttemptsInput = {
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   timeLimitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   audioReplayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -991,6 +1100,9 @@ export type PracticeSetCreateManyCreatedByInput = {
   isPublished?: boolean
   timeLimitMin?: number | null
   audioReplayLimit?: number | null
+  accessLevel?: $Enums.AccessLevel
+  releaseAt?: Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1005,6 +1117,9 @@ export type PracticeSetUpdateWithoutCreatedByInput = {
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   timeLimitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   audioReplayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questions?: Prisma.QuestionUpdateManyWithoutPracticeSetNestedInput
@@ -1022,6 +1137,9 @@ export type PracticeSetUncheckedUpdateWithoutCreatedByInput = {
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   timeLimitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   audioReplayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   questions?: Prisma.QuestionUncheckedUpdateManyWithoutPracticeSetNestedInput
@@ -1039,6 +1157,9 @@ export type PracticeSetUncheckedUpdateManyWithoutCreatedByInput = {
   isPublished?: Prisma.BoolFieldUpdateOperationsInput | boolean
   timeLimitMin?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   audioReplayLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  accessLevel?: Prisma.EnumAccessLevelFieldUpdateOperationsInput | $Enums.AccessLevel
+  releaseAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sectionConfig?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1102,6 +1223,9 @@ export type PracticeSetSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   isPublished?: boolean
   timeLimitMin?: boolean
   audioReplayLimit?: boolean
+  accessLevel?: boolean
+  releaseAt?: boolean
+  sectionConfig?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1122,6 +1246,9 @@ export type PracticeSetSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   isPublished?: boolean
   timeLimitMin?: boolean
   audioReplayLimit?: boolean
+  accessLevel?: boolean
+  releaseAt?: boolean
+  sectionConfig?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1138,6 +1265,9 @@ export type PracticeSetSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   isPublished?: boolean
   timeLimitMin?: boolean
   audioReplayLimit?: boolean
+  accessLevel?: boolean
+  releaseAt?: boolean
+  sectionConfig?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1154,12 +1284,15 @@ export type PracticeSetSelectScalar = {
   isPublished?: boolean
   timeLimitMin?: boolean
   audioReplayLimit?: boolean
+  accessLevel?: boolean
+  releaseAt?: boolean
+  sectionConfig?: boolean
   createdById?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PracticeSetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "type" | "category" | "difficulty" | "isPublished" | "timeLimitMin" | "audioReplayLimit" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["practiceSet"]>
+export type PracticeSetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "type" | "category" | "difficulty" | "isPublished" | "timeLimitMin" | "audioReplayLimit" | "accessLevel" | "releaseAt" | "sectionConfig" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["practiceSet"]>
 export type PracticeSetInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdBy?: boolean | Prisma.PracticeSet$createdByArgs<ExtArgs>
   questions?: boolean | Prisma.PracticeSet$questionsArgs<ExtArgs>
@@ -1192,6 +1325,9 @@ export type $PracticeSetPayload<ExtArgs extends runtime.Types.Extensions.Interna
     isPublished: boolean
     timeLimitMin: number | null
     audioReplayLimit: number | null
+    accessLevel: $Enums.AccessLevel
+    releaseAt: Date | null
+    sectionConfig: runtime.JsonValue | null
     createdById: string | null
     createdAt: Date
     updatedAt: Date
@@ -1631,6 +1767,9 @@ export interface PracticeSetFieldRefs {
   readonly isPublished: Prisma.FieldRef<"PracticeSet", 'Boolean'>
   readonly timeLimitMin: Prisma.FieldRef<"PracticeSet", 'Int'>
   readonly audioReplayLimit: Prisma.FieldRef<"PracticeSet", 'Int'>
+  readonly accessLevel: Prisma.FieldRef<"PracticeSet", 'AccessLevel'>
+  readonly releaseAt: Prisma.FieldRef<"PracticeSet", 'DateTime'>
+  readonly sectionConfig: Prisma.FieldRef<"PracticeSet", 'Json'>
   readonly createdById: Prisma.FieldRef<"PracticeSet", 'String'>
   readonly createdAt: Prisma.FieldRef<"PracticeSet", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"PracticeSet", 'DateTime'>

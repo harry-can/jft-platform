@@ -20,8 +20,20 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
+}
+
+export type UserAvgAggregateOutputType = {
+  xp: number | null
+  streakDays: number | null
+}
+
+export type UserSumAggregateOutputType = {
+  xp: number | null
+  streakDays: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -34,6 +46,10 @@ export type UserMinAggregateOutputType = {
   address: string | null
   avatarUrl: string | null
   isActive: boolean | null
+  subscriptionPlan: string | null
+  xp: number | null
+  streakDays: number | null
+  lastStudyDate: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -48,6 +64,10 @@ export type UserMaxAggregateOutputType = {
   address: string | null
   avatarUrl: string | null
   isActive: boolean | null
+  subscriptionPlan: string | null
+  xp: number | null
+  streakDays: number | null
+  lastStudyDate: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -62,11 +82,25 @@ export type UserCountAggregateOutputType = {
   address: number
   avatarUrl: number
   isActive: number
+  subscriptionPlan: number
+  xp: number
+  streakDays: number
+  lastStudyDate: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
+
+export type UserAvgAggregateInputType = {
+  xp?: true
+  streakDays?: true
+}
+
+export type UserSumAggregateInputType = {
+  xp?: true
+  streakDays?: true
+}
 
 export type UserMinAggregateInputType = {
   id?: true
@@ -78,6 +112,10 @@ export type UserMinAggregateInputType = {
   address?: true
   avatarUrl?: true
   isActive?: true
+  subscriptionPlan?: true
+  xp?: true
+  streakDays?: true
+  lastStudyDate?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -92,6 +130,10 @@ export type UserMaxAggregateInputType = {
   address?: true
   avatarUrl?: true
   isActive?: true
+  subscriptionPlan?: true
+  xp?: true
+  streakDays?: true
+  lastStudyDate?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -106,6 +148,10 @@ export type UserCountAggregateInputType = {
   address?: true
   avatarUrl?: true
   isActive?: true
+  subscriptionPlan?: true
+  xp?: true
+  streakDays?: true
+  lastStudyDate?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -149,6 +195,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: UserAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: UserSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -179,6 +237,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
+  _avg?: UserAvgAggregateInputType
+  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
@@ -193,9 +253,15 @@ export type UserGroupByOutputType = {
   address: string | null
   avatarUrl: string | null
   isActive: boolean
+  subscriptionPlan: string
+  xp: number
+  streakDays: number
+  lastStudyDate: Date | null
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -228,6 +294,10 @@ export type UserWhereInput = {
   address?: Prisma.StringNullableFilter<"User"> | string | null
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
   isActive?: Prisma.BoolFilter<"User"> | boolean
+  subscriptionPlan?: Prisma.StringFilter<"User"> | string
+  xp?: Prisma.IntFilter<"User"> | number
+  streakDays?: Prisma.IntFilter<"User"> | number
+  lastStudyDate?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sessions?: Prisma.SessionListRelationFilter
@@ -236,6 +306,12 @@ export type UserWhereInput = {
   memberships?: Prisma.ClassMemberListRelationFilter
   createdSets?: Prisma.PracticeSetListRelationFilter
   generatedJobs?: Prisma.GeneratorJobListRelationFilter
+  lessons?: Prisma.LessonProgressListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
+  studyPlans?: Prisma.StudyPlanListRelationFilter
+  badges?: Prisma.UserBadgeListRelationFilter
+  certificates?: Prisma.CertificateListRelationFilter
+  auditLogs?: Prisma.AuditLogListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -248,6 +324,10 @@ export type UserOrderByWithRelationInput = {
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  subscriptionPlan?: Prisma.SortOrder
+  xp?: Prisma.SortOrder
+  streakDays?: Prisma.SortOrder
+  lastStudyDate?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   sessions?: Prisma.SessionOrderByRelationAggregateInput
@@ -256,6 +336,12 @@ export type UserOrderByWithRelationInput = {
   memberships?: Prisma.ClassMemberOrderByRelationAggregateInput
   createdSets?: Prisma.PracticeSetOrderByRelationAggregateInput
   generatedJobs?: Prisma.GeneratorJobOrderByRelationAggregateInput
+  lessons?: Prisma.LessonProgressOrderByRelationAggregateInput
+  notifications?: Prisma.NotificationOrderByRelationAggregateInput
+  studyPlans?: Prisma.StudyPlanOrderByRelationAggregateInput
+  badges?: Prisma.UserBadgeOrderByRelationAggregateInput
+  certificates?: Prisma.CertificateOrderByRelationAggregateInput
+  auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -271,6 +357,10 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   address?: Prisma.StringNullableFilter<"User"> | string | null
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
   isActive?: Prisma.BoolFilter<"User"> | boolean
+  subscriptionPlan?: Prisma.StringFilter<"User"> | string
+  xp?: Prisma.IntFilter<"User"> | number
+  streakDays?: Prisma.IntFilter<"User"> | number
+  lastStudyDate?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   sessions?: Prisma.SessionListRelationFilter
@@ -279,6 +369,12 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   memberships?: Prisma.ClassMemberListRelationFilter
   createdSets?: Prisma.PracticeSetListRelationFilter
   generatedJobs?: Prisma.GeneratorJobListRelationFilter
+  lessons?: Prisma.LessonProgressListRelationFilter
+  notifications?: Prisma.NotificationListRelationFilter
+  studyPlans?: Prisma.StudyPlanListRelationFilter
+  badges?: Prisma.UserBadgeListRelationFilter
+  certificates?: Prisma.CertificateListRelationFilter
+  auditLogs?: Prisma.AuditLogListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -291,11 +387,17 @@ export type UserOrderByWithAggregationInput = {
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  subscriptionPlan?: Prisma.SortOrder
+  xp?: Prisma.SortOrder
+  streakDays?: Prisma.SortOrder
+  lastStudyDate?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
+  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
+  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -311,6 +413,10 @@ export type UserScalarWhereWithAggregatesInput = {
   address?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  subscriptionPlan?: Prisma.StringWithAggregatesFilter<"User"> | string
+  xp?: Prisma.IntWithAggregatesFilter<"User"> | number
+  streakDays?: Prisma.IntWithAggregatesFilter<"User"> | number
+  lastStudyDate?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -325,6 +431,10 @@ export type UserCreateInput = {
   address?: string | null
   avatarUrl?: string | null
   isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -333,6 +443,12 @@ export type UserCreateInput = {
   memberships?: Prisma.ClassMemberCreateNestedManyWithoutUserInput
   createdSets?: Prisma.PracticeSetCreateNestedManyWithoutCreatedByInput
   generatedJobs?: Prisma.GeneratorJobCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -345,6 +461,10 @@ export type UserUncheckedCreateInput = {
   address?: string | null
   avatarUrl?: string | null
   isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -353,6 +473,12 @@ export type UserUncheckedCreateInput = {
   memberships?: Prisma.ClassMemberUncheckedCreateNestedManyWithoutUserInput
   createdSets?: Prisma.PracticeSetUncheckedCreateNestedManyWithoutCreatedByInput
   generatedJobs?: Prisma.GeneratorJobUncheckedCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserUpdateInput = {
@@ -365,6 +491,10 @@ export type UserUpdateInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -373,6 +503,12 @@ export type UserUpdateInput = {
   memberships?: Prisma.ClassMemberUpdateManyWithoutUserNestedInput
   createdSets?: Prisma.PracticeSetUpdateManyWithoutCreatedByNestedInput
   generatedJobs?: Prisma.GeneratorJobUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -385,6 +521,10 @@ export type UserUncheckedUpdateInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -393,6 +533,12 @@ export type UserUncheckedUpdateInput = {
   memberships?: Prisma.ClassMemberUncheckedUpdateManyWithoutUserNestedInput
   createdSets?: Prisma.PracticeSetUncheckedUpdateManyWithoutCreatedByNestedInput
   generatedJobs?: Prisma.GeneratorJobUncheckedUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -405,6 +551,10 @@ export type UserCreateManyInput = {
   address?: string | null
   avatarUrl?: string | null
   isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -419,6 +569,10 @@ export type UserUpdateManyMutationInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -433,6 +587,10 @@ export type UserUncheckedUpdateManyInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -447,8 +605,17 @@ export type UserCountOrderByAggregateInput = {
   address?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  subscriptionPlan?: Prisma.SortOrder
+  xp?: Prisma.SortOrder
+  streakDays?: Prisma.SortOrder
+  lastStudyDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserAvgOrderByAggregateInput = {
+  xp?: Prisma.SortOrder
+  streakDays?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -461,6 +628,10 @@ export type UserMaxOrderByAggregateInput = {
   address?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  subscriptionPlan?: Prisma.SortOrder
+  xp?: Prisma.SortOrder
+  streakDays?: Prisma.SortOrder
+  lastStudyDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -475,8 +646,17 @@ export type UserMinOrderByAggregateInput = {
   address?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  subscriptionPlan?: Prisma.SortOrder
+  xp?: Prisma.SortOrder
+  streakDays?: Prisma.SortOrder
+  lastStudyDate?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserSumOrderByAggregateInput = {
+  xp?: Prisma.SortOrder
+  streakDays?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -503,6 +683,18 @@ export type EnumUserRoleFieldUpdateOperationsInput = {
 
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -595,6 +787,92 @@ export type UserUpdateOneRequiredWithoutGeneratedJobsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGeneratedJobsInput, Prisma.UserUpdateWithoutGeneratedJobsInput>, Prisma.UserUncheckedUpdateWithoutGeneratedJobsInput>
 }
 
+export type UserCreateNestedOneWithoutLessonsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLessonsInput, Prisma.UserUncheckedCreateWithoutLessonsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLessonsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutLessonsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLessonsInput, Prisma.UserUncheckedCreateWithoutLessonsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLessonsInput
+  upsert?: Prisma.UserUpsertWithoutLessonsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLessonsInput, Prisma.UserUpdateWithoutLessonsInput>, Prisma.UserUncheckedUpdateWithoutLessonsInput>
+}
+
+export type UserCreateNestedOneWithoutStudyPlansInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStudyPlansInput, Prisma.UserUncheckedCreateWithoutStudyPlansInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStudyPlansInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutStudyPlansNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutStudyPlansInput, Prisma.UserUncheckedCreateWithoutStudyPlansInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutStudyPlansInput
+  upsert?: Prisma.UserUpsertWithoutStudyPlansInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutStudyPlansInput, Prisma.UserUpdateWithoutStudyPlansInput>, Prisma.UserUncheckedUpdateWithoutStudyPlansInput>
+}
+
+export type UserCreateNestedOneWithoutNotificationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationsInput
+  upsert?: Prisma.UserUpsertWithoutNotificationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationsInput, Prisma.UserUpdateWithoutNotificationsInput>, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type UserCreateNestedOneWithoutBadgesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBadgesInput, Prisma.UserUncheckedCreateWithoutBadgesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBadgesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutBadgesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBadgesInput, Prisma.UserUncheckedCreateWithoutBadgesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBadgesInput
+  upsert?: Prisma.UserUpsertWithoutBadgesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBadgesInput, Prisma.UserUpdateWithoutBadgesInput>, Prisma.UserUncheckedUpdateWithoutBadgesInput>
+}
+
+export type UserCreateNestedOneWithoutCertificatesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCertificatesInput, Prisma.UserUncheckedCreateWithoutCertificatesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCertificatesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCertificatesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCertificatesInput, Prisma.UserUncheckedCreateWithoutCertificatesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCertificatesInput
+  upsert?: Prisma.UserUpsertWithoutCertificatesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCertificatesInput, Prisma.UserUpdateWithoutCertificatesInput>, Prisma.UserUncheckedUpdateWithoutCertificatesInput>
+}
+
+export type UserCreateNestedOneWithoutAuditLogsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuditLogsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutAuditLogsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuditLogsInput
+  upsert?: Prisma.UserUpsertWithoutAuditLogsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuditLogsInput, Prisma.UserUpdateWithoutAuditLogsInput>, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
+}
+
 export type UserCreateWithoutSessionsInput = {
   id?: string
   name?: string | null
@@ -605,6 +883,10 @@ export type UserCreateWithoutSessionsInput = {
   address?: string | null
   avatarUrl?: string | null
   isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   attempts?: Prisma.AttemptCreateNestedManyWithoutUserInput
@@ -612,6 +894,12 @@ export type UserCreateWithoutSessionsInput = {
   memberships?: Prisma.ClassMemberCreateNestedManyWithoutUserInput
   createdSets?: Prisma.PracticeSetCreateNestedManyWithoutCreatedByInput
   generatedJobs?: Prisma.GeneratorJobCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -624,6 +912,10 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   address?: string | null
   avatarUrl?: string | null
   isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutUserInput
@@ -631,6 +923,12 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   memberships?: Prisma.ClassMemberUncheckedCreateNestedManyWithoutUserInput
   createdSets?: Prisma.PracticeSetUncheckedCreateNestedManyWithoutCreatedByInput
   generatedJobs?: Prisma.GeneratorJobUncheckedCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -659,6 +957,10 @@ export type UserUpdateWithoutSessionsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attempts?: Prisma.AttemptUpdateManyWithoutUserNestedInput
@@ -666,6 +968,12 @@ export type UserUpdateWithoutSessionsInput = {
   memberships?: Prisma.ClassMemberUpdateManyWithoutUserNestedInput
   createdSets?: Prisma.PracticeSetUpdateManyWithoutCreatedByNestedInput
   generatedJobs?: Prisma.GeneratorJobUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -678,6 +986,10 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   attempts?: Prisma.AttemptUncheckedUpdateManyWithoutUserNestedInput
@@ -685,6 +997,12 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   memberships?: Prisma.ClassMemberUncheckedUpdateManyWithoutUserNestedInput
   createdSets?: Prisma.PracticeSetUncheckedUpdateManyWithoutCreatedByNestedInput
   generatedJobs?: Prisma.GeneratorJobUncheckedUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutMembershipsInput = {
@@ -697,6 +1015,10 @@ export type UserCreateWithoutMembershipsInput = {
   address?: string | null
   avatarUrl?: string | null
   isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -704,6 +1026,12 @@ export type UserCreateWithoutMembershipsInput = {
   weaknessProfiles?: Prisma.WeaknessProfileCreateNestedManyWithoutUserInput
   createdSets?: Prisma.PracticeSetCreateNestedManyWithoutCreatedByInput
   generatedJobs?: Prisma.GeneratorJobCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutMembershipsInput = {
@@ -716,6 +1044,10 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   address?: string | null
   avatarUrl?: string | null
   isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -723,6 +1055,12 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   weaknessProfiles?: Prisma.WeaknessProfileUncheckedCreateNestedManyWithoutUserInput
   createdSets?: Prisma.PracticeSetUncheckedCreateNestedManyWithoutCreatedByInput
   generatedJobs?: Prisma.GeneratorJobUncheckedCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutMembershipsInput = {
@@ -751,6 +1089,10 @@ export type UserUpdateWithoutMembershipsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -758,6 +1100,12 @@ export type UserUpdateWithoutMembershipsInput = {
   weaknessProfiles?: Prisma.WeaknessProfileUpdateManyWithoutUserNestedInput
   createdSets?: Prisma.PracticeSetUpdateManyWithoutCreatedByNestedInput
   generatedJobs?: Prisma.GeneratorJobUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMembershipsInput = {
@@ -770,6 +1118,10 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -777,6 +1129,12 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   weaknessProfiles?: Prisma.WeaknessProfileUncheckedUpdateManyWithoutUserNestedInput
   createdSets?: Prisma.PracticeSetUncheckedUpdateManyWithoutCreatedByNestedInput
   generatedJobs?: Prisma.GeneratorJobUncheckedUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutCreatedSetsInput = {
@@ -789,6 +1147,10 @@ export type UserCreateWithoutCreatedSetsInput = {
   address?: string | null
   avatarUrl?: string | null
   isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -796,6 +1158,12 @@ export type UserCreateWithoutCreatedSetsInput = {
   weaknessProfiles?: Prisma.WeaknessProfileCreateNestedManyWithoutUserInput
   memberships?: Prisma.ClassMemberCreateNestedManyWithoutUserInput
   generatedJobs?: Prisma.GeneratorJobCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutCreatedSetsInput = {
@@ -808,6 +1176,10 @@ export type UserUncheckedCreateWithoutCreatedSetsInput = {
   address?: string | null
   avatarUrl?: string | null
   isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -815,6 +1187,12 @@ export type UserUncheckedCreateWithoutCreatedSetsInput = {
   weaknessProfiles?: Prisma.WeaknessProfileUncheckedCreateNestedManyWithoutUserInput
   memberships?: Prisma.ClassMemberUncheckedCreateNestedManyWithoutUserInput
   generatedJobs?: Prisma.GeneratorJobUncheckedCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutCreatedSetsInput = {
@@ -843,6 +1221,10 @@ export type UserUpdateWithoutCreatedSetsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -850,6 +1232,12 @@ export type UserUpdateWithoutCreatedSetsInput = {
   weaknessProfiles?: Prisma.WeaknessProfileUpdateManyWithoutUserNestedInput
   memberships?: Prisma.ClassMemberUpdateManyWithoutUserNestedInput
   generatedJobs?: Prisma.GeneratorJobUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedSetsInput = {
@@ -862,6 +1250,10 @@ export type UserUncheckedUpdateWithoutCreatedSetsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -869,6 +1261,12 @@ export type UserUncheckedUpdateWithoutCreatedSetsInput = {
   weaknessProfiles?: Prisma.WeaknessProfileUncheckedUpdateManyWithoutUserNestedInput
   memberships?: Prisma.ClassMemberUncheckedUpdateManyWithoutUserNestedInput
   generatedJobs?: Prisma.GeneratorJobUncheckedUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutAttemptsInput = {
@@ -881,6 +1279,10 @@ export type UserCreateWithoutAttemptsInput = {
   address?: string | null
   avatarUrl?: string | null
   isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -888,6 +1290,12 @@ export type UserCreateWithoutAttemptsInput = {
   memberships?: Prisma.ClassMemberCreateNestedManyWithoutUserInput
   createdSets?: Prisma.PracticeSetCreateNestedManyWithoutCreatedByInput
   generatedJobs?: Prisma.GeneratorJobCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutAttemptsInput = {
@@ -900,6 +1308,10 @@ export type UserUncheckedCreateWithoutAttemptsInput = {
   address?: string | null
   avatarUrl?: string | null
   isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -907,6 +1319,12 @@ export type UserUncheckedCreateWithoutAttemptsInput = {
   memberships?: Prisma.ClassMemberUncheckedCreateNestedManyWithoutUserInput
   createdSets?: Prisma.PracticeSetUncheckedCreateNestedManyWithoutCreatedByInput
   generatedJobs?: Prisma.GeneratorJobUncheckedCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutAttemptsInput = {
@@ -935,6 +1353,10 @@ export type UserUpdateWithoutAttemptsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -942,6 +1364,12 @@ export type UserUpdateWithoutAttemptsInput = {
   memberships?: Prisma.ClassMemberUpdateManyWithoutUserNestedInput
   createdSets?: Prisma.PracticeSetUpdateManyWithoutCreatedByNestedInput
   generatedJobs?: Prisma.GeneratorJobUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAttemptsInput = {
@@ -954,6 +1382,10 @@ export type UserUncheckedUpdateWithoutAttemptsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -961,6 +1393,12 @@ export type UserUncheckedUpdateWithoutAttemptsInput = {
   memberships?: Prisma.ClassMemberUncheckedUpdateManyWithoutUserNestedInput
   createdSets?: Prisma.PracticeSetUncheckedUpdateManyWithoutCreatedByNestedInput
   generatedJobs?: Prisma.GeneratorJobUncheckedUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutWeaknessProfilesInput = {
@@ -973,6 +1411,10 @@ export type UserCreateWithoutWeaknessProfilesInput = {
   address?: string | null
   avatarUrl?: string | null
   isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -980,6 +1422,12 @@ export type UserCreateWithoutWeaknessProfilesInput = {
   memberships?: Prisma.ClassMemberCreateNestedManyWithoutUserInput
   createdSets?: Prisma.PracticeSetCreateNestedManyWithoutCreatedByInput
   generatedJobs?: Prisma.GeneratorJobCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutWeaknessProfilesInput = {
@@ -992,6 +1440,10 @@ export type UserUncheckedCreateWithoutWeaknessProfilesInput = {
   address?: string | null
   avatarUrl?: string | null
   isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -999,6 +1451,12 @@ export type UserUncheckedCreateWithoutWeaknessProfilesInput = {
   memberships?: Prisma.ClassMemberUncheckedCreateNestedManyWithoutUserInput
   createdSets?: Prisma.PracticeSetUncheckedCreateNestedManyWithoutCreatedByInput
   generatedJobs?: Prisma.GeneratorJobUncheckedCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutWeaknessProfilesInput = {
@@ -1027,6 +1485,10 @@ export type UserUpdateWithoutWeaknessProfilesInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -1034,6 +1496,12 @@ export type UserUpdateWithoutWeaknessProfilesInput = {
   memberships?: Prisma.ClassMemberUpdateManyWithoutUserNestedInput
   createdSets?: Prisma.PracticeSetUpdateManyWithoutCreatedByNestedInput
   generatedJobs?: Prisma.GeneratorJobUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWeaknessProfilesInput = {
@@ -1046,6 +1514,10 @@ export type UserUncheckedUpdateWithoutWeaknessProfilesInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1053,6 +1525,12 @@ export type UserUncheckedUpdateWithoutWeaknessProfilesInput = {
   memberships?: Prisma.ClassMemberUncheckedUpdateManyWithoutUserNestedInput
   createdSets?: Prisma.PracticeSetUncheckedUpdateManyWithoutCreatedByNestedInput
   generatedJobs?: Prisma.GeneratorJobUncheckedUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
 }
 
 export type UserCreateWithoutGeneratedJobsInput = {
@@ -1065,6 +1543,10 @@ export type UserCreateWithoutGeneratedJobsInput = {
   address?: string | null
   avatarUrl?: string | null
   isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
@@ -1072,6 +1554,12 @@ export type UserCreateWithoutGeneratedJobsInput = {
   weaknessProfiles?: Prisma.WeaknessProfileCreateNestedManyWithoutUserInput
   memberships?: Prisma.ClassMemberCreateNestedManyWithoutUserInput
   createdSets?: Prisma.PracticeSetCreateNestedManyWithoutCreatedByInput
+  lessons?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
 }
 
 export type UserUncheckedCreateWithoutGeneratedJobsInput = {
@@ -1084,6 +1572,10 @@ export type UserUncheckedCreateWithoutGeneratedJobsInput = {
   address?: string | null
   avatarUrl?: string | null
   isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
@@ -1091,6 +1583,12 @@ export type UserUncheckedCreateWithoutGeneratedJobsInput = {
   weaknessProfiles?: Prisma.WeaknessProfileUncheckedCreateNestedManyWithoutUserInput
   memberships?: Prisma.ClassMemberUncheckedCreateNestedManyWithoutUserInput
   createdSets?: Prisma.PracticeSetUncheckedCreateNestedManyWithoutCreatedByInput
+  lessons?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
 }
 
 export type UserCreateOrConnectWithoutGeneratedJobsInput = {
@@ -1119,6 +1617,10 @@ export type UserUpdateWithoutGeneratedJobsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
@@ -1126,6 +1628,12 @@ export type UserUpdateWithoutGeneratedJobsInput = {
   weaknessProfiles?: Prisma.WeaknessProfileUpdateManyWithoutUserNestedInput
   memberships?: Prisma.ClassMemberUpdateManyWithoutUserNestedInput
   createdSets?: Prisma.PracticeSetUpdateManyWithoutCreatedByNestedInput
+  lessons?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGeneratedJobsInput = {
@@ -1138,6 +1646,10 @@ export type UserUncheckedUpdateWithoutGeneratedJobsInput = {
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1145,6 +1657,804 @@ export type UserUncheckedUpdateWithoutGeneratedJobsInput = {
   weaknessProfiles?: Prisma.WeaknessProfileUncheckedUpdateManyWithoutUserNestedInput
   memberships?: Prisma.ClassMemberUncheckedUpdateManyWithoutUserNestedInput
   createdSets?: Prisma.PracticeSetUncheckedUpdateManyWithoutCreatedByNestedInput
+  lessons?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+}
+
+export type UserCreateWithoutLessonsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  phone?: string | null
+  address?: string | null
+  avatarUrl?: string | null
+  isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutUserInput
+  weaknessProfiles?: Prisma.WeaknessProfileCreateNestedManyWithoutUserInput
+  memberships?: Prisma.ClassMemberCreateNestedManyWithoutUserInput
+  createdSets?: Prisma.PracticeSetCreateNestedManyWithoutCreatedByInput
+  generatedJobs?: Prisma.GeneratorJobCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+}
+
+export type UserUncheckedCreateWithoutLessonsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  phone?: string | null
+  address?: string | null
+  avatarUrl?: string | null
+  isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutUserInput
+  weaknessProfiles?: Prisma.WeaknessProfileUncheckedCreateNestedManyWithoutUserInput
+  memberships?: Prisma.ClassMemberUncheckedCreateNestedManyWithoutUserInput
+  createdSets?: Prisma.PracticeSetUncheckedCreateNestedManyWithoutCreatedByInput
+  generatedJobs?: Prisma.GeneratorJobUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+}
+
+export type UserCreateOrConnectWithoutLessonsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutLessonsInput, Prisma.UserUncheckedCreateWithoutLessonsInput>
+}
+
+export type UserUpsertWithoutLessonsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutLessonsInput, Prisma.UserUncheckedUpdateWithoutLessonsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLessonsInput, Prisma.UserUncheckedCreateWithoutLessonsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutLessonsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutLessonsInput, Prisma.UserUncheckedUpdateWithoutLessonsInput>
+}
+
+export type UserUpdateWithoutLessonsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutUserNestedInput
+  weaknessProfiles?: Prisma.WeaknessProfileUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.ClassMemberUpdateManyWithoutUserNestedInput
+  createdSets?: Prisma.PracticeSetUpdateManyWithoutCreatedByNestedInput
+  generatedJobs?: Prisma.GeneratorJobUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutLessonsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutUserNestedInput
+  weaknessProfiles?: Prisma.WeaknessProfileUncheckedUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.ClassMemberUncheckedUpdateManyWithoutUserNestedInput
+  createdSets?: Prisma.PracticeSetUncheckedUpdateManyWithoutCreatedByNestedInput
+  generatedJobs?: Prisma.GeneratorJobUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+}
+
+export type UserCreateWithoutStudyPlansInput = {
+  id?: string
+  name?: string | null
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  phone?: string | null
+  address?: string | null
+  avatarUrl?: string | null
+  isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutUserInput
+  weaknessProfiles?: Prisma.WeaknessProfileCreateNestedManyWithoutUserInput
+  memberships?: Prisma.ClassMemberCreateNestedManyWithoutUserInput
+  createdSets?: Prisma.PracticeSetCreateNestedManyWithoutCreatedByInput
+  generatedJobs?: Prisma.GeneratorJobCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+}
+
+export type UserUncheckedCreateWithoutStudyPlansInput = {
+  id?: string
+  name?: string | null
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  phone?: string | null
+  address?: string | null
+  avatarUrl?: string | null
+  isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutUserInput
+  weaknessProfiles?: Prisma.WeaknessProfileUncheckedCreateNestedManyWithoutUserInput
+  memberships?: Prisma.ClassMemberUncheckedCreateNestedManyWithoutUserInput
+  createdSets?: Prisma.PracticeSetUncheckedCreateNestedManyWithoutCreatedByInput
+  generatedJobs?: Prisma.GeneratorJobUncheckedCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+}
+
+export type UserCreateOrConnectWithoutStudyPlansInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutStudyPlansInput, Prisma.UserUncheckedCreateWithoutStudyPlansInput>
+}
+
+export type UserUpsertWithoutStudyPlansInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutStudyPlansInput, Prisma.UserUncheckedUpdateWithoutStudyPlansInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutStudyPlansInput, Prisma.UserUncheckedCreateWithoutStudyPlansInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutStudyPlansInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutStudyPlansInput, Prisma.UserUncheckedUpdateWithoutStudyPlansInput>
+}
+
+export type UserUpdateWithoutStudyPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutUserNestedInput
+  weaknessProfiles?: Prisma.WeaknessProfileUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.ClassMemberUpdateManyWithoutUserNestedInput
+  createdSets?: Prisma.PracticeSetUpdateManyWithoutCreatedByNestedInput
+  generatedJobs?: Prisma.GeneratorJobUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutStudyPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutUserNestedInput
+  weaknessProfiles?: Prisma.WeaknessProfileUncheckedUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.ClassMemberUncheckedUpdateManyWithoutUserNestedInput
+  createdSets?: Prisma.PracticeSetUncheckedUpdateManyWithoutCreatedByNestedInput
+  generatedJobs?: Prisma.GeneratorJobUncheckedUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+}
+
+export type UserCreateWithoutNotificationsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  phone?: string | null
+  address?: string | null
+  avatarUrl?: string | null
+  isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutUserInput
+  weaknessProfiles?: Prisma.WeaknessProfileCreateNestedManyWithoutUserInput
+  memberships?: Prisma.ClassMemberCreateNestedManyWithoutUserInput
+  createdSets?: Prisma.PracticeSetCreateNestedManyWithoutCreatedByInput
+  generatedJobs?: Prisma.GeneratorJobCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+}
+
+export type UserUncheckedCreateWithoutNotificationsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  phone?: string | null
+  address?: string | null
+  avatarUrl?: string | null
+  isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutUserInput
+  weaknessProfiles?: Prisma.WeaknessProfileUncheckedCreateNestedManyWithoutUserInput
+  memberships?: Prisma.ClassMemberUncheckedCreateNestedManyWithoutUserInput
+  createdSets?: Prisma.PracticeSetUncheckedCreateNestedManyWithoutCreatedByInput
+  generatedJobs?: Prisma.GeneratorJobUncheckedCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+}
+
+export type UserCreateOrConnectWithoutNotificationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+}
+
+export type UserUpsertWithoutNotificationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNotificationsInput, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationsInput, Prisma.UserUncheckedCreateWithoutNotificationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNotificationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNotificationsInput, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
+}
+
+export type UserUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutUserNestedInput
+  weaknessProfiles?: Prisma.WeaknessProfileUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.ClassMemberUpdateManyWithoutUserNestedInput
+  createdSets?: Prisma.PracticeSetUpdateManyWithoutCreatedByNestedInput
+  generatedJobs?: Prisma.GeneratorJobUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNotificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutUserNestedInput
+  weaknessProfiles?: Prisma.WeaknessProfileUncheckedUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.ClassMemberUncheckedUpdateManyWithoutUserNestedInput
+  createdSets?: Prisma.PracticeSetUncheckedUpdateManyWithoutCreatedByNestedInput
+  generatedJobs?: Prisma.GeneratorJobUncheckedUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+}
+
+export type UserCreateWithoutBadgesInput = {
+  id?: string
+  name?: string | null
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  phone?: string | null
+  address?: string | null
+  avatarUrl?: string | null
+  isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutUserInput
+  weaknessProfiles?: Prisma.WeaknessProfileCreateNestedManyWithoutUserInput
+  memberships?: Prisma.ClassMemberCreateNestedManyWithoutUserInput
+  createdSets?: Prisma.PracticeSetCreateNestedManyWithoutCreatedByInput
+  generatedJobs?: Prisma.GeneratorJobCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+}
+
+export type UserUncheckedCreateWithoutBadgesInput = {
+  id?: string
+  name?: string | null
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  phone?: string | null
+  address?: string | null
+  avatarUrl?: string | null
+  isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutUserInput
+  weaknessProfiles?: Prisma.WeaknessProfileUncheckedCreateNestedManyWithoutUserInput
+  memberships?: Prisma.ClassMemberUncheckedCreateNestedManyWithoutUserInput
+  createdSets?: Prisma.PracticeSetUncheckedCreateNestedManyWithoutCreatedByInput
+  generatedJobs?: Prisma.GeneratorJobUncheckedCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+}
+
+export type UserCreateOrConnectWithoutBadgesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBadgesInput, Prisma.UserUncheckedCreateWithoutBadgesInput>
+}
+
+export type UserUpsertWithoutBadgesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBadgesInput, Prisma.UserUncheckedUpdateWithoutBadgesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBadgesInput, Prisma.UserUncheckedCreateWithoutBadgesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBadgesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBadgesInput, Prisma.UserUncheckedUpdateWithoutBadgesInput>
+}
+
+export type UserUpdateWithoutBadgesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutUserNestedInput
+  weaknessProfiles?: Prisma.WeaknessProfileUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.ClassMemberUpdateManyWithoutUserNestedInput
+  createdSets?: Prisma.PracticeSetUpdateManyWithoutCreatedByNestedInput
+  generatedJobs?: Prisma.GeneratorJobUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBadgesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutUserNestedInput
+  weaknessProfiles?: Prisma.WeaknessProfileUncheckedUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.ClassMemberUncheckedUpdateManyWithoutUserNestedInput
+  createdSets?: Prisma.PracticeSetUncheckedUpdateManyWithoutCreatedByNestedInput
+  generatedJobs?: Prisma.GeneratorJobUncheckedUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+}
+
+export type UserCreateWithoutCertificatesInput = {
+  id?: string
+  name?: string | null
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  phone?: string | null
+  address?: string | null
+  avatarUrl?: string | null
+  isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutUserInput
+  weaknessProfiles?: Prisma.WeaknessProfileCreateNestedManyWithoutUserInput
+  memberships?: Prisma.ClassMemberCreateNestedManyWithoutUserInput
+  createdSets?: Prisma.PracticeSetCreateNestedManyWithoutCreatedByInput
+  generatedJobs?: Prisma.GeneratorJobCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+}
+
+export type UserUncheckedCreateWithoutCertificatesInput = {
+  id?: string
+  name?: string | null
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  phone?: string | null
+  address?: string | null
+  avatarUrl?: string | null
+  isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutUserInput
+  weaknessProfiles?: Prisma.WeaknessProfileUncheckedCreateNestedManyWithoutUserInput
+  memberships?: Prisma.ClassMemberUncheckedCreateNestedManyWithoutUserInput
+  createdSets?: Prisma.PracticeSetUncheckedCreateNestedManyWithoutCreatedByInput
+  generatedJobs?: Prisma.GeneratorJobUncheckedCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+}
+
+export type UserCreateOrConnectWithoutCertificatesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCertificatesInput, Prisma.UserUncheckedCreateWithoutCertificatesInput>
+}
+
+export type UserUpsertWithoutCertificatesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCertificatesInput, Prisma.UserUncheckedUpdateWithoutCertificatesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCertificatesInput, Prisma.UserUncheckedCreateWithoutCertificatesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCertificatesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCertificatesInput, Prisma.UserUncheckedUpdateWithoutCertificatesInput>
+}
+
+export type UserUpdateWithoutCertificatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutUserNestedInput
+  weaknessProfiles?: Prisma.WeaknessProfileUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.ClassMemberUpdateManyWithoutUserNestedInput
+  createdSets?: Prisma.PracticeSetUpdateManyWithoutCreatedByNestedInput
+  generatedJobs?: Prisma.GeneratorJobUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCertificatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutUserNestedInput
+  weaknessProfiles?: Prisma.WeaknessProfileUncheckedUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.ClassMemberUncheckedUpdateManyWithoutUserNestedInput
+  createdSets?: Prisma.PracticeSetUncheckedUpdateManyWithoutCreatedByNestedInput
+  generatedJobs?: Prisma.GeneratorJobUncheckedUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+}
+
+export type UserCreateWithoutAuditLogsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  phone?: string | null
+  address?: string | null
+  avatarUrl?: string | null
+  isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutUserInput
+  weaknessProfiles?: Prisma.WeaknessProfileCreateNestedManyWithoutUserInput
+  memberships?: Prisma.ClassMemberCreateNestedManyWithoutUserInput
+  createdSets?: Prisma.PracticeSetCreateNestedManyWithoutCreatedByInput
+  generatedJobs?: Prisma.GeneratorJobCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAuditLogsInput = {
+  id?: string
+  name?: string | null
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  phone?: string | null
+  address?: string | null
+  avatarUrl?: string | null
+  isActive?: boolean
+  subscriptionPlan?: string
+  xp?: number
+  streakDays?: number
+  lastStudyDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutUserInput
+  weaknessProfiles?: Prisma.WeaknessProfileUncheckedCreateNestedManyWithoutUserInput
+  memberships?: Prisma.ClassMemberUncheckedCreateNestedManyWithoutUserInput
+  createdSets?: Prisma.PracticeSetUncheckedCreateNestedManyWithoutCreatedByInput
+  generatedJobs?: Prisma.GeneratorJobUncheckedCreateNestedManyWithoutUserInput
+  lessons?: Prisma.LessonProgressUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  studyPlans?: Prisma.StudyPlanUncheckedCreateNestedManyWithoutUserInput
+  badges?: Prisma.UserBadgeUncheckedCreateNestedManyWithoutUserInput
+  certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAuditLogsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
+}
+
+export type UserUpsertWithoutAuditLogsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAuditLogsInput, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAuditLogsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAuditLogsInput, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
+}
+
+export type UserUpdateWithoutAuditLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutUserNestedInput
+  weaknessProfiles?: Prisma.WeaknessProfileUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.ClassMemberUpdateManyWithoutUserNestedInput
+  createdSets?: Prisma.PracticeSetUpdateManyWithoutCreatedByNestedInput
+  generatedJobs?: Prisma.GeneratorJobUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAuditLogsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  subscriptionPlan?: Prisma.StringFieldUpdateOperationsInput | string
+  xp?: Prisma.IntFieldUpdateOperationsInput | number
+  streakDays?: Prisma.IntFieldUpdateOperationsInput | number
+  lastStudyDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutUserNestedInput
+  weaknessProfiles?: Prisma.WeaknessProfileUncheckedUpdateManyWithoutUserNestedInput
+  memberships?: Prisma.ClassMemberUncheckedUpdateManyWithoutUserNestedInput
+  createdSets?: Prisma.PracticeSetUncheckedUpdateManyWithoutCreatedByNestedInput
+  generatedJobs?: Prisma.GeneratorJobUncheckedUpdateManyWithoutUserNestedInput
+  lessons?: Prisma.LessonProgressUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  studyPlans?: Prisma.StudyPlanUncheckedUpdateManyWithoutUserNestedInput
+  badges?: Prisma.UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+  certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1159,6 +2469,12 @@ export type UserCountOutputType = {
   memberships: number
   createdSets: number
   generatedJobs: number
+  lessons: number
+  notifications: number
+  studyPlans: number
+  badges: number
+  certificates: number
+  auditLogs: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1168,6 +2484,12 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   memberships?: boolean | UserCountOutputTypeCountMembershipsArgs
   createdSets?: boolean | UserCountOutputTypeCountCreatedSetsArgs
   generatedJobs?: boolean | UserCountOutputTypeCountGeneratedJobsArgs
+  lessons?: boolean | UserCountOutputTypeCountLessonsArgs
+  notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+  studyPlans?: boolean | UserCountOutputTypeCountStudyPlansArgs
+  badges?: boolean | UserCountOutputTypeCountBadgesArgs
+  certificates?: boolean | UserCountOutputTypeCountCertificatesArgs
+  auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
 }
 
 /**
@@ -1222,6 +2544,48 @@ export type UserCountOutputTypeCountGeneratedJobsArgs<ExtArgs extends runtime.Ty
   where?: Prisma.GeneratorJobWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountLessonsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LessonProgressWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountStudyPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StudyPlanWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBadgesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserBadgeWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCertificatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CertificateWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuditLogWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1233,6 +2597,10 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   address?: boolean
   avatarUrl?: boolean
   isActive?: boolean
+  subscriptionPlan?: boolean
+  xp?: boolean
+  streakDays?: boolean
+  lastStudyDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
@@ -1241,6 +2609,12 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
   createdSets?: boolean | Prisma.User$createdSetsArgs<ExtArgs>
   generatedJobs?: boolean | Prisma.User$generatedJobsArgs<ExtArgs>
+  lessons?: boolean | Prisma.User$lessonsArgs<ExtArgs>
+  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  studyPlans?: boolean | Prisma.User$studyPlansArgs<ExtArgs>
+  badges?: boolean | Prisma.User$badgesArgs<ExtArgs>
+  certificates?: boolean | Prisma.User$certificatesArgs<ExtArgs>
+  auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1254,6 +2628,10 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   address?: boolean
   avatarUrl?: boolean
   isActive?: boolean
+  subscriptionPlan?: boolean
+  xp?: boolean
+  streakDays?: boolean
+  lastStudyDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -1268,6 +2646,10 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   address?: boolean
   avatarUrl?: boolean
   isActive?: boolean
+  subscriptionPlan?: boolean
+  xp?: boolean
+  streakDays?: boolean
+  lastStudyDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -1282,11 +2664,15 @@ export type UserSelectScalar = {
   address?: boolean
   avatarUrl?: boolean
   isActive?: boolean
+  subscriptionPlan?: boolean
+  xp?: boolean
+  streakDays?: boolean
+  lastStudyDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "phone" | "address" | "avatarUrl" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "phone" | "address" | "avatarUrl" | "isActive" | "subscriptionPlan" | "xp" | "streakDays" | "lastStudyDate" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   attempts?: boolean | Prisma.User$attemptsArgs<ExtArgs>
@@ -1294,6 +2680,12 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
   createdSets?: boolean | Prisma.User$createdSetsArgs<ExtArgs>
   generatedJobs?: boolean | Prisma.User$generatedJobsArgs<ExtArgs>
+  lessons?: boolean | Prisma.User$lessonsArgs<ExtArgs>
+  notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  studyPlans?: boolean | Prisma.User$studyPlansArgs<ExtArgs>
+  badges?: boolean | Prisma.User$badgesArgs<ExtArgs>
+  certificates?: boolean | Prisma.User$certificatesArgs<ExtArgs>
+  auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1308,6 +2700,12 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     memberships: Prisma.$ClassMemberPayload<ExtArgs>[]
     createdSets: Prisma.$PracticeSetPayload<ExtArgs>[]
     generatedJobs: Prisma.$GeneratorJobPayload<ExtArgs>[]
+    lessons: Prisma.$LessonProgressPayload<ExtArgs>[]
+    notifications: Prisma.$NotificationPayload<ExtArgs>[]
+    studyPlans: Prisma.$StudyPlanPayload<ExtArgs>[]
+    badges: Prisma.$UserBadgePayload<ExtArgs>[]
+    certificates: Prisma.$CertificatePayload<ExtArgs>[]
+    auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1319,6 +2717,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     address: string | null
     avatarUrl: string | null
     isActive: boolean
+    subscriptionPlan: string
+    xp: number
+    streakDays: number
+    lastStudyDate: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1721,6 +3123,12 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   memberships<T extends Prisma.User$membershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClassMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdSets<T extends Prisma.User$createdSetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdSetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PracticeSetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   generatedJobs<T extends Prisma.User$generatedJobsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$generatedJobsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GeneratorJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  lessons<T extends Prisma.User$lessonsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$lessonsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LessonProgressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  studyPlans<T extends Prisma.User$studyPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$studyPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudyPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  badges<T extends Prisma.User$badgesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$badgesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  certificates<T extends Prisma.User$certificatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$certificatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1759,6 +3167,10 @@ export interface UserFieldRefs {
   readonly address: Prisma.FieldRef<"User", 'String'>
   readonly avatarUrl: Prisma.FieldRef<"User", 'String'>
   readonly isActive: Prisma.FieldRef<"User", 'Boolean'>
+  readonly subscriptionPlan: Prisma.FieldRef<"User", 'String'>
+  readonly xp: Prisma.FieldRef<"User", 'Int'>
+  readonly streakDays: Prisma.FieldRef<"User", 'Int'>
+  readonly lastStudyDate: Prisma.FieldRef<"User", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -2295,6 +3707,150 @@ export type User$generatedJobsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.GeneratorJobScalarFieldEnum | Prisma.GeneratorJobScalarFieldEnum[]
+}
+
+/**
+ * User.lessons
+ */
+export type User$lessonsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LessonProgress
+   */
+  select?: Prisma.LessonProgressSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LessonProgress
+   */
+  omit?: Prisma.LessonProgressOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LessonProgressInclude<ExtArgs> | null
+  where?: Prisma.LessonProgressWhereInput
+  orderBy?: Prisma.LessonProgressOrderByWithRelationInput | Prisma.LessonProgressOrderByWithRelationInput[]
+  cursor?: Prisma.LessonProgressWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LessonProgressScalarFieldEnum | Prisma.LessonProgressScalarFieldEnum[]
+}
+
+/**
+ * User.notifications
+ */
+export type User$notificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
+}
+
+/**
+ * User.studyPlans
+ */
+export type User$studyPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StudyPlan
+   */
+  select?: Prisma.StudyPlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StudyPlan
+   */
+  omit?: Prisma.StudyPlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StudyPlanInclude<ExtArgs> | null
+  where?: Prisma.StudyPlanWhereInput
+  orderBy?: Prisma.StudyPlanOrderByWithRelationInput | Prisma.StudyPlanOrderByWithRelationInput[]
+  cursor?: Prisma.StudyPlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StudyPlanScalarFieldEnum | Prisma.StudyPlanScalarFieldEnum[]
+}
+
+/**
+ * User.badges
+ */
+export type User$badgesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserBadge
+   */
+  select?: Prisma.UserBadgeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserBadge
+   */
+  omit?: Prisma.UserBadgeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserBadgeInclude<ExtArgs> | null
+  where?: Prisma.UserBadgeWhereInput
+  orderBy?: Prisma.UserBadgeOrderByWithRelationInput | Prisma.UserBadgeOrderByWithRelationInput[]
+  cursor?: Prisma.UserBadgeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserBadgeScalarFieldEnum | Prisma.UserBadgeScalarFieldEnum[]
+}
+
+/**
+ * User.certificates
+ */
+export type User$certificatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Certificate
+   */
+  select?: Prisma.CertificateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Certificate
+   */
+  omit?: Prisma.CertificateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CertificateInclude<ExtArgs> | null
+  where?: Prisma.CertificateWhereInput
+  orderBy?: Prisma.CertificateOrderByWithRelationInput | Prisma.CertificateOrderByWithRelationInput[]
+  cursor?: Prisma.CertificateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CertificateScalarFieldEnum | Prisma.CertificateScalarFieldEnum[]
+}
+
+/**
+ * User.auditLogs
+ */
+export type User$auditLogsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AuditLog
+   */
+  select?: Prisma.AuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AuditLog
+   */
+  omit?: Prisma.AuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuditLogInclude<ExtArgs> | null
+  where?: Prisma.AuditLogWhereInput
+  orderBy?: Prisma.AuditLogOrderByWithRelationInput | Prisma.AuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.AuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
 }
 
 /**

@@ -293,6 +293,12 @@ export default function DashboardPage() {
             </div>
 
             <div className="rounded-3xl bg-white p-6 shadow">
+              <a
+  href="/student/assignments"
+  className="rounded-3xl bg-white p-6 font-black shadow"
+>
+  My Assignments
+</a>
               <h2 className="text-xl font-semibold">Weak Areas Detail</h2>
 
               <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">

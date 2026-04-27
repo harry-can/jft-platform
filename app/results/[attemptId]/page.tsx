@@ -122,14 +122,35 @@ export default function ResultPage() {
             </div>
           </div>
 
-          <div className="mt-6 flex gap-3">
-            <a href="/practice" className="rounded-xl bg-white px-4 py-2 text-black">
-              Practice Again
-            </a>
-            <a href="/dashboard" className="rounded-xl border border-white/30 px-4 py-2">
-              Dashboard
-            </a>
-          </div>
+        <div className="mt-6 flex flex-wrap gap-3">
+  <a
+    href="/student/report"
+    className="rounded-xl bg-white px-4 py-2 font-semibold text-black"
+  >
+    View Full Report
+  </a>
+
+  <a
+    href="/practice"
+    className="rounded-xl border border-white/30 px-4 py-2 font-semibold text-white"
+  >
+    Practice Again
+  </a>
+
+  <a
+    href="/exams"
+    className="rounded-xl border border-white/30 px-4 py-2 font-semibold text-white"
+  >
+    Retest
+  </a>
+
+  <a
+    href="/student/home"
+    className="rounded-xl border border-white/30 px-4 py-2 font-semibold text-white"
+  >
+    Smart Home
+  </a>
+</div>
         </div>
 
         <div className="rounded-3xl bg-white p-6 shadow">

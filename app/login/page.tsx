@@ -31,12 +31,12 @@ export default function LoginPage() {
         return;
       }
 
-      if (data.role === "admin") {
+      if (data.role === "ADMIN") {
         window.location.href = "/admin/questions";
         return;
       }
 
-      if (data.role === "teacher") {
+      if (data.role === "TEACHER") {
         window.location.href = "/teacher/classes";
         return;
       }

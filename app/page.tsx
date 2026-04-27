@@ -2,146 +2,122 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-100 via-white to-zinc-200 text-zinc-900">
-      <header className="sticky top-0 z-20 border-b bg-white/80 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">JFT Practice Platform</h1>
-            <p className="text-sm text-zinc-500">Smart practice, analytics, and mock exams</p>
+    <main className="min-h-screen">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
+        <div>
+          <h1 className="text-2xl font-black tracking-tight text-slate-950">
+            JFT Master
+          </h1>
+          <p className="text-sm text-slate-500">Practice • Exam • Analytics</p>
+        </div>
+
+        <div className="flex gap-3">
+          <Link
+            href="/login"
+            className="rounded-2xl border border-slate-200 bg-white px-5 py-2.5 font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
+          >
+            Login
+          </Link>
+          <Link
+            href="/register"
+            className="rounded-2xl bg-blue-600 px-5 py-2.5 font-semibold text-white shadow-lg shadow-blue-600/20 hover:bg-blue-700"
+          >
+            Register
+          </Link>
+        </div>
+      </nav>
+
+      <section className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-2 lg:items-center">
+        <div>
+          <div className="mb-6 inline-flex rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">
+            Official-style JFT Basic Preparation
           </div>
 
-          <div className="flex gap-3">
+          <h2 className="max-w-3xl text-5xl font-black leading-tight tracking-tight text-slate-950 md:text-6xl">
+            Learn Japanese smarter with practice, exams and progress tracking.
+          </h2>
+
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+            A complete platform for students, teachers and admins with category
+            practice, official mock exams, audio/image questions, reports and
+            weakness analysis.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-4">
             <Link
               href="/practice"
-              className="rounded-xl bg-black px-4 py-2 text-white transition hover:bg-zinc-800"
+              className="rounded-2xl bg-blue-600 px-7 py-4 font-bold text-white shadow-xl shadow-blue-600/25 hover:bg-blue-700"
             >
-              Practice
+              Start Practice
             </Link>
+
             <Link
-              href="/dashboard"
-              className="rounded-xl border px-4 py-2 transition hover:bg-zinc-100"
+              href="/exams"
+              className="rounded-2xl border border-slate-200 bg-white px-7 py-4 font-bold text-slate-800 shadow-sm hover:bg-slate-50"
             >
-              Dashboard
-            </Link>
-            <Link
-              href="/teacher/classes"
-              className="rounded-xl border px-4 py-2 transition hover:bg-zinc-100"
-            >
-              Teacher
-            </Link>
-            <Link
-              href="/admin/questions"
-              className="rounded-xl border px-4 py-2 transition hover:bg-zinc-100"
-            >
-              Admin
+              Take Mock Exam
             </Link>
           </div>
         </div>
-      </header>
 
-      <main className="mx-auto max-w-7xl px-6 py-16">
-        <section className="grid gap-10 md:grid-cols-2 md:items-center">
-          <div className="space-y-6">
-            <div className="inline-flex rounded-full border bg-white px-4 py-2 text-sm text-zinc-600 shadow-sm">
-              JFT Basic (N4 Level) Preparation Platform
+        <div className="rounded-[2rem] border border-white/70 bg-white/80 p-6 shadow-2xl shadow-slate-300/40 backdrop-blur">
+          <div className="rounded-[1.5rem] bg-slate-950 p-6 text-white">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xl font-bold">Student Performance</h3>
+              <span className="rounded-full bg-green-400/20 px-3 py-1 text-sm text-green-300">
+                Live
+              </span>
             </div>
 
-            <h2 className="text-5xl font-bold leading-tight tracking-tight">
-              Practice smarter. Track progress. Improve faster.
-            </h2>
-
-            <p className="max-w-xl text-lg text-zinc-600">
-              Prepare for vocabulary, grammar, reading, and listening with a clean
-              dashboard, teacher monitoring, and full mock exam support.
-            </p>
-
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href="/practice"
-                className="rounded-2xl bg-black px-6 py-3 text-lg font-medium text-white shadow-lg transition hover:bg-zinc-800"
-              >
-                Start Practice
-              </Link>
-
-              <Link
-                href="/dashboard"
-                className="rounded-2xl border bg-white px-6 py-3 text-lg font-medium transition hover:bg-zinc-100"
-              >
-                Open Dashboard
-              </Link>
-            </div>
-          </div>
-
-          <div className="grid gap-5">
-            <div className="rounded-3xl bg-white p-6 shadow-xl">
-              <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Today’s Overview</h3>
-                <span className="rounded-full bg-zinc-100 px-3 py-1 text-sm text-zinc-600">
-                  Live
-                </span>
+            <div className="mt-6 grid grid-cols-2 gap-4">
+              <div className="rounded-2xl bg-white/10 p-5">
+                <p className="text-sm text-slate-300">Accuracy</p>
+                <p className="mt-2 text-4xl font-black">84%</p>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="rounded-2xl bg-zinc-50 p-4">
-                  <div className="text-sm text-zinc-500">Practice Score</div>
-                  <div className="mt-2 text-3xl font-bold">82%</div>
-                </div>
-                <div className="rounded-2xl bg-zinc-50 p-4">
-                  <div className="text-sm text-zinc-500">Weak Areas</div>
-                  <div className="mt-2 text-3xl font-bold">3</div>
-                </div>
-                <div className="rounded-2xl bg-zinc-50 p-4">
-                  <div className="text-sm text-zinc-500">Mock Exams</div>
-                  <div className="mt-2 text-3xl font-bold">5</div>
-                </div>
-                <div className="rounded-2xl bg-zinc-50 p-4">
-                  <div className="text-sm text-zinc-500">Study Streak</div>
-                  <div className="mt-2 text-3xl font-bold">12d</div>
-                </div>
+              <div className="rounded-2xl bg-white/10 p-5">
+                <p className="text-sm text-slate-300">Weak Areas</p>
+                <p className="mt-2 text-4xl font-black">3</p>
+              </div>
+
+              <div className="rounded-2xl bg-white/10 p-5">
+                <p className="text-sm text-slate-300">Mock Exams</p>
+                <p className="mt-2 text-4xl font-black">12</p>
+              </div>
+
+              <div className="rounded-2xl bg-white/10 p-5">
+                <p className="text-sm text-slate-300">Study Streak</p>
+                <p className="mt-2 text-4xl font-black">18d</p>
               </div>
             </div>
-
-            <div className="rounded-3xl bg-black p-6 text-white shadow-xl">
-              <h3 className="text-lg font-semibold">Recommended Next Step</h3>
-              <p className="mt-3 text-zinc-300">
-                Focus on grammar and reading for the next session to improve your overall score.
-              </p>
-              <Link
-                href="/practice"
-                className="mt-5 inline-block rounded-xl bg-white px-4 py-2 font-medium text-black transition hover:bg-zinc-200"
-              >
-                Continue Learning
-              </Link>
-            </div>
           </div>
-        </section>
 
-        <section className="mt-20 grid gap-6 md:grid-cols-3">
-          <div className="rounded-3xl bg-white p-6 shadow-md">
-            <div className="text-3xl">📘</div>
-            <h3 className="mt-4 text-xl font-semibold">Practice Mode</h3>
-            <p className="mt-2 text-zinc-600">
-              Solve unlimited questions and improve by topic.
+          <div className="mt-5 rounded-[1.5rem] bg-blue-50 p-6">
+            <h4 className="font-bold text-blue-900">AI Recommendation</h4>
+            <p className="mt-2 text-sm leading-6 text-blue-800">
+              Focus on Grammar and Listening today. Retry wrong questions until
+              all answers become correct.
             </p>
           </div>
+        </div>
+      </section>
 
-          <div className="rounded-3xl bg-white p-6 shadow-md">
-            <div className="text-3xl">📊</div>
-            <h3 className="mt-4 text-xl font-semibold">Progress Analytics</h3>
-            <p className="mt-2 text-zinc-600">
-              Track accuracy, scores, and category-wise weakness.
-            </p>
+      <section className="mx-auto grid max-w-7xl gap-6 px-6 pb-16 md:grid-cols-3">
+        {[
+          ["📘", "Smart Practice", "Category-wise and full practice sets."],
+          ["🎧", "Audio/Image Questions", "Support for official-style media questions."],
+          ["📊", "Detailed Reports", "Teacher and admin analytics for each student."],
+        ].map(([icon, title, desc]) => (
+          <div
+            key={title}
+            className="rounded-[2rem] border border-white bg-white/85 p-8 shadow-xl shadow-slate-300/30 backdrop-blur"
+          >
+            <div className="text-4xl">{icon}</div>
+            <h3 className="mt-5 text-xl font-black text-slate-950">{title}</h3>
+            <p className="mt-3 leading-7 text-slate-600">{desc}</p>
           </div>
-
-          <div className="rounded-3xl bg-white p-6 shadow-md">
-            <div className="text-3xl">👨‍🏫</div>
-            <h3 className="mt-4 text-xl font-semibold">Teacher Monitoring</h3>
-            <p className="mt-2 text-zinc-600">
-              View class performance and support students better.
-            </p>
-          </div>
-        </section>
-      </main>
-    </div>
+        ))}
+      </section>
+    </main>
   );
 }

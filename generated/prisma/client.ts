@@ -67,6 +67,11 @@ export type ClassMember = Prisma.ClassMemberModel
  */
 export type PracticeSet = Prisma.PracticeSetModel
 /**
+ * Model ReadingPassage
+ * 
+ */
+export type ReadingPassage = Prisma.ReadingPassageModel
+/**
  * Model Question
  * 
  */
@@ -106,3 +111,43 @@ export type WeaknessProfile = Prisma.WeaknessProfileModel
  * 
  */
 export type GeneratorJob = Prisma.GeneratorJobModel
+/**
+ * Model Lesson
+ * 
+ */
+export type Lesson = Prisma.LessonModel
+/**
+ * Model LessonProgress
+ * 
+ */
+export type LessonProgress = Prisma.LessonProgressModel
+/**
+ * Model StudyPlan
+ * 
+ */
+export type StudyPlan = Prisma.StudyPlanModel
+/**
+ * Model StudyPlanItem
+ * 
+ */
+export type StudyPlanItem = Prisma.StudyPlanItemModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
+/**
+ * Model UserBadge
+ * 
+ */
+export type UserBadge = Prisma.UserBadgeModel
+/**
+ * Model Certificate
+ * 
+ */
+export type Certificate = Prisma.CertificateModel
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = Prisma.AuditLogModel
