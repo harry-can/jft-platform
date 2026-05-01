@@ -13,12 +13,13 @@ export async function POST(req: Request) {
       );
     }
 
-    const classRoom = await prisma.classRoom.create({
-      data: {
-        name,
-        teacherId,
-      },
-    });
+   const classRoom = await prisma.classRoom.create({
+  data: {
+    name,
+    teacherId,
+    joinCode: Math.random().toString(36).substring(2, 8), // generate code
+  },
+});
 
     return NextResponse.json(classRoom);
   } catch (error) {
