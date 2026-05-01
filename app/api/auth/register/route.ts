@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/auth";
 import { createSession } from "@/lib/session";
-import { UserRole } from "@prisma/client";
+import { UserRole} from "@prisma/client";
 export async function POST(req: Request) {
   const body = await req.json();
   const { name, email, password, role } = body;
