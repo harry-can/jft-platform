@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/roles";
@@ -32,6 +31,11 @@ export async function POST(req: Request) {
   const practiceSetId = body.practiceSetId as string | undefined;
   const retrySetId = body.retrySetId as string | undefined;
   const attemptType = (body.attemptType || AttemptType.PRACTICE) as AttemptType;
+  const autoSubmitted = Boolean(body.autoSubmitted);
+  const timeSpentSec =
+    body.timeSpentSec !== undefined && body.timeSpentSec !== null
+      ? Number(body.timeSpentSec)
+      : null;
 
   if (!answers || Object.keys(answers).length === 0) {
     return NextResponse.json({ error: "No answers submitted" }, { status: 400 });
@@ -42,6 +46,9 @@ export async function POST(req: Request) {
       id: {
         in: Object.keys(answers),
       },
+    },
+    include: {
+      practiceSet: true,
     },
   });
 
@@ -65,9 +72,12 @@ export async function POST(req: Request) {
       userId: user!.id,
       practiceSetId: finalPracticeSetId,
       type: attemptType,
-      status: AttemptStatus.SUBMITTED,
+      status: autoSubmitted
+        ? AttemptStatus.AUTO_SUBMITTED
+        : AttemptStatus.SUBMITTED,
       submittedAt: new Date(),
       parentAttemptId: sourceRetrySet?.sourceAttemptId || null,
+      timeSpentSec,
     },
   });
 
@@ -78,8 +88,11 @@ export async function POST(req: Request) {
     const selected = answers[question.id];
     const isCorrect = selected === question.answer;
 
-    if (isCorrect) correctCount += 1;
-    else wrongQuestionIds.push(question.id);
+    if (isCorrect) {
+      correctCount += 1;
+    } else {
+      wrongQuestionIds.push(question.id);
+    }
 
     await prisma.attemptAnswer.create({
       data: {
@@ -93,7 +106,9 @@ export async function POST(req: Request) {
 
   const totalQuestions = questions.length;
   const accuracy =
-    totalQuestions > 0 ? Number(((correctCount / totalQuestions) * 100).toFixed(2)) : 0;
+    totalQuestions > 0
+      ? Number(((correctCount / totalQuestions) * 100).toFixed(2))
+      : 0;
 
   const resultLabel = getResultLabel(accuracy);
 
@@ -107,15 +122,27 @@ export async function POST(req: Request) {
       correctCount,
       accuracy,
       resultLabel,
+      timeSpentSec,
     },
   });
 
+  /**
+   * CATEGORY-WISE WEAKNESS UPDATE
+   *
+   * This still runs for practice and official mock exams.
+   * Official mock exams should still update analysis/weakness.
+   */
   const grouped: Record<string, { total: number; correct: number }> = {};
 
   for (const question of questions) {
     const category = String(question.category);
 
-    if (!grouped[category]) grouped[category] = { total: 0, correct: 0 };
+    if (!grouped[category]) {
+      grouped[category] = {
+        total: 0,
+        correct: 0,
+      };
+    }
 
     grouped[category].total += 1;
 
@@ -136,8 +163,11 @@ export async function POST(req: Request) {
 
     const attemptsCount = (previous?.attemptsCount || 0) + stats.total;
     const correctTotal = (previous?.correctCount || 0) + stats.correct;
+
     const newAccuracy =
-      attemptsCount > 0 ? Number(((correctTotal / attemptsCount) * 100).toFixed(2)) : 0;
+      attemptsCount > 0
+        ? Number(((correctTotal / attemptsCount) * 100).toFixed(2))
+        : 0;
 
     await prisma.weaknessProfile.upsert({
       where: {
@@ -166,6 +196,11 @@ export async function POST(req: Request) {
   let wrongRetrySetId: string | null = null;
   let unresolvedWrongCount = wrongQuestionIds.length;
 
+  /**
+   * CASE 1:
+   * Student is already doing WRONG_RETRY.
+   * Update existing retry set recursively.
+   */
   if (attemptType === AttemptType.WRONG_RETRY && retrySetId) {
     const retrySet = await prisma.wrongRetrySet.findFirst({
       where: {
@@ -215,7 +250,23 @@ export async function POST(req: Request) {
 
       wrongRetrySetId = retrySet.id;
     }
-  } else if (wrongQuestionIds.length > 0 && accuracy >= 50) {
+  }
+
+  /**
+   * CASE 2:
+   * Create new wrong-question retry set.
+   *
+   * IMPORTANT:
+   * This is ONLY for practice sets.
+   * It will NOT run for OFFICIAL_EXAM.
+   */
+  const canCreateWrongRetry =
+    attemptType !== AttemptType.OFFICIAL_EXAM &&
+    attemptType !== AttemptType.WRONG_RETRY &&
+    wrongQuestionIds.length > 0 &&
+    accuracy >= 50;
+
+  if (canCreateWrongRetry) {
     const retrySet = await prisma.wrongRetrySet.create({
       data: {
         userId: user!.id,
@@ -235,7 +286,8 @@ export async function POST(req: Request) {
         userId: user!.id,
         type: "WEAKNESS",
         title: "Wrong-question practice created",
-        message: "You scored above 50%. Practice only wrong questions until 100%.",
+        message:
+          "You scored above 50% in practice. Practice only wrong questions until 100%.",
         href: `/wrong-retry/${retrySet.id}`,
       },
     });
@@ -246,16 +298,33 @@ export async function POST(req: Request) {
   return NextResponse.json({
     attemptId: attempt.id,
     attempt: updatedAttempt,
+
     totalScore: correctCount,
     totalQuestions,
     correctCount,
     wrongCount: wrongQuestionIds.length,
     accuracy,
     resultLabel,
-    shouldRetryWrong: wrongQuestionIds.length > 0 && accuracy >= 50,
+
+    /**
+     * Official mock test must not show retry prompt.
+     */
+    shouldRetryWrong: canCreateWrongRetry,
+
+    /**
+     * Retake full set if score is below 50%.
+     */
     shouldRetakeFull: accuracy < 50,
+
     wrongRetrySetId,
     unresolvedWrongCount,
-    completedWrongRetry: attemptType === AttemptType.WRONG_RETRY && unresolvedWrongCount === 0,
+
+    completedWrongRetry:
+      attemptType === AttemptType.WRONG_RETRY && unresolvedWrongCount === 0,
+
+    /**
+     * Helpful frontend flag.
+     */
+    isOfficialExam: attemptType === AttemptType.OFFICIAL_EXAM,
   });
 }

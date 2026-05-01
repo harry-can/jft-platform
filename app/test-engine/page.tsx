@@ -201,16 +201,16 @@ export default function TestEnginePage() {
       return;
     }
 
-    if (data.shouldRetryWrong && data.wrongRetrySetId) {
-      const goRetry = confirm(
-        `You scored ${data.accuracy}%. Wrong-question practice is ready. Practice wrong questions now?`
-      );
+    if (!data.isOfficialExam && data.shouldRetryWrong && data.wrongRetrySetId) {
+  const goRetry = confirm(
+    `You scored ${data.accuracy}%. Wrong-question practice is ready. Practice wrong questions now?`
+  );
 
-      if (goRetry) {
-        router.push(`/wrong-retry/${data.wrongRetrySetId}`);
-        return;
-      }
-    }
+  if (goRetry) {
+    router.push(`/wrong-retry/${data.wrongRetrySetId}`);
+    return;
+  }
+}
 
     router.push(`/results/${data.attemptId}`);
   }
@@ -242,17 +242,17 @@ export default function TestEnginePage() {
     <main className="min-h-screen bg-slate-100">
       <header className="sticky top-0 z-30 border-b bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="font-bold text-blue-700">
-              {retrySetId ? "Wrong Retry" : isOfficial ? "Official Exam" : "Practice"}
-            </p>
-            <h1 className="text-2xl font-black">
-              {practiceSet?.title || "Wrong Question Practice"}
-            </h1>
-            <p className="text-sm text-slate-500">
-              Answered {answeredCount}/{questions.length}
-            </p>
-          </div>
+          <div className="mb-4 rounded-[2rem] bg-gradient-to-br from-slate-950 to-blue-950 p-6 text-white shadow-xl">
+  <p className="font-bold text-blue-200">
+    {retrySetId ? "Wrong Retry Mode" : isOfficial ? "Official Exam Mode" : "Practice Mode"}
+  </p>
+  <h1 className="mt-2 text-3xl font-black">
+    {practiceSet?.title || "Wrong Question Practice"}
+  </h1>
+  <p className="mt-2 text-slate-300">
+    Answer carefully. Your weakness and retry plan will be generated automatically.
+  </p>
+</div>
 
           <div className="flex items-center gap-3">
             {timeLeft !== null && (

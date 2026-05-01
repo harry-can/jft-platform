@@ -2,21 +2,37 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 
 type ResultData = {
   id: string;
-  totalScore: number | null;
-  resultLabel: string | null;
+  type: string;
+  status: string;
   submittedAt: string | null;
-  exam: {
-    id: string;
-    title: string;
-  };
+  totalQuestions: number;
+  correctCount: number;
+  accuracy: number;
+  resultLabel: string | null;
+  wrongRetrySetId: string | null;
   user: {
     id: string;
     name: string | null;
     email: string;
   };
+  practiceSet: {
+    id: string;
+    title: string;
+    description: string | null;
+    type: string;
+  };
+  categoryStats: Record<
+    string,
+    {
+      total: number;
+      correct: number;
+      accuracy: number;
+    }
+  >;
   answers: {
     id: string;
     selectedChoiceId: string | null;
@@ -25,14 +41,16 @@ type ResultData = {
       id: string;
       text: string;
       category: string;
+      difficulty: string;
+      type: string;
       options: Record<string, string> | null;
       answer: string | null;
-      imageUrl?: string | null;
-      audioUrl?: string | null;
-      explanation?: string | null;
+      explanation: string | null;
+      imageUrl: string | null;
+      audioUrl: string | null;
+      transcript: string | null;
     };
   }[];
-  categoryBreakdown: Record<string, { total: number; correct: number }>;
 };
 
 export default function ResultPage() {
@@ -40,6 +58,7 @@ export default function ResultPage() {
   const attemptId = params.attemptId as string;
 
   const [result, setResult] = useState<ResultData | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -47,218 +66,313 @@ export default function ResultPage() {
       try {
         const res = await fetch(`/api/results/${attemptId}`);
 
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(`API error ${res.status}: ${text}`);
+        const contentType = res.headers.get("content-type");
+
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error(
+            `Result API returned non-JSON response. Status: ${res.status}`
+          );
         }
 
         const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "Failed to load result");
+        }
+
         setResult(data);
       } catch (err) {
+        console.error("Result load error:", err);
         setError(err instanceof Error ? err.message : "Failed to load result");
+      } finally {
+        setLoading(false);
       }
     }
 
-    loadResult();
+    if (attemptId) {
+      loadResult();
+    }
   }, [attemptId]);
 
-  if (error) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-zinc-100 p-6">
-        <div className="mx-auto max-w-5xl rounded-3xl bg-white p-6 shadow">
-          <h1 className="text-2xl font-bold text-red-600">Failed to load result</h1>
-          <pre className="mt-4 overflow-auto rounded-xl bg-zinc-100 p-4 text-sm">
-            {error}
-          </pre>
+      <main className="min-h-screen bg-slate-100 p-6">
+        <div className="mx-auto max-w-4xl rounded-[2rem] bg-white p-8 text-center shadow">
+          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-black" />
+          <p className="mt-4 font-bold">Loading result...</p>
         </div>
-      </div>
+      </main>
     );
   }
 
-  if (!result) {
-    return <div className="p-6">Loading result...</div>;
-  }
+  if (error || !result) {
+    return (
+      <main className="min-h-screen bg-slate-100 p-6">
+        <div className="mx-auto max-w-4xl rounded-[2rem] bg-white p-8 shadow">
+          <h1 className="text-3xl font-black">Failed to load result</h1>
 
-  const totalQuestions = result.answers.length;
-  const correct = result.answers.filter((a) => a.isCorrect).length;
-  const percent = totalQuestions > 0 ? Math.round((correct / totalQuestions) * 100) : 0;
-
-  return (
-    <div className="min-h-screen bg-zinc-100">
-      <div className="mx-auto max-w-6xl px-6 py-8 space-y-8">
-        <div className="rounded-3xl bg-black p-8 text-white shadow-xl">
-          <h1 className="text-3xl font-bold">Exam Result</h1>
-          <p className="mt-2 text-zinc-300">
-            {result.exam.title} • {result.user.name || result.user.email}
+          <p className="mt-3 rounded-2xl bg-red-50 p-4 font-bold text-red-700">
+            {error || "Result not found"}
           </p>
 
-          <div className="mt-6 grid gap-4 md:grid-cols-4">
-            <div className="rounded-2xl bg-white/10 p-4">
-              <div className="text-sm text-zinc-300">Score</div>
-              <div className="mt-2 text-3xl font-bold">
-                {correct}/{totalQuestions}
-              </div>
-            </div>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link
+              href="/student/report"
+              className="rounded-2xl bg-black px-5 py-3 font-bold text-white"
+            >
+              My Report
+            </Link>
 
-            <div className="rounded-2xl bg-white/10 p-4">
-              <div className="text-sm text-zinc-300">Percent</div>
-              <div className="mt-2 text-3xl font-bold">{percent}%</div>
-            </div>
+            <Link
+              href="/practice"
+              className="rounded-2xl border bg-white px-5 py-3 font-bold"
+            >
+              Practice
+            </Link>
 
-            <div className="rounded-2xl bg-white/10 p-4">
-              <div className="text-sm text-zinc-300">Result</div>
-              <div className="mt-2 text-2xl font-bold">
-                {result.resultLabel || "-"}
-              </div>
-            </div>
+            <Link
+              href="/student/home"
+              className="rounded-2xl border bg-white px-5 py-3 font-bold"
+            >
+              Smart Home
+            </Link>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
-            <div className="rounded-2xl bg-white/10 p-4">
-              <div className="text-sm text-zinc-300">Submitted</div>
-              <div className="mt-2 text-sm font-semibold">
-                {result.submittedAt
-                  ? new Date(result.submittedAt).toLocaleString()
-                  : "-"}
-              </div>
-            </div>
+  const correct = result.correctCount || 0;
+  const totalQuestions = result.totalQuestions || result.answers.length;
+  const percent = Number(result.accuracy || 0).toFixed(1);
+  const isOfficialExam = result.type === "OFFICIAL_EXAM";
+
+  return (
+    <main className="min-h-screen bg-slate-100">
+      <div className="mx-auto max-w-7xl px-6 py-10">
+        <section className="rounded-[2.5rem] bg-gradient-to-br from-slate-950 via-blue-950 to-indigo-900 p-8 text-white shadow-2xl">
+          <p className="font-bold text-blue-200">
+            {isOfficialExam ? "Official Mock Exam Result" : "Practice Result"}
+          </p>
+
+          <h1 className="mt-2 text-4xl font-black">
+            {result.practiceSet.title}
+          </h1>
+
+          <p className="mt-3 text-slate-300">
+            {result.user.name || result.user.email}
+            {result.submittedAt
+              ? ` • Submitted ${new Date(result.submittedAt).toLocaleString()}`
+              : ""}
+          </p>
+
+          <div className="mt-8 grid gap-4 md:grid-cols-4">
+            <ResultCard title="Score" value={`${correct}/${totalQuestions}`} />
+            <ResultCard title="Percent" value={`${percent}%`} />
+            <ResultCard title="Result" value={result.resultLabel || "-"} />
+            <ResultCard title="Type" value={result.type} />
           </div>
 
-        <div className="mt-6 flex flex-wrap gap-3">
-  <a
-    href="/student/report"
-    className="rounded-xl bg-white px-4 py-2 font-semibold text-black"
-  >
-    View Full Report
-  </a>
+          <div className="mt-8 flex flex-wrap gap-3">
+            {result.type !== "OFFICIAL_EXAM" && result.wrongRetrySetId && (
+              <Link
+                href={`/wrong-retry/${result.wrongRetrySetId}`}
+                className="rounded-2xl bg-blue-600 px-5 py-3 font-bold text-white"
+              >
+                Practice Wrong Questions
+              </Link>
+            )}
 
-  <a
-    href="/practice"
-    className="rounded-xl border border-white/30 px-4 py-2 font-semibold text-white"
-  >
-    Practice Again
-  </a>
+            <Link
+              href="/student/report"
+              className="rounded-2xl bg-white px-5 py-3 font-bold text-black"
+            >
+              View Full Report
+            </Link>
 
-  <a
-    href="/exams"
-    className="rounded-xl border border-white/30 px-4 py-2 font-semibold text-white"
-  >
-    Retest
-  </a>
+            <Link
+              href="/practice"
+              className="rounded-2xl border border-white/30 px-5 py-3 font-bold text-white"
+            >
+              Practice Again
+            </Link>
 
-  <a
-    href="/student/home"
-    className="rounded-xl border border-white/30 px-4 py-2 font-semibold text-white"
-  >
-    Smart Home
-  </a>
-</div>
-        </div>
+            <Link
+              href="/exams"
+              className="rounded-2xl border border-white/30 px-5 py-3 font-bold text-white"
+            >
+              Retest
+            </Link>
 
-        <div className="rounded-3xl bg-white p-6 shadow">
-          <h2 className="text-xl font-semibold">Category Breakdown</h2>
+            <Link
+              href="/student/home"
+              className="rounded-2xl border border-white/30 px-5 py-3 font-bold text-white"
+            >
+              Smart Home
+            </Link>
+          </div>
 
-          <div className="mt-4 grid gap-4 md:grid-cols-3">
-            {Object.entries(result.categoryBreakdown).map(([category, stats]) => {
-              const categoryPercent =
-                stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0;
+          {result.type === "OFFICIAL_EXAM" && (
+            <p className="mt-4 rounded-2xl bg-white/10 p-4 text-sm leading-6 text-slate-300">
+              Official mock exams do not create wrong-question retry. Use
+              category practice or full practice sets for wrong-question
+              training.
+            </p>
+          )}
+        </section>
+
+        <section className="mt-8 rounded-[2rem] bg-white p-6 shadow">
+          <h2 className="text-2xl font-black">Category Analysis</h2>
+
+          {Object.keys(result.categoryStats || {}).length === 0 ? (
+            <p className="mt-4 text-slate-500">No category data found.</p>
+          ) : (
+            <div className="mt-5 grid gap-4 md:grid-cols-3">
+              {Object.entries(result.categoryStats).map(([category, stats]) => (
+                <div key={category} className="rounded-2xl border p-5">
+                  <div className="font-black">{category}</div>
+
+                  <div className="mt-2 text-3xl font-black">
+                    {stats.accuracy.toFixed(1)}%
+                  </div>
+
+                  <div className="mt-2 text-sm text-slate-500">
+                    {stats.correct}/{stats.total} correct
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section className="mt-8 rounded-[2rem] bg-white p-6 shadow">
+          <h2 className="text-2xl font-black">Question Review</h2>
+
+          <div className="mt-6 space-y-5">
+            {result.answers.map((answer, index) => {
+              const question = answer.question;
 
               return (
-                <div key={category} className="rounded-2xl border p-4">
-                  <div className="font-semibold">{category}</div>
-                  <div className="mt-2 text-2xl font-bold">
-                    {stats.correct}/{stats.total}
+                <div
+                  key={answer.id}
+                  className={`rounded-[2rem] border p-5 ${
+                    answer.isCorrect
+                      ? "border-green-200 bg-green-50"
+                      : "border-red-200 bg-red-50"
+                  }`}
+                >
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="rounded-full bg-white px-3 py-1 text-xs font-black">
+                      Question {index + 1}
+                    </span>
+
+                    <span className="rounded-full bg-white px-3 py-1 text-xs font-black">
+                      {question.category}
+                    </span>
+
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-black ${
+                        answer.isCorrect
+                          ? "bg-green-600 text-white"
+                          : "bg-red-600 text-white"
+                      }`}
+                    >
+                      {answer.isCorrect ? "Correct" : "Wrong"}
+                    </span>
                   </div>
-                  <div className="mt-3 h-3 rounded-full bg-zinc-100">
-                    <div
-                      className="h-3 rounded-full bg-black"
-                      style={{ width: `${categoryPercent}%` }}
-                    />
-                  </div>
-                  <div className="mt-2 text-sm text-zinc-500">
-                    {categoryPercent}%
+
+                  <h3 className="mt-4 text-xl font-black leading-8">
+                    {question.text}
+                  </h3>
+
+                  {question.imageUrl && (
+                    <div className="mt-4 overflow-hidden rounded-2xl border bg-white">
+                      <img
+                        src={question.imageUrl}
+                        alt="Question image"
+                        className="max-h-[360px] w-full object-contain"
+                      />
+                    </div>
+                  )}
+
+                  {question.audioUrl && (
+                    <div className="mt-4 rounded-2xl border bg-white p-4">
+                      <div className="mb-2 font-bold">Audio</div>
+                      <audio controls className="w-full">
+                        <source src={question.audioUrl} />
+                      </audio>
+                    </div>
+                  )}
+
+                  {question.options && (
+                    <div className="mt-5 grid gap-3 md:grid-cols-2">
+                      {Object.entries(question.options).map(([key, value]) => {
+                        const isCorrectAnswer = key === question.answer;
+                        const isSelected = key === answer.selectedChoiceId;
+
+                        return (
+                          <div
+                            key={key}
+                            className={`rounded-2xl border bg-white p-4 ${
+                              isCorrectAnswer
+                                ? "border-green-500"
+                                : isSelected
+                                ? "border-red-500"
+                                : ""
+                            }`}
+                          >
+                            <div className="font-bold">
+                              {key}. {value}
+                            </div>
+
+                            {isCorrectAnswer && (
+                              <div className="mt-1 text-sm font-bold text-green-700">
+                                Correct answer
+                              </div>
+                            )}
+
+                            {isSelected && !isCorrectAnswer && (
+                              <div className="mt-1 text-sm font-bold text-red-700">
+                                Your answer
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  <div className="mt-5 rounded-2xl bg-white p-4">
+                    <div className="font-black">Explanation</div>
+
+                    <p className="mt-2 leading-7 text-slate-600">
+                      {question.explanation || "No explanation provided."}
+                    </p>
+
+                    {question.transcript && (
+                      <>
+                        <div className="mt-4 font-black">Transcript</div>
+                        <p className="mt-2 leading-7 text-slate-600">
+                          {question.transcript}
+                        </p>
+                      </>
+                    )}
                   </div>
                 </div>
               );
             })}
           </div>
-        </div>
-
-        <div className="rounded-3xl bg-white p-6 shadow">
-          <h2 className="text-xl font-semibold">Answer Review</h2>
-
-          <div className="mt-4 space-y-5">
-            {result.answers.map((a, index) => (
-              <div key={a.id} className="rounded-2xl border p-5">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <div className="text-sm text-zinc-500">
-                      Question {index + 1} • {a.question.category}
-                    </div>
-                    <div className="mt-2 font-semibold">{a.question.text}</div>
-                  </div>
-
-                  <div
-                    className={`rounded-full px-3 py-1 text-sm font-semibold ${
-                      a.isCorrect
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
-                    }`}
-                  >
-                    {a.isCorrect ? "Correct" : "Wrong"}
-                  </div>
-                </div>
-
-                {a.question.imageUrl && (
-                  <img
-                    src={a.question.imageUrl}
-                    alt="Question"
-                    className="mt-4 max-h-64 rounded-2xl border object-contain"
-                  />
-                )}
-
-                {a.question.audioUrl && (
-                  <audio controls className="mt-4 w-full">
-                    <source src={a.question.audioUrl} />
-                  </audio>
-                )}
-
-                {a.question.options && (
-                  <div className="mt-4 grid gap-2">
-                    {Object.entries(a.question.options).map(([key, value]) => (
-                      <div
-                        key={key}
-                        className={`rounded-xl border p-3 ${
-                          key === a.question.answer
-                            ? "border-green-500 bg-green-50"
-                            : key === a.selectedChoiceId
-                            ? "border-red-500 bg-red-50"
-                            : ""
-                        }`}
-                      >
-                        <span className="font-medium">{key}.</span> {value}
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <div className="mt-4 flex flex-wrap gap-3 text-sm">
-                  <span className="rounded-xl bg-zinc-100 px-3 py-2">
-                    Your answer: {a.selectedChoiceId || "-"}
-                  </span>
-                  <span className="rounded-xl bg-zinc-100 px-3 py-2">
-                    Correct answer: {a.question.answer || "-"}
-                  </span>
-                </div>
-
-                {a.question.explanation && (
-                  <div className="mt-4 rounded-xl bg-blue-50 p-3 text-sm text-zinc-700">
-                    {a.question.explanation}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+        </section>
       </div>
+    </main>
+  );
+}
+
+function ResultCard({ title, value }: { title: string; value: string }) {
+  return (
+    <div className="rounded-[2rem] bg-white/10 p-5">
+      <div className="text-sm text-slate-300">{title}</div>
+      <div className="mt-2 text-2xl font-black">{value}</div>
     </div>
   );
 }
