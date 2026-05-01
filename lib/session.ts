@@ -4,15 +4,15 @@ import { randomUUID } from "crypto";
 
 export const SESSION_COOKIE_NAME = "jft_session";
 
-// ✅ CREATE SESSION (FIX YOUR ERROR)
+// CREATE SESSION
 export async function createSession(userId: string) {
   const token = randomUUID();
 
-  const session = await prisma.session.create({
+  await prisma.session.create({
     data: {
       token,
       userId,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     },
   });
 
@@ -23,11 +23,9 @@ export async function createSession(userId: string) {
     path: "/",
     secure: process.env.NODE_ENV === "production",
   });
-
-  return session;
 }
 
-// ✅ GET CURRENT USER (YOUR EXISTING FUNCTION)
+// GET CURRENT USER
 export async function getCurrentUser() {
   const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
@@ -51,7 +49,7 @@ export async function getCurrentUser() {
   return session.user;
 }
 
-// ✅ LOGOUT (OPTIONAL BUT IMPORTANT)
+// LOGOUT
 export async function deleteSession() {
   const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
