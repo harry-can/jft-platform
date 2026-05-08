@@ -25,7 +25,7 @@ export default function AdminAnalyticsPage() {
   return (
     <main className="min-h-screen bg-[#f7fff2] p-8">
       <div className="mx-auto max-w-7xl">
-        <h1 className="text-4xl font-black">Analytics Dashboard</h1>
+        <h1 className="text-4xl font-black">Analytic Dashboard</h1>
 
         <div className="mt-8 grid gap-5 md:grid-cols-3 lg:grid-cols-6">
           <Card title="Users" value={data.totalUsers} />
