@@ -48,7 +48,36 @@ function parseNullableNumber(value: unknown) {
   const n = Number(value);
   return Number.isFinite(n) ? n : null;
 }
+export async function GET(
+  req: Request,
+  { params }: { params: Promise<{ questionId: string }> }
+) {
+  const { response } = await requireAdmin();
+  if (response) return response;
 
+  const { questionId } = await params;
+
+  const question = await prisma.question.findUnique({
+    where: {
+      id: questionId,
+    },
+    include: {
+      practiceSet: true,
+      passage: true,
+    },
+  });
+
+  if (!question) {
+    return NextResponse.json(
+      { error: "Question not found" },
+      { status: 404 }
+    );
+  }
+
+  return NextResponse.json({
+    question,
+  });
+}
 export async function PATCH(
   req: Request,
   { params }: { params: Promise<{ questionId: string }> }

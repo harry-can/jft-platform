@@ -2,24 +2,43 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(
-  _: Request,
-  { params }: { params: Promise<{ examId: string }> }
+  req: Request,
+  { params }: { params: { examId: string } }
 ) {
-  const { examId } = await params;
-
-  const exam = await prisma.practiceSet.findUnique({
-    where: { id: examId },
-    include: {
-      questions: {
-        where: { isPublished: true },
-        orderBy: { orderIndex: "asc" },
+  try {
+    const exam = await prisma.practiceSet.findUnique({
+      where: {
+        id: params.examId,
       },
-    },
-  });
+      include: {
+        questions: {
+          where: {
+            isPublished: true,
+          },
+          orderBy: {
+            orderIndex: "asc",
+          },
+        },
+      },
+    });
 
-  if (!exam) {
-    return NextResponse.json({ error: "Exam not found" }, { status: 404 });
+    if (!exam) {
+      return NextResponse.json(
+        { error: "Exam not found" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      exam,
+    });
+  } catch (error) {
+    console.error("Get exam error:", error);
+
+    return NextResponse.json(
+      { error: "Failed to load exam" },
+      { status: 500 }
+    );
   }
-
-  return NextResponse.json(exam);
 }

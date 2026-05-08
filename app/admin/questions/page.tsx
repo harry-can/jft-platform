@@ -13,6 +13,7 @@ type Question = {
   imageUrl?: string | null;
   audioUrl?: string | null;
   explanation?: string | null;
+  isPublished: boolean;
   practiceSet?: {
     id: string;
     title: string;
@@ -67,8 +68,8 @@ export default function AdminQuestionsPage() {
         throw new Error(sData.error || "Failed to load practice sets");
       }
 
-      setQuestions(Array.isArray(qData) ? qData : []);
-      setSets(Array.isArray(sData) ? sData : []);
+      setQuestions(Array.isArray(qData) ? qData : qData.questions || []);
+      setSets(Array.isArray(sData) ? sData : sData.practiceSets || sData.sets || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
       setQuestions([]);
@@ -144,6 +145,45 @@ export default function AdminQuestionsPage() {
     await loadData();
   }
 
+  async function deleteQuestion(id: string) {
+    if (!confirm("Delete this question?")) return;
+
+    const res = await fetch(`/api/admin/questions/${id}`, {
+      method: "DELETE",
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || "Failed to delete question");
+      return;
+    }
+
+    alert(data.message || "Question deleted");
+    await loadData();
+  }
+
+  async function togglePublish(q: Question) {
+    const res = await fetch(`/api/admin/questions/${q.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        isPublished: !q.isPublished,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || "Failed to update question");
+      return;
+    }
+
+    await loadData();
+  }
+
   if (loading) {
     return <div className="p-6">Loading admin questions...</div>;
   }
@@ -173,7 +213,7 @@ export default function AdminQuestionsPage() {
           <div>
             <h1 className="text-3xl font-bold">Admin Question Manager</h1>
             <p className="mt-2 text-zinc-600">
-              Create text, image, and audio questions.
+              Create, edit, publish, unpublish, and delete questions.
             </p>
           </div>
 
@@ -323,11 +363,28 @@ export default function AdminQuestionsPage() {
               <div className="mt-4 space-y-4">
                 {questions.map((q) => (
                   <div key={q.id} className="rounded-2xl border p-5">
-                    <div className="font-medium">{q.text}</div>
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <div className="font-medium">{q.text}</div>
 
-                    <div className="mt-1 text-sm text-zinc-500">
-                      Set: {q.practiceSet?.title || "-"} | Category:{" "}
-                      {q.category} | Type: {q.type}
+                        <div className="mt-1 text-sm text-zinc-500">
+                          Set: {q.practiceSet?.title || "-"} | Category:{" "}
+                          {q.category} | Type: {q.type}
+                        </div>
+
+                        <div className="mt-2 text-sm">
+                          Status:{" "}
+                          <span
+                            className={
+                              q.isPublished
+                                ? "font-bold text-green-600"
+                                : "font-bold text-red-600"
+                            }
+                          >
+                            {q.isPublished ? "Published" : "Unpublished"}
+                          </span>
+                        </div>
+                      </div>
                     </div>
 
                     {q.imageUrl && (
@@ -356,6 +413,29 @@ export default function AdminQuestionsPage() {
 
                     <div className="mt-3 font-semibold">
                       Correct Answer: {q.answer}
+                    </div>
+
+                    <div className="mt-4 flex flex-wrap gap-3">
+                      <a
+                        href={`/admin/questions/${q.id}/edit`}
+                        className="rounded-xl bg-blue-500 px-4 py-2 font-bold text-white"
+                      >
+                        Edit
+                      </a>
+
+                      <button
+                        onClick={() => togglePublish(q)}
+                        className="rounded-xl bg-yellow-500 px-4 py-2 font-bold text-white"
+                      >
+                        {q.isPublished ? "Unpublish" : "Publish"}
+                      </button>
+
+                      <button
+                        onClick={() => deleteQuestion(q.id)}
+                        className="rounded-xl bg-red-500 px-4 py-2 font-bold text-white"
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
                 ))}

@@ -84,7 +84,10 @@ export async function GET(req: Request) {
     ],
   });
 
-  return NextResponse.json(questions);
+  return NextResponse.json({
+  success: true,
+  questions,
+});
 }
 
 export async function POST(req: Request) {
@@ -152,5 +155,8 @@ export async function POST(req: Request) {
     },
   });
 
-  return NextResponse.json(created);
+ return NextResponse.json({
+  success: true,
+  question: created,
+});
 }

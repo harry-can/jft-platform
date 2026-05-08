@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
- 
 }
 
 datasource db {
@@ -13,8 +12,23 @@ enum UserRole {
   ADMIN
 }
 
+enum ExamType {
+  JLPT
+  JFT
+}
+
+enum JLPTLevel {
+  N5
+  N4
+  N3
+  N2
+  N1
+  JFT_BASIC
+}
+
 enum QuestionCategory {
   VOCAB
+  VOCABULARY
   GRAMMAR
   READING
   LISTENING
@@ -46,8 +60,10 @@ enum AttemptType {
 
 enum AttemptStatus {
   STARTED
+  IN_PROGRESS
   SUBMITTED
   AUTO_SUBMITTED
+  LOCKED
 }
 
 enum AccessLevel {
@@ -105,6 +121,8 @@ enum AuditAction {
   ROLE_CHANGE
   LOGIN
   EXPORT
+  EXAM_VIOLATION
+  EXAM_LOCKED
 }
 
 model User {
@@ -115,13 +133,14 @@ model User {
   role      UserRole @default(STUDENT)
   phone     String?
   address   String?
-  avatarUrl String?
+  avatarUrl String?  @default("/images/default-student.png")
   isActive  Boolean  @default(true)
 
   subscriptionPlan String    @default("FREE")
   xp               Int       @default(0)
   streakDays       Int       @default(0)
   lastStudyDate    DateTime?
+  currentLevel     JLPTLevel @default(N5)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -132,13 +151,12 @@ model User {
   memberships      ClassMember[]
   createdSets      PracticeSet[]     @relation("SetCreator")
   generatedJobs    GeneratorJob[]
-
-  lessons       LessonProgress[]
-  notifications Notification[]
-  studyPlans    StudyPlan[]
-  badges        UserBadge[]
-  certificates  Certificate[]
-  auditLogs     AuditLog[]
+  lessons          LessonProgress[]
+  notifications    Notification[]
+  studyPlans       StudyPlan[]
+  badges           UserBadge[]
+  certificates     Certificate[]
+  auditLogs        AuditLog[]
 }
 
 model Session {
@@ -183,9 +201,12 @@ model PracticeSet {
   title            String
   description      String?
   type             SetType             @default(CATEGORY_PRACTICE)
+  examType         ExamType            @default(JLPT)
+  level            JLPTLevel           @default(N5)
   category         QuestionCategory?
   difficulty       QuestionDifficulty?
   isPublished      Boolean             @default(false)
+  isOfficial       Boolean             @default(false)
   timeLimitMin     Int?
   audioReplayLimit Int?
 
@@ -224,17 +245,18 @@ model Question {
   category      QuestionCategory   @default(OTHER)
   difficulty    QuestionDifficulty @default(MEDIUM)
   type          String             @default("mcq")
-  options       Json?
-  answer        String?
-  imageUrl      String?
-  audioUrl      String?
-  transcript    String?
-  replayLimit   Int?
-  explanation   String?
-  tags          String[]
-  points        Int                @default(1)
-  orderIndex    Int                @default(0)
-  isPublished   Boolean            @default(true)
+
+  options     Json?
+  answer      String?
+  imageUrl    String?
+  audioUrl    String?
+  transcript  String?
+  replayLimit Int?     @default(2)
+  explanation String?
+  tags        String[]
+  points      Int      @default(1)
+  orderIndex  Int      @default(0)
+  isPublished Boolean  @default(true)
 
   passageId    String?
   grammarPoint String?
@@ -279,11 +301,17 @@ model Attempt {
   timeSpentSec    Int?
   parentAttemptId String?
 
+  violations         Int     @default(0)
+  lockedReason       String?
+  secureMode         Boolean @default(false)
+  fullscreenRequired Boolean @default(false)
+
   user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   practiceSet   PracticeSet     @relation(fields: [practiceSetId], references: [id], onDelete: Cascade)
   answers       AttemptAnswer[]
   wrongRetrySet WrongRetrySet?
   certificates  Certificate[]
+  examLogs      ExamLog[]
 
   @@index([userId])
   @@index([practiceSetId])
@@ -303,6 +331,19 @@ model AttemptAnswer {
   question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@unique([attemptId, questionId])
+}
+
+model ExamLog {
+  id        String   @id @default(cuid())
+  attemptId String
+  eventType String
+  message   String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  attempt Attempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@index([attemptId])
 }
 
 model WrongRetrySet {
@@ -339,6 +380,7 @@ model WeaknessProfile {
   category      QuestionCategory
   attemptsCount Int              @default(0)
   correctCount  Int              @default(0)
+  wrongCount    Int              @default(0)
   accuracy      Float            @default(0)
   weaknessLevel String?
   updatedAt     DateTime         @updatedAt
